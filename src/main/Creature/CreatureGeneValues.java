@@ -4,7 +4,6 @@ import main.Genetics.Genome;
 import main.Genetics.GeneID;
 
 import java.awt.*;
-import java.io.Console;
 import java.util.ArrayList;
 
 public class CreatureGeneValues{
@@ -115,7 +114,6 @@ public class CreatureGeneValues{
         speed = dna.GetGene(GeneID.MovementSpeed);
         stomachSize=GeneMinMax.StomachSizeMin + (dna.GetGene(GeneID.StomachSize) * (GeneMinMax.StomachSizeMax-GeneMinMax.StomachSizeMin));
         maxStoredEnergy=GeneMinMax.EnergyStorageMin + (dna.GetGene(GeneID.MaxStoredEnergy) *(GeneMinMax.EnergyStorageMax-GeneMinMax.EnergyStorageMin));
-        float temp=dna.GetGene(GeneID.VisionAngle);
         visionAngle=GeneMinMax.VisionAngleMin + (dna.GetGene(GeneID.VisionAngle) * (GeneMinMax.VisionAngleMax-GeneMinMax.VisionAngleMin));
         visionClarity=dna.GetGene(GeneID.VisionClarity);
         visionDistance=GeneMinMax.VisionDistanceMin + (dna.GetGene(GeneID.VisionDistance) * (GeneMinMax.VisionDistanceMax-GeneMinMax.VisionDistanceMin));
@@ -172,7 +170,7 @@ public class CreatureGeneValues{
     }
 
     public ArrayList<Integer> GetFlipperColorRGB(){
-        ArrayList<Integer> flipperColor=new ArrayList<Integer>();
+        ArrayList<Integer> flipperColor=new ArrayList<>();
         flipperColor.add(flipperColorRed);
         flipperColor.add(flipperColorGreen);
         flipperColor.add(flipperColorBlue);
@@ -195,7 +193,7 @@ public class CreatureGeneValues{
     }
 
     public ArrayList<Integer> GetTailColorRGB(){
-        ArrayList<Integer> tailColor=new ArrayList<Integer>();
+        ArrayList<Integer> tailColor=new ArrayList<>();
         tailColor.add(tailColorRed);
         tailColor.add(tailColorGreen);
         tailColor.add(tailColorBlue);
@@ -219,7 +217,7 @@ public class CreatureGeneValues{
     }
 
     public ArrayList<Integer> GetEyeColorRGB(){
-        ArrayList<Integer> eyeColor=new ArrayList<Integer>();
+        ArrayList<Integer> eyeColor=new ArrayList<>();
         eyeColor.add(eyeColorRed);
         eyeColor.add(eyeColorGreen);
         eyeColor.add(eyeColorBlue);
@@ -243,7 +241,7 @@ public class CreatureGeneValues{
     }
 
     public ArrayList<Integer> GetBodyColorRGB(){
-        ArrayList<Integer> bodyColor=new ArrayList<Integer>();
+        ArrayList<Integer> bodyColor=new ArrayList<>();
         bodyColor.add(bodyColorRed);
         bodyColor.add(bodyColorGreen);
         bodyColor.add(bodyColorBlue);
@@ -263,7 +261,7 @@ public class CreatureGeneValues{
     }
 
     public ArrayList<Integer> GetMouthColorRGB(){
-        ArrayList<Integer> mouthColor=new ArrayList<Integer>();
+        ArrayList<Integer> mouthColor=new ArrayList<>();
         mouthColor.add(mouthColorRed);
         mouthColor.add(mouthColorGreen);
         mouthColor.add(mouthColorBlue);
@@ -286,9 +284,7 @@ public class CreatureGeneValues{
         return lifeSpan;
     }
 
-    public float GetSkinToughness(){
-        return skinToughness;
-    }
+    public float GetSkinToughness(){return skinToughness;}
 
     public float GetSeniorAgePercentage(){
         return seniorAgePercentage;

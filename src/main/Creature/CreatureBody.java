@@ -8,10 +8,9 @@ import java.util.ArrayList;
 
 public class CreatureBody{
 
-    private Creature CurrentCreature;
-    private CreatureGeneValues CGV;
-    private CreatureVitals Vitals;
-    private ArrayList<BodySegment> Body;
+    private final CreatureGeneValues CGV;
+    private final CreatureVitals Vitals;
+    private final ArrayList<BodySegment> Body;
     private int HeadSegmentID;
     private int MouthSegmentID;
     private int EyesSegmentID;
@@ -22,19 +21,18 @@ public class CreatureBody{
     //CGV parameter variables
     private final float HeadShape;
     private final boolean MouthPresent;
-    private boolean FlipperPresent;
-    private boolean TailPresent;
+    private final boolean FlipperPresent;
+    private final boolean TailPresent;
 
     private boolean EyesPresent;
 
     //create cgv parameter
     public CreatureBody(Creature currentCreature){
-        CurrentCreature=currentCreature;
-        CGV=CurrentCreature.GetGenes();
-        Vitals=CurrentCreature.GetVitals();
+        CGV= currentCreature.GetGenes();
+        Vitals= currentCreature.GetVitals();
 
         //class variables
-        Body=new ArrayList<BodySegment>();
+        Body=new ArrayList<>();
 
         HeadSegmentID=0;
         MouthSegmentID=-1;
@@ -66,7 +64,6 @@ public class CreatureBody{
     }
 
     public void CreateBody(float x,float y){
-        float WidthOfCurrentSegment=0;
         float HeightOfCurrentSegment=0;
 
 
@@ -133,17 +130,12 @@ public class CreatureBody{
 
     public void UpdateBody(){
 
-        float WidthOfCurrentSegment=0;
-        float HeightOfCurrentSegment=0;
-
         BodySegment bodySegment= GetBodySegment(0);
-        BodySegment previousSegment=bodySegment;
 
         Head head=(Head) bodySegment;
         head.SetSegmentDistance(GetCurrentBodyDistanceBetweenSegments());
         head.SetSegmentWidth(GetCurrentBodyWidth()-DetermineTaper(GetCurrentBodyWidth(),0,GetBodyLength()));
         head.SetSegmentHeight(GetCurrentBodyHeight());
-        previousSegment=bodySegment;
         Body.set(0,head);
 
         for(int i=1;i<GetBodyLength();i++) {
@@ -152,7 +144,6 @@ public class CreatureBody{
             bodySegment.SetSegmentWidth(GetCurrentBodyWidth() - DetermineTaper(GetCurrentBodyWidth(), i, GetBodyLength()));
             bodySegment.SetSegmentHeight(GetCurrentBodyHeight() - DetermineTaper(GetCurrentBodyWidth(), i, GetBodyLength()));
             bodySegment.SetSegmentHeight(GetCurrentBodyHeight());
-            previousSegment = bodySegment;
             Body.set(i, bodySegment);
         }
 
@@ -326,7 +317,7 @@ public class CreatureBody{
     public float GetCurrentEyeSize(){return CGV.GetEyeSize() * Vitals.GetMaturity();}
 
     public Color GetCurrentHeadColor(){return CGV.GetBodyColor();}
-    public Color GetCurrentSegmentsColor(int index){return CGV.GetBodyColor();}
+    public Color GetCurrentSegmentsColor(){return CGV.GetBodyColor();}
     public Color GetCurrentMouthColor(){return CGV.GetMouthColor();}
     public Color GetCurrentEyesColor(){return CGV.GetEyeColor();}
     public Color GetCurrentFlipperColor(){return CGV.GetFlipperColor();}

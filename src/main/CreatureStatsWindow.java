@@ -6,7 +6,6 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.util.UUID;
 
 public class CreatureStatsWindow {
     static JTextPane Stats;
@@ -19,91 +18,59 @@ public class CreatureStatsWindow {
 
         //Creating the panel at bottom and adding components
         JPanel panel = new JPanel();
-        JPanel panel1 = new JPanel();
+
         panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-        Border border = new EmptyBorder(0, 0, 1000, 400);
-        Border border1 = new EmptyBorder(0, 400, 1000, 400);
 
         Stats = new JTextPane();
         Stats.setSize(400,1000);
-        //Stats.setBorder(border);
         panel.add(Stats);
 
         Stats1 = new JTextPane();
         Stats1.setSize(400,1000);
-        //Stats1.setBorder(border1);
         panel.add(Stats1);
 
         //Adding Components to the frame.
         frame.getContentPane().add(panel);
-        //frame.getContentPane().add(panel1, BorderLayout.EAST);
+
 
         frame.setVisible(true);
 
        }
     private String AddField(String Name, int offset, float GeneValue, float VitalsValue){
         String tab = "    ";
-        StringBuilder returnvalue= new StringBuilder();
-        for(int i=0;i<offset;i++){
-            returnvalue.append(tab);
-        }
-        returnvalue.append(Name).append(": (").append(GeneValue).append(") ").append(VitalsValue).append("\r\n");
-        return returnvalue.toString();
+        return tab.repeat(Math.max(0, offset)) +
+                Name + ": (" + GeneValue + ") " + VitalsValue + "\r\n";
     }
     private String AddField(String Name, int offset, float GeneValue, boolean VitalsValue){
         String tab = "    ";
-        StringBuilder returnvalue= new StringBuilder();
-        for(int i=0;i<offset;i++){
-            returnvalue.append(tab);
-        }
-        returnvalue.append(Name).append(": (").append(GeneValue).append(") ").append(VitalsValue).append("\r\n");
-        return returnvalue.toString();
+        return tab.repeat(Math.max(0, offset)) +
+                Name + ": (" + GeneValue + ") " + VitalsValue + "\r\n";
     }
 
     private String AddField(String Name, int offset, Color GeneValue, Color VitalsValue){
         String tab = "    ";
-        StringBuilder returnvalue= new StringBuilder();
-        for(int i=0;i<offset;i++){
-            returnvalue.append(tab);
-        }
-        returnvalue.append(Name).append(": (").append(GeneValue.getRed()).append(",").append(GeneValue.getGreen()).append(",").append(GeneValue.getBlue()).append(") ").append(VitalsValue.getRed()).append(",").append(VitalsValue.getGreen()).append(",").append(VitalsValue.getBlue()).append("\r\n");
-        return returnvalue.toString();
+        return tab.repeat(Math.max(0, offset)) +
+                Name + ": (" + GeneValue.getRed() + "," + GeneValue.getGreen() + "," + GeneValue.getBlue() + ") " + VitalsValue.getRed() + "," + VitalsValue.getGreen() + "," + VitalsValue.getBlue() + "\r\n";
     }
     private String AddField(String Name, int offset, String Value){
         String tab = "    ";
-        StringBuilder returnvalue= new StringBuilder();
-        for(int i=0;i<offset;i++){
-            returnvalue.append(tab);
-        }
-        returnvalue.append(Name).append(": ").append(Value).append("\r\n");
-        return returnvalue.toString();
+        return tab.repeat(Math.max(0, offset)) +
+                Name + ": " + Value + "\r\n";
     }
     private String AddField(String Name, int offset, boolean Value){
         String tab = "    ";
-        StringBuilder returnvalue= new StringBuilder();
-        for(int i=0;i<offset;i++){
-            returnvalue.append(tab);
-        }
-        returnvalue.append(Name).append(": ").append(Value).append("\r\n");
-        return returnvalue.toString();
+        return tab.repeat(Math.max(0, offset)) +
+                Name + ": " + Value + "\r\n";
     }
     private String AddField(String Name, int offset, float Value){
         String tab = "    ";
-        StringBuilder returnvalue= new StringBuilder();
-        for(int i=0;i<offset;i++){
-            returnvalue.append(tab);
-        }
-        returnvalue.append(Name).append(": ").append(Value).append("\r\n");
-        return returnvalue.toString();
+        return tab.repeat(Math.max(0, offset)) +
+                Name + ": " + Value + "\r\n";
     }
     private String AddSection(String Name, int offset){
         String tab = "    ";
-        StringBuilder returnvalue= new StringBuilder();
-        for(int i=0;i<offset;i++){
-            returnvalue.append(tab);
-        }
-        returnvalue.append(Name).append("\r\n");
-        return returnvalue.toString();
+        return tab.repeat(Math.max(0, offset)) +
+                Name + "\r\n";
     }
     public void Update(Creature CurrentCreature) {
         CreatureVitals Vitals=CurrentCreature.GetVitals();

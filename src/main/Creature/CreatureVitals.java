@@ -26,10 +26,6 @@ public class CreatureVitals {
     private UUID ParentMaleID;
     private UUID ParentFemaleID;
 
-    private float SpeedChangeWithGrowth;
-    private float ColorChangeWithOldAge;
-
-
     private float StomachSize;
 
     private float Maturity;
@@ -63,9 +59,6 @@ public class CreatureVitals {
 
         ParentMaleID=parentMale;
         ParentFemaleID=parentFemale;
-
-        SpeedChangeWithGrowth=0;
-        ColorChangeWithOldAge=0;
 
         StomachSize=CGV.GetStomachSize();
 

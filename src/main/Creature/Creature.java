@@ -185,7 +185,7 @@ public class Creature{
                 DistanceToTarget= gUtils.DistanceBetweenPoints(Vitals.GetX(),Vitals.GetY(),TargetObject.X(),TargetObject.Y());
                 CreatureAction=Actions.Move;
                 break;
-            case Move:
+            case Move, MoveToPlant:
                 MoveTo(TargetObject.X(),TargetObject.Y());
                 break;
             case TargetPlant:
@@ -193,12 +193,9 @@ public class Creature{
                 TargetObject=Plant;
                 CreatureAction=Actions.MoveToPlant;
                 break;
-            case MoveToPlant:
-                MoveTo(TargetObject.X(),TargetObject.Y());
-                break;
             case Eat:
                 Physics.PauseSpeed(true);
-                Nourishment nourishment=plant=gWorld.gNourishment.get(Plant.IdOfObject());
+                Nourishment nourishment=gWorld.gNourishment.get(Plant.IdOfObject());
                 float amountBit=Metabolism.Bite(nourishment);
                 nourishment.SetNourishmentMass(nourishment.GetNourishmentMass()-amountBit);
                 gWorld.gNourishment.set(Plant.IdOfObject(),nourishment);
@@ -237,8 +234,7 @@ public class Creature{
     }
 
     public void Display(PApplet w,float scale){
-        BodySegment head=Body.GetHeadSegment();
-        w.stroke(0);
+       w.stroke(0);
        // w.fill(new Color(128,128,128).hashCode());
        // w.circle(head.GetSegmentX(),head.GetSegmentY(),gMaxObjectInRangeRadius*2);
        // w.stroke(new Color(0,0,255).hashCode());

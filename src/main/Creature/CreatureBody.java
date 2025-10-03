@@ -78,7 +78,7 @@ public class CreatureBody{
         for(int i=1;i<GetBodyLength()-1;i++){
             HeightOfCurrentSegment=HeightOfCurrentSegment-i*(HeightOfCurrentSegment/(GetBodyLength()-1));
             Segment s=new Segment();
-            s.InitializeSegment(x-i*HeightOfCurrentSegment,y,GetCurrentBodyWidth()-DetermineTaper(GetCurrentBodyWidth(),i,GetBodyLength()),GetCurrentBodyHeight()-DetermineTaper(GetCurrentBodyWidth(),i,GetBodyLength()),0,GetCurrentBodyDistanceBetweenSegments(),GetCurrentSegmentsColor(i));
+            s.InitializeSegment(x-i*HeightOfCurrentSegment,y,GetCurrentBodyWidth()-DetermineTaper(GetCurrentBodyWidth(),i,GetBodyLength()),GetCurrentBodyHeight()-DetermineTaper(GetCurrentBodyWidth(),i,GetBodyLength()),0,GetCurrentBodyDistanceBetweenSegments(),GetCurrentSegmentsColor());
             s.SetSegmentConnectedTo(i-1);
             Body.add(s);
         }

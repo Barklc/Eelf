@@ -3,8 +3,6 @@ package main;
 import main.Creature.*;
 
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class CreatureStatsWindow {

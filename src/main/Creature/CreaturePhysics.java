@@ -7,10 +7,7 @@ import main.Genetics.GeneID;
 import static main.Main.gUtils;
 
 public class CreaturePhysics{
-    private Creature CurrentCreature;
-    private CreatureGeneValues CGV;
-    private CreatureVitals Vitals;
-    private CreatureBody Body;
+    private final CreatureBody Body;
     private float BaseSpeed;
     private final float MaxTurnAngle;
     private float TurnAngle;
@@ -25,8 +22,8 @@ public class CreaturePhysics{
     private boolean PauseSpeed;
 
     public CreaturePhysics(Creature currentCreature){
-        CGV = currentCreature.GetGenes();
-        Vitals = currentCreature.GetVitals();
+        CreatureGeneValues CGV = currentCreature.GetGenes();
+        CreatureVitals vitals = currentCreature.GetVitals();
         Body = currentCreature.GetBody();
         MassMax=195;
         MaxTurnAngle= CGV.GetBaseDNA().GetGeneDef(GeneID.MaxTurnAngle).Maximum();

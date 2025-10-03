@@ -1,13 +1,12 @@
 package main.Creature;
+
 import main.Actions;
-import main.Constants;
-import main.Coords;
 import main.Creature.BodySegments.*;
+import main.GameParameters;
 import main.Genetics.Genome;
 import main.Nourishments.Nourishment;
-import processing.core.*;
+import processing.core.PApplet;
 
-import java.awt.event.PaintEvent;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -91,7 +90,7 @@ public class Creature{
         //Update speed value based on when growing.  Otherwise, use the last
         BodyMass=Body.GetBodyMass();
         Speed = Physics.DetermineSpeed(Body.GetCurrentTailHeight(),Body.GetBodyMass());
-        TurnAngle = Physics.DetermineTurnRate(Body.GetCurrentFlipperWidth(),Body.GetBodySegment(Constants.FlippersSegmentConnected).GetSegmentWidth());
+        TurnAngle = Physics.DetermineTurnRate(Body.GetCurrentFlipperWidth(),Body.GetBodySegment(GameParameters.FlippersSegmentConnected).GetSegmentWidth());
         System.out.println("TurnAngle=" + TurnAngle);
 
         //Loop through each body segment and update location, color and angle
@@ -223,7 +222,7 @@ public class Creature{
         Metabolism.SetEnergyUsedDuringBirthRecoveryTime(0.0f);
         Metabolism.EnergyCycle();
         //TODO: Check health of unborn and determine its state (alive/dead)
-        //TODO: If unborn is lost clear pregnant flag and start birthCoolDown
+        //TODO: If unborn is lost clear pregnant flag and start birthRecoveryTime
         Body.GetHeadSegment().SetSegmentX(Vitals.GetX());
         Body.GetHeadSegment().SetSegmentY(Vitals.GetY());
         Body.GetHeadSegment().SetSegmentAngle(Vitals.GetAngle());

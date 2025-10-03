@@ -1,9 +1,8 @@
 package main.Creature;
 
-import main.Constants;
+import main.GameParameters;
+import main.FlagsOverride;
 import main.Creature.BodySegments.*;
-import processing.core.PApplet;
-
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -47,21 +46,20 @@ public class CreatureBody{
         //get gene values
         HeadShape=CGV.GetHeadShape();
 
-        MouthPresent=(CGV.GetBiteStrength()>=Constants.MouthPresentThreshold);
-        if (Constants.MouthPresentOverride){
+        MouthPresent=(CGV.GetBiteStrength()>=GameParameters.MouthPresentThreshold);
+        if (FlagsOverride.MouthPresentOverride){
             MouthPresent=true;
         }
-        FlipperPresent=(CGV.GetFlipperPresent()>=Constants.FlipperPresentThreshold);
-        if (Constants.FlipperPresentOverride){
+        FlipperPresent=(CGV.GetFlipperPresent()>=GameParameters.FlipperPresentThreshold);
+        if (FlagsOverride.FlipperPresentOverride){
             FlipperPresent=true;
         }
-        TailPresent=(CGV.GetTailPresent()>=Constants.TailPresentThreshold);
-        if (Constants.TailPresentOverride){
+        TailPresent=(CGV.GetTailPresent()>=GameParameters.TailPresentThreshold);
+        if (FlagsOverride.TailPresentOverride){
             TailPresent=true;
         }
-        //TODO: Eyes will be present and size 3 to start until Olfactory is implemented.
-        EyesPresent=(CGV.GetEyesPresent()>Constants.EyesPresentThreshold);
-        if (Constants.EyesPresentOverride){
+        EyesPresent=(CGV.GetEyesPresent()>GameParameters.EyesPresentThreshold);
+        if (FlagsOverride.EyesPresentOverride){
             EyesPresent=true;
         }
 
@@ -92,7 +90,7 @@ public class CreatureBody{
             Mouth m=new Mouth();
             m.SetMouthSize(GetCurrentMouthSize());
             m.SetBiteStrength(GetCurrentBiteStrength());
-            m.SetSegmentConnectedTo(Constants.MouthSegmentConnected);
+            m.SetSegmentConnectedTo(GameParameters.MouthSegmentConnected);
             m.SetMouthColor(GetCurrentMouthColor());
             Body.add(m);
             MouthSegmentID=Body.size()-1;
@@ -101,7 +99,7 @@ public class CreatureBody{
             Eyes e=new Eyes();
             e.InitializeSegment(x,y,GetCurrentBodyWidth(),GetCurrentBodyHeight(),0,GetCurrentBodyDistanceBetweenSegments(),GetCurrentHeadColor());
             e.SetEyeSize(GetCurrentEyeSize());
-            e.SetSegmentConnectedTo(Constants.EyesSegmentConnected);
+            e.SetSegmentConnectedTo(GameParameters.EyesSegmentConnected);
             e.SetEyeColor(GetCurrentEyesColor());
             Body.add(e);
             EyesSegmentID=Body.size()-1;
@@ -111,21 +109,21 @@ public class CreatureBody{
             f.InitializeSegment(x,y,GetCurrentBodyWidth(),GetCurrentBodyHeight(),0,GetCurrentBodyDistanceBetweenSegments(), GetCurrentFlipperColor());
             f.SetFlipperWidth(GetCurrentFlipperWidth());
             f.SetFlipperHeight(GetCurrentFlipperHeight());
-            f.SetSegmentConnectedTo(Constants.FlippersSegmentConnected);
+            f.SetSegmentConnectedTo(GameParameters.FlippersSegmentConnected);
             Body.add(f);
             FlippersSegmentID=Body.size()-1;
         }
         if(TailPresent){
             Tail t=new Tail();
-            t.InitializeSegment(x-(GetBodyLength()-Constants.TailSegmentOffset)*HeightOfCurrentSegment,
+            t.InitializeSegment(x-(GetBodyLength()-GameParameters.TailSegmentOffset)*HeightOfCurrentSegment,
                     y,
-                    GetCurrentBodyWidth()-DetermineTaper(GetCurrentBodyWidth(),GetBodyLength()-Constants.TailSegmentOffset,GetBodyLength()),
-                    GetCurrentBodyHeight()-DetermineTaper(GetCurrentBodyWidth(),GetBodyLength()-Constants.TailSegmentOffset,GetBodyLength()),
+                    GetCurrentBodyWidth()-DetermineTaper(GetCurrentBodyWidth(),GetBodyLength()-GameParameters.TailSegmentOffset,GetBodyLength()),
+                    GetCurrentBodyHeight()-DetermineTaper(GetCurrentBodyWidth(),GetBodyLength()-GameParameters.TailSegmentOffset,GetBodyLength()),
                     0,GetCurrentBodyDistanceBetweenSegments(),
                     GetCurrentTailColor());
             t.SetTailWidth(GetCurrentTailWidth());
             t.SetTailHeight(GetCurrentTailHeight());
-            t.SetSegmentConnectedTo(GetBodyLength()-Constants.TailSegmentOffset);
+            t.SetSegmentConnectedTo(GetBodyLength()- GameParameters.TailSegmentOffset);
             Body.add(t);
             TailSegmentID=Body.size()-1;
         }
@@ -135,8 +133,6 @@ public class CreatureBody{
 
     public void UpdateBody(){
 
-        //TODO: Need to change the logic as how the body segments are looked at and updated
-        //TODO: Need to count segments not special segments to effect tapper
         float WidthOfCurrentSegment=0;
         float HeightOfCurrentSegment=0;
 

@@ -1,5 +1,6 @@
 package main.Creature;
-import main.Constants;
+import main.FlagsOverride;
+import main.GeneMinMax;
 import main.Creature.BodySegments.BodySegment;
 import main.Genetics.GeneID;
 
@@ -54,8 +55,8 @@ public class CreaturePhysics{
         if (PauseSpeed){
             return 0;
         }
-        if(TailHeight>= Constants.TailHeightMax/2f){
-            TailSpeedMod=(TailHeight/2f)/(Constants.TailHeightMax/2f);
+        if(TailHeight>= GeneMinMax.TailHeightMax/2f){
+            TailSpeedMod=(TailHeight/2f)/(GeneMinMax.TailHeightMax/2f);
         }
         if(true){
             MassSpeedMod=1f-(Mass/MassMax);
@@ -79,7 +80,7 @@ public class CreaturePhysics{
         //println("CreaturePhysics.DetermineTurnRate - FlipperTurnAngleMod: " + FlipperTurnAngleMod);
         //println("CreaturePhysics.DetermineTurnRate - SegmentWidthTurnAngleMod: " + SegmentWidthTurnAngleMod);
         //println("CreaturePhysics.DetermineTurnRate - ActualTurnAngle: " + ActualTurnAngle);
-        if (Constants.TurnRateOverride){actualTurnAngle=0.025f;}
+        if (FlagsOverride.TurnRateOverride){actualTurnAngle=0.025f;}
         CurrentTurnAngle=actualTurnAngle;
         return actualTurnAngle;
     }

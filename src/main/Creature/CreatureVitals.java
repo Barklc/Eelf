@@ -1,11 +1,10 @@
 package main.Creature;
-import main.Constants;
+import main.GameParameters;
 
 import java.util.UUID;
 
 public class CreatureVitals {
     private final CreatureGeneValues CGV;
-    private final CreatureBody Body;
     private float X;
     private float Y;
     private float Angle;
@@ -16,7 +15,6 @@ public class CreatureVitals {
     private int LifeSpan;
     private float MaturityRate;
     private boolean Alive;
-    private boolean Hungry;
     private boolean Pregnant;
 
     private CreatureStomachContent StomachContent;
@@ -31,13 +29,12 @@ public class CreatureVitals {
     private float SpeedChangeWithGrowth;
     private float ColorChangeWithOldAge;
 
-    private float MaxEnergyStorage;
+
     private float StomachSize;
 
     private float Maturity;
     public CreatureVitals(Creature currentCreature){
         CGV= currentCreature.GetGenes();
-        Body= currentCreature.GetBody();
     }
 
     public void InitializeCreatureVitals(float x, float y, float angle, float health,int age, UUID parentMale, UUID parentFemale){
@@ -145,17 +142,12 @@ public class CreatureVitals {
     public void IncreaseGestationPeriodCountDown(){GestationPeriodCountDown++;}
     public void DecreaseGestationPeriodCountDown(){GestationPeriodCountDown--;}
     public float GetUnbornHealthDamage(){return UnbornHealthDamage;}
-    public void IncreaseUnbornHealthDamage(){UnbornHealthDamage+=Constants.UnbornHealthDamagePerIncrease;}
+    public void IncreaseUnbornHealthDamage(){UnbornHealthDamage+= GameParameters.UnbornHealthDamagePerIncrease;}
     public void SetGestationPeriodCountDown(int value){GestationPeriodCountDown=value;}
     public UUID GetParentMaleID(){return ParentMaleID;}
     public void SetParentMaleID(UUID value){ParentMaleID=value;}
     public UUID GetParentFemaleID(){return ParentFemaleID;}
     public void SetParentFemaleID(UUID value){ParentFemaleID=value;}
-
-    public float GetSpeedChangeWithGrowth(){return SpeedChangeWithGrowth;}
-    public void SetSpeedChangeWithGrowth(float value){SpeedChangeWithGrowth=value;}
-    public float GetColorChangeWithOldAge(){return ColorChangeWithOldAge;}
-    public void SetColorChangeWithOldAge(float value){ColorChangeWithOldAge=value;}
 
     public float GetMaturity(){return Maturity;}
     public void SetMaturity(float value){

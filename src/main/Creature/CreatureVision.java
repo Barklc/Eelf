@@ -1,5 +1,5 @@
 package main.Creature;
-import main.Constants;
+import main.FlagsOverride;
 import main.Creature.BodySegments.BodySegment;
 
 import processing.core.*;
@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import static main.Main.*;
 
 public class CreatureVision{
-    private Creature CurrentCreature;
-    private CreatureGeneValues CGV;
     private float hx,hy;
     private float angle,hangle;
     private float distance;
@@ -18,15 +16,14 @@ public class CreatureVision{
     CreatureGeneValues cgv;
 
     public CreatureVision(Creature currentCreature) {
-        CurrentCreature=currentCreature;
-        CGV=CurrentCreature.GetGenes();
+        CreatureGeneValues CGV = currentCreature.GetGenes();
     }
 
     public void InitializeVision(float a, float d, float newClarity){
         angle=(float)Math.toRadians(a);
         distance=d;
         clarity=newClarity;
-        sightlines=new ArrayList<SightLine>();
+        sightlines=new ArrayList<>();
     }
 
     public void SetVisionDistance(float value){
@@ -39,10 +36,9 @@ public class CreatureVision{
     }
 
     public void UpdateSightLines(float d){
-        sightlines=new ArrayList<SightLine>();
+        sightlines=new ArrayList<>();
         distance=d;
 
-        float temp=(float)Math.toDegrees(angle);
         //get outside sight lines
         float x1,y1,x2,y2;
         x1 = (float) (hx + (d)*Math.cos(hangle-(angle/2)*Math.PI));
@@ -68,7 +64,7 @@ public class CreatureVision{
 
     public void Display(PApplet w,float scale){
 
-        if (Constants.ShowVisionSightLinesFlag){
+        if (FlagsOverride.ShowVisionSightLinesFlag){
             if (!sightlines.isEmpty()){
                 w.stroke(100);
                 SightLine sightline=sightlines.get(0);
@@ -90,34 +86,25 @@ public class CreatureVision{
     }
 
     public ArrayList<ObjectInRange> FindObjects(ArrayList<ObjectInRange> ObjectsInRange){
-        ArrayList<ObjectInRange> oir=new ArrayList<ObjectInRange>();
-        for(int i=0;i<ObjectsInRange.size();i++){
-            ObjectInRange object=ObjectsInRange.get(i);
-            float radius=0;
-            float distance=-1;
-            switch (object.objectType){
-                case Plant:
-                    radius=gWorld.gNourishment.get(object.IdOfObject()).GetNourishmentSize()/2;
-                    distance=object.distance=itemInSightLine(object.X(),object.Y(),radius);
-                    object.distance=distance;
-                    break;
-                case Meat:
-                    radius=gWorld.gNourishment.get(object.IdOfObject()).GetNourishmentSize()/2;
-                    distance=object.distance=itemInSightLine(object.X(),object.Y(),radius);
-                    object.distance=distance;
+        ArrayList<ObjectInRange> oir=new ArrayList<>();
+        for (ObjectInRange object : ObjectsInRange) {
+            float radius;
+            switch (object.objectType) {
+                case Plant, Meat:
+                    radius = gWorld.gNourishment.get(object.IdOfObject()).GetNourishmentSize() / 2;
+                    object.distance = itemInSightLine(object.X(), object.Y(), radius);
                     break;
                 case Creature:
-                    radius=cgv.GetBodyWidth();
-                    distance=object.distance=itemInSightLine(object.X(),object.Y(),radius);
-                    object.distance=distance;
+                    radius = cgv.GetBodyWidth();
+                    object.distance = itemInSightLine(object.X(), object.Y(), radius);
                     break;
                 case PlantScent:
                 case MeatScent:
                 case CreatureScent:
-                    distance=-1;
+                    distance = -1;
                     break;
             }
-            if (distance!=-1){
+            if (distance != -1) {
                 oir.add(object);
             }
         }
@@ -156,13 +143,12 @@ public class CreatureVision{
     public float itemInSightLine(float x,float y,float r){
         float distance=-1;
 
-        for(int i=0;i<sightlines.size();i++){
-            distance=-1;
+        for (SightLine sightLine : sightlines) {
+            distance = -1;
             //determine if x,y with radius r crosses sight line.
-            SightLine sightline=sightlines.get(i);
             //https://stackoverflow.com/questions/67116296/is-this-code-for-determining-if-a-circle-and-line-segment-intersects-correct
-            if (gUtils.lineSegmentIntersectsCircleOptimized(sightline.GetEyeX(),sightline.GetEyeY(),sightline.GetDistanceX(),sightline.GetDistanceY(),x,y,r)){
-                distance=gUtils.DistanceBetweenPoints(sightline.GetEyeX(),sightline.GetEyeY(),x,y);
+            if (gUtils.lineSegmentIntersectsCircleOptimized(sightLine.GetEyeX(), sightLine.GetEyeY(), sightLine.GetDistanceX(), sightLine.GetDistanceY(), x, y, r)) {
+                distance = gUtils.DistanceBetweenPoints(sightLine.GetEyeX(), sightLine.GetEyeY(), x, y);
                 break;
             }
         }

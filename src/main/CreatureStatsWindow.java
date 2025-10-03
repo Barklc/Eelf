@@ -153,7 +153,7 @@ public class CreatureStatsWindow {
         bp+=AddField("Color",2,new Color(0,0,0),new Color(0,0,0));
 
         String ap=AddSection("Age Info",0);
-        ap+=AddField("Age",1, Genes.GetLifeSpan(), Vitals.GetAge());
+        ap+=AddField("Age",1, Vitals.GetLifeSpan(), Vitals.GetAge());
         ap+=AddField("Maturity",1,Vitals.GetMaturity());
         ap+=AddField("Maturity",1,Genes.GetMatureAgePercentage(),Vitals.GetMaturityAge());
         ap+=AddField("Senior",1,Genes.GetSeniorAgePercentage(),Vitals.GetSeniorAge());

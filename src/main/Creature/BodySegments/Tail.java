@@ -59,10 +59,10 @@ public class Tail extends BodySegment {
     @Override
     public void DisplaySegment(PApplet w, float scale){
 
-        float nx= (float) (GetSegmentX() + (GetSegmentWidth()+TailWidth/2)*Math.cos(GetSegmentAngle()));
+        float nx= (float) (GetSegmentX() + (GetSegmentWidth())*Math.cos(GetSegmentAngle()));
         float ny= (float) (GetSegmentY() + (GetSegmentHeight())*Math.sin(GetSegmentAngle()));
-        PShape tail=CreateTail(w, TailHeight, TailWidth, GetSegmentColor());
-        w.stroke(255);
+        PShape tail=CreateTail(w, TailHeight*2, TailWidth*2, GetSegmentColor());
+        //w.circle(nx,ny,5);
         w.pushMatrix();
         w.translate(nx,ny);
         w.rotate(GetSegmentAngle());
@@ -73,7 +73,7 @@ public class Tail extends BodySegment {
 
     @Override
     public ArrayList<PShape> CreateShapes(float w, float h, Color c){
-        return new ArrayList<PShape>();
+        return new ArrayList<>();
     }
 
     private PShape CreateTail(PApplet w,float theight, float twidth, Color tcolor){
@@ -81,16 +81,16 @@ public class Tail extends BodySegment {
         float topEnd=90;
         float bottomEnd=90;
         float bottomStart=0;
-        PShape tail=new PShape();
+        PShape tail;
 
         tail=w.createShape();
         tail.beginShape();
         tail.stroke(tcolor.hashCode());
         tail.fill(tcolor.hashCode());
 
-        float angle=0.0f;
-        float nx=0.0f;
-        float ny=0.0f;
+        float angle;
+        float nx;
+        float ny;
 
         //Draw the outside of the mouth
         for(float i=topStart;i<topEnd;i++)

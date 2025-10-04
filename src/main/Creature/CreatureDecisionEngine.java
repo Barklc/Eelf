@@ -3,10 +3,10 @@ package main.Creature;
 import main.Actions;
 
 public class CreatureDecisionEngine{
-    private Creature CurrentCreature;
-    private CreaturePhysics Physics;
-    private CreatureBody Body;
-    private CreatureVitals Vitals;
+    private final Creature CurrentCreature;
+    private final CreaturePhysics Physics;
+    private final CreatureBody Body;
+    private final CreatureVitals Vitals;
     private ObjectInRange PlantInRange;
     private ObjectInRange MeatInRange;
     private ObjectInRange CreatureInRange;
@@ -86,7 +86,7 @@ public class CreatureDecisionEngine{
             return Actions.NewDestination;
         }
         if (previousDistanceToTarget>distanceToTarget-Physics.GetCurrentSpeed() && previousDistanceToTarget<distanceToTarget){
-            System.out.println("Distance Equal");
+            //System.out.println("Distance Equal");
             return Actions.NewDestination;
         }
 

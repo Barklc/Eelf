@@ -3,10 +3,7 @@ package main;
 import main.Creature.*;
 
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.util.UUID;
 
 public class CreatureStatsWindow {
     static JTextPane Stats;
@@ -19,91 +16,62 @@ public class CreatureStatsWindow {
 
         //Creating the panel at bottom and adding components
         JPanel panel = new JPanel();
-        JPanel panel1 = new JPanel();
+
         panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-        Border border = new EmptyBorder(0, 0, 1000, 400);
-        Border border1 = new EmptyBorder(0, 400, 1000, 400);
 
         Stats = new JTextPane();
         Stats.setSize(400,1000);
-        //Stats.setBorder(border);
         panel.add(Stats);
 
         Stats1 = new JTextPane();
         Stats1.setSize(400,1000);
-        //Stats1.setBorder(border1);
         panel.add(Stats1);
 
         //Adding Components to the frame.
         frame.getContentPane().add(panel);
-        //frame.getContentPane().add(panel1, BorderLayout.EAST);
+
 
         frame.setVisible(true);
 
-       }
+    }
+    String FloatToString(float value){
+        return String.format("%.2f",value);
+    }
     private String AddField(String Name, int offset, float GeneValue, float VitalsValue){
         String tab = "    ";
-        StringBuilder returnvalue= new StringBuilder();
-        for(int i=0;i<offset;i++){
-            returnvalue.append(tab);
-        }
-        returnvalue.append(Name).append(": (").append(GeneValue).append(") ").append(VitalsValue).append("\r\n");
-        return returnvalue.toString();
+        return tab.repeat(Math.max(0, offset)) +
+                Name + ": (" + FloatToString(GeneValue) + ") " + FloatToString(VitalsValue) + "\r\n";
     }
     private String AddField(String Name, int offset, float GeneValue, boolean VitalsValue){
         String tab = "    ";
-        StringBuilder returnvalue= new StringBuilder();
-        for(int i=0;i<offset;i++){
-            returnvalue.append(tab);
-        }
-        returnvalue.append(Name).append(": (").append(GeneValue).append(") ").append(VitalsValue).append("\r\n");
-        return returnvalue.toString();
+        return tab.repeat(Math.max(0, offset)) +
+                Name + ": (" + FloatToString(GeneValue)+ ") " + VitalsValue + "\r\n";
     }
 
     private String AddField(String Name, int offset, Color GeneValue, Color VitalsValue){
         String tab = "    ";
-        StringBuilder returnvalue= new StringBuilder();
-        for(int i=0;i<offset;i++){
-            returnvalue.append(tab);
-        }
-        returnvalue.append(Name).append(": (").append(GeneValue.getRed()).append(",").append(GeneValue.getGreen()).append(",").append(GeneValue.getBlue()).append(") ").append(VitalsValue.getRed()).append(",").append(VitalsValue.getGreen()).append(",").append(VitalsValue.getBlue()).append("\r\n");
-        return returnvalue.toString();
+        return tab.repeat(Math.max(0, offset)) +
+                Name + ": (" + GeneValue.getRed() + "," + GeneValue.getGreen() + "," + GeneValue.getBlue() + ") " + VitalsValue.getRed() + "," + VitalsValue.getGreen() + "," + VitalsValue.getBlue() + "\r\n";
     }
     private String AddField(String Name, int offset, String Value){
         String tab = "    ";
-        StringBuilder returnvalue= new StringBuilder();
-        for(int i=0;i<offset;i++){
-            returnvalue.append(tab);
-        }
-        returnvalue.append(Name).append(": ").append(Value).append("\r\n");
-        return returnvalue.toString();
+        return tab.repeat(Math.max(0, offset)) +
+                Name + ": " + Value + "\r\n";
     }
     private String AddField(String Name, int offset, boolean Value){
         String tab = "    ";
-        StringBuilder returnvalue= new StringBuilder();
-        for(int i=0;i<offset;i++){
-            returnvalue.append(tab);
-        }
-        returnvalue.append(Name).append(": ").append(Value).append("\r\n");
-        return returnvalue.toString();
+        return tab.repeat(Math.max(0, offset)) +
+                Name + ": " + Value + "\r\n";
     }
     private String AddField(String Name, int offset, float Value){
         String tab = "    ";
-        StringBuilder returnvalue= new StringBuilder();
-        for(int i=0;i<offset;i++){
-            returnvalue.append(tab);
-        }
-        returnvalue.append(Name).append(": ").append(Value).append("\r\n");
-        return returnvalue.toString();
+        return tab.repeat(Math.max(0, offset)) +
+                Name + ": " + FloatToString(Value) + "\r\n";
     }
     private String AddSection(String Name, int offset){
         String tab = "    ";
-        StringBuilder returnvalue= new StringBuilder();
-        for(int i=0;i<offset;i++){
-            returnvalue.append(tab);
-        }
-        returnvalue.append(Name).append("\r\n");
-        return returnvalue.toString();
+        return tab.repeat(Math.max(0, offset)) +
+                Name + "\r\n";
     }
     public void Update(Creature CurrentCreature) {
         CreatureVitals Vitals=CurrentCreature.GetVitals();
@@ -148,12 +116,13 @@ public class CreatureStatsWindow {
         bp+=AddField("Color",2,new Color(0,0,0),new Color(0,0,0));
         bp+=AddSection("Tail Info",1);
         bp+=AddField("Present",2,Genes.GetTailPresent(),Body.GetTailPresent());
-        bp+=AddField("Width",2,Genes.GetTailWidth(),Body.GetCurrentTailWidth());
-        bp+=AddField("Height",2,Genes.GetTailHeight(),Body.GetCurrentTailHeight());
+        bp+=AddField("Width",2,Genes.GetTailWidthPercentage(),Body.GetCurrentTailWidth());
+        bp+=AddField("Height",2,Genes.GetTailHeightPercentage(),Body.GetCurrentTailHeight());
         bp+=AddField("Color",2,new Color(0,0,0),new Color(0,0,0));
+        bp+=AddField("Modifier",2,Physics.GetTailSpeedMod(),Physics.GetCurrentTailSpeedMod());
 
         String ap=AddSection("Age Info",0);
-        ap+=AddField("Age",1, Genes.GetLifeSpan(), Vitals.GetAge());
+        ap+=AddField("Age",1, Vitals.GetLifeSpan(), Vitals.GetAge());
         ap+=AddField("Maturity",1,Vitals.GetMaturity());
         ap+=AddField("Maturity",1,Genes.GetMatureAgePercentage(),Vitals.GetMaturityAge());
         ap+=AddField("Senior",1,Genes.GetSeniorAgePercentage(),Vitals.GetSeniorAge());

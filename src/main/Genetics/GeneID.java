@@ -16,8 +16,8 @@ public class GeneID {  //Body Chromosome
     public static final int FlipperHeight=12;
     public static final int FlipperWidth=13;
     public static final int TailPresent=14;
-    public static final int TailHeight=15;
-    public static final int TailWidth=16;
+    public static final int TailHeightPercentage=15;
+    public static final int TailWidthPercentage=16;
     public static final int BodyDistanceBetweenSegments=17;
     public static final int FlipperColorRed=18;
     public static final int FlipperColorGreen=19;

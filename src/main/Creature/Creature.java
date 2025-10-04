@@ -1,13 +1,14 @@
 package main.Creature;
+
 import main.Actions;
-import main.Constants;
-import main.Coords;
 import main.Creature.BodySegments.*;
+import main.FlagsOverride;
+import main.GameParameters;
 import main.Genetics.Genome;
 import main.Nourishments.Nourishment;
-import processing.core.*;
+import processing.core.PApplet;
 
-import java.awt.event.PaintEvent;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -48,7 +49,7 @@ public class Creature{
 
         guid=uuid;
         Physics.SetBaseSpeed(Genes.GetSpeed());
-        Speed = Physics.DetermineSpeed(Genes.GetTailHeight(),BodyMass);
+        Speed = Physics.DetermineSpeed(BodyMass);
         Physics.SetBaseTurnRate(.025f);
         TurnAngle = Physics.DetermineTurnRate(Genes.GetFlipperWidth(),Genes.GetBodyWidth());
         Vision.InitializeVision(Genes.GetVisionAngle(), Vitals.GetCurrentVisionDistance(), Genes.GetVisionClarity());
@@ -83,17 +84,11 @@ public class Creature{
     public ObjectInRange GetTargetObject(){return TargetObject;}
 
     public ArrayList<ObjectInRange> GetObjectsInRange(UUID CurrentUUID){
-        ObjectsInRange=gWorld.ObjectsInRange(Vitals.GetX(),Vitals.GetY(),gMaxObjectInRangeRadius,CurrentUUID);
+        ObjectsInRange=gWorld.ObjectsInRange(Vitals.GetX(),Vitals.GetY(),GameParameters.MaxObjectInRangeRadius,CurrentUUID);
         return ObjectsInRange;
     }
 
     public void UpdateCreatureLocation(){
-        //Update speed value based on when growing.  Otherwise, use the last
-        BodyMass=Body.GetBodyMass();
-        Speed = Physics.DetermineSpeed(Body.GetCurrentTailHeight(),Body.GetBodyMass());
-        TurnAngle = Physics.DetermineTurnRate(Body.GetCurrentFlipperWidth(),Body.GetBodySegment(Constants.FlippersSegmentConnected).GetSegmentWidth());
-        System.out.println("TurnAngle=" + TurnAngle);
-
         //Loop through each body segment and update location, color and angle
         for(int i=0;i<Body.GetTotalBodySegmentLength();i++){
             BodySegment b=Body.GetBodySegment(i);
@@ -179,14 +174,14 @@ public class Creature{
         DecisionEngine.SetObjectInRangeBySpecifiedType(Creature,ObjectInRangeType.Creature);
 
         CreatureAction=DecisionEngine.Decision(CreatureAction);
-        System.out.println("CreatureAction=" + CreatureAction);
+        //System.out.println("CreatureAction=" + CreatureAction);
         switch (CreatureAction){
             case NewDestination:
                 TargetObject=NewDestination();
                 DistanceToTarget= gUtils.DistanceBetweenPoints(Vitals.GetX(),Vitals.GetY(),TargetObject.X(),TargetObject.Y());
                 CreatureAction=Actions.Move;
                 break;
-            case Move:
+            case Move, MoveToPlant:
                 MoveTo(TargetObject.X(),TargetObject.Y());
                 break;
             case TargetPlant:
@@ -194,24 +189,21 @@ public class Creature{
                 TargetObject=Plant;
                 CreatureAction=Actions.MoveToPlant;
                 break;
-            case MoveToPlant:
-                MoveTo(TargetObject.X(),TargetObject.Y());
-                break;
             case Eat:
                 Physics.PauseSpeed(true);
-                Nourishment nourishment=plant=gWorld.gNourishment.get(Plant.IdOfObject());
+                Nourishment nourishment=gWorld.gNourishment.get(Plant.IdOfObject());
                 float amountBit=Metabolism.Bite(nourishment);
                 nourishment.SetNourishmentMass(nourishment.GetNourishmentMass()-amountBit);
                 gWorld.gNourishment.set(Plant.IdOfObject(),nourishment);
                 break;
         }
-        System.out.println("Vital X=" + Vitals.GetX());
-        System.out.println("Vital Y=" + Vitals.GetY());
-        System.out.println("Target X=" + TargetObject.X());
-        System.out.println("Target Y=" + TargetObject.Y());
-        System.out.println("Angle=" + Vitals.GetAngle());
-        System.out.println("DistanceToTarget=" + DistanceToTarget);
-        System.out.println("PreviousDistanceToTarget=" + PreviousDistanceToTarget);
+//        System.out.println("Vital X=" + Vitals.GetX());
+//        System.out.println("Vital Y=" + Vitals.GetY());
+//        System.out.println("Target X=" + TargetObject.X());
+//        System.out.println("Target Y=" + TargetObject.Y());
+//        System.out.println("Angle=" + Vitals.GetAngle());
+//        System.out.println("DistanceToTarget=" + DistanceToTarget);
+//        System.out.println("PreviousDistanceToTarget=" + PreviousDistanceToTarget);
         //println("Creature.CreatureAction - soir.size(): " + soir.size());
         //println("Creature.CreatureAction - voir.size(): " + voir.size());
 
@@ -223,27 +215,31 @@ public class Creature{
         Metabolism.SetEnergyUsedDuringBirthRecoveryTime(0.0f);
         Metabolism.EnergyCycle();
         //TODO: Check health of unborn and determine its state (alive/dead)
-        //TODO: If unborn is lost clear pregnant flag and start birthCoolDown
+        //TODO: If unborn is lost clear pregnant flag and start birthRecoveryTime
         Body.GetHeadSegment().SetSegmentX(Vitals.GetX());
         Body.GetHeadSegment().SetSegmentY(Vitals.GetY());
         Body.GetHeadSegment().SetSegmentAngle(Vitals.GetAngle());
-
-        if (ticks==1){
+         if (ticks==1){
             Vitals.IncreaseMaturity();
             Body.UpdateBody();
         }
-
-
+        //Update body mass, speed and turn rate based on it growing.  Otherwise, use the last
+        if (Vitals.GetMaturity()<1.0f){
+            BodyMass=Body.GetCurrentBodyMass();
+            Speed = Physics.DetermineSpeed(Body.GetCurrentBodyMass());
+            TurnAngle = Physics.DetermineTurnRate(Body.GetCurrentFlipperWidth(),Body.GetBodySegment(GameParameters.FlippersSegmentConnected).GetSegmentWidth());
+            //System.out.println("TurnAngle=" + TurnAngle);
+        }
 
     }
 
     public void Display(PApplet w,float scale){
-        BodySegment head=Body.GetHeadSegment();
-        w.stroke(0);
-       // w.fill(new Color(128,128,128).hashCode());
-       // w.circle(head.GetSegmentX(),head.GetSegmentY(),gMaxObjectInRangeRadius*2);
-       // w.stroke(new Color(0,0,255).hashCode());
-       // w.circle(head.GetSegmentX(),head.GetSegmentY(),gMaxScentDistance*2);
+       w.stroke(0);
+
+       if (FlagsOverride.ShowObjectsInRangeFlag) {
+           w.fill(new Color(128, 128, 128).hashCode());
+           w.circle(Body.GetHeadSegment().GetSegmentX(), Body.GetHeadSegment().GetSegmentY(), GameParameters.MaxObjectInRangeRadius * 2);
+       }
         BodySegment b=Body.GetMouthSegment();
         if (b !=null && b.BodySegmentType()==SegmentID.Mouth){
             b.DisplaySegment(w,scale);
@@ -252,12 +248,18 @@ public class Creature{
         if (b !=null && b.BodySegmentType()==SegmentID.Flippers){
             b.DisplaySegment(w,scale);
         }
-        for(int i=0;i<Body.GetTotalBodySegmentLength();i++){
-            b=Body.GetBodySegment(i);
-            if (b.BodySegmentType()!=SegmentID.Mouth && b.BodySegmentType()!=SegmentID.Flippers) {
-                b.DisplaySegment(w, scale);
-            }
+        for(int i=0;i<Body.GetBodyLength()-1;i++){
+            Body.GetBodySegment(i).DisplaySegment(w, scale);
         }
+        b=Body.GetEyesSegment();
+        if (b !=null && b.BodySegmentType()==SegmentID.Eyes){
+            b.DisplaySegment(w,scale);
+        }
+        b=Body.GetTailSegment();
+        if (b !=null && b.BodySegmentType()==SegmentID.Tail){
+            b.DisplaySegment(w,scale);
+        }
+
 
         Vision.Display(w, scale);
         w.circle(TargetObject.X(),TargetObject.Y(),5);

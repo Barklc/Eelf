@@ -1,0 +1,51 @@
+package main;
+
+public class GeneMinMax {
+    public static final float BodyLengthMax = 18;
+    public static final float BodyLengthMin = 6;
+    public static final float BiteStrengthMax = 10;
+    public static final float BiteStrengthMin = 1;
+    public static final float BodyHeightMax = 20;
+    public static final float BodyHeightMin = 5;
+    public static final float BodyWidthMax = 10;
+    public static final float BodyWidthMin = -5;
+    public static final float BodyTapperMax = 1.0f;
+    public static final float BodyTapperMin = 0.5f;
+    public static final float EyeSizeMax = 4f;
+    public static final float EyeSizeMin = 2f;
+    public static final float TailWidthMaxPercentage = 1.0f;
+    public static final float TailWidthMinPercentage = 0.5f;
+    public static final float TailSpeedModMaxPercentage=1.0f;
+    public static final float TailSpeedModMinPercentage=0.1f;
+    public static final float TailHeightMaxPercentage = 1.0f;
+    public static final float TailHeightMinPercentage = 0.5f;
+    public static final float FlipperWidthMax = 20f;
+    public static final float FlipperWidthMin = 1f;
+    public static final float FlipperHeightMax = 10f;
+    public static final float FlipperHeightMin = 3f;
+    public static final float SkinToughnessMax = 10f;
+    public static final float SkinToughnessMin = 1f;
+    public static final float VisionAngleMax = 90f;
+    public static final float VisionAngleMin = 10f;
+    public static final float VisionDistanceMax = 300f;
+    public static final float VisionDistanceMin = 100f;
+    public static final float VisionScanFreqMax = 6f;
+    public static final float VisionScanFreqMin = 6f;
+    public static final float HealthMax = 10f;
+    public static final float HealthMin = 1f;
+    public static final float EnergyStorageMax = 20f;
+    public static final float EnergyStorageMin = 1f;
+    public static final float LifeSpanMax = 100f;
+    public static final float LifeSpanMin = 10f;
+    public static final float StomachSizeMax = 100f;
+    public static final float StomachSizeMin = 25f;
+    public static final float GestationPeriodMax = 9;
+    public static final float GestationPeriodMin = 1;
+    public static final float BirthRecoveryMax = 12;
+    public static final float BirthRecoveryMin = 3;
+    public static final float BirthEnergyCostMax = 10;
+    public static final float BirthEnergyCostMin = 5;
+    public static final float BirthGestationEnergyCostMax = 0;
+    public static final float BirthGestationEnergyCostMin = 0;
+}
+

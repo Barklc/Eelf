@@ -1,6 +1,6 @@
 package main.Creature;
 
-import main.Constants;
+import main.GameParameters;
 import main.Nourishments.Nourishment;
 import main.Nourishments.NourishmentTypes;
 import main.Nourishments.PlantNourishment;
@@ -39,7 +39,7 @@ public class CreatureMetabolism {
         float PlantDigestionAmount;
 
         if (Vitals.GetTotalStomachContent()>0){
-            float digestionAmount=Constants.BaseDigestionAmount*CGV.GetDigestionRate();
+            float digestionAmount= GameParameters.BaseDigestionAmount*CGV.GetDigestionRate();
             if (Vitals.GetMeatStomachContent()>0){
                 MeatDigestionAmount=Vitals.RemoveMeatStomachContent(digestionAmount);
                 digestionAmount=digestionAmount-MeatDigestionAmount;
@@ -79,7 +79,7 @@ public class CreatureMetabolism {
     public void SetEnergyUsedForMovement(float value){
         //TODO: Determine how much energy is used to move the distance moved
         EnergyUsedForMovement=value;
-        //Metabolism Cost (E/S) = Default Metabolism Cost (setting) * Bibite Speed (gene) * Bibite Size (2D)
+        //Metabolism Cost (E/S) = Default Metabolism Cost (setting) *  Speed (gene) *  Size (2D)
     }
 
     public void SetEnergyUsedDuringBirthRecoveryTime(float value){

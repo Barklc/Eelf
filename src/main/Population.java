@@ -14,7 +14,7 @@ public class Population {
     int maxPop=0;
 
     public Population() {
-        population=new ArrayList<Creature>();
+        population=new ArrayList<>();
     }
 
     public void CreatePopulation(int MaxPop,int Width,int Height){
@@ -60,8 +60,8 @@ public class Population {
         newGenome.SetGeneInChromosome(GeneID.FlipperHeight, gGenesDef.GetGene(GeneID.FlipperHeight).RandomValue());
         newGenome.SetGeneInChromosome(GeneID.FlipperWidth, gGenesDef.GetGene(GeneID.FlipperWidth).RandomValue());
         newGenome.SetGeneInChromosome(GeneID.TailPresent, gGenesDef.GetGene(GeneID.TailPresent).RandomValue());
-        newGenome.SetGeneInChromosome(GeneID.TailHeight, gGenesDef.GetGene(GeneID.TailHeight).RandomValue());
-        newGenome.SetGeneInChromosome(GeneID.TailWidth, gGenesDef.GetGene(GeneID.TailWidth).RandomValue());
+        newGenome.SetGeneInChromosome(GeneID.TailHeightPercentage, gGenesDef.GetGene(GeneID.TailHeightPercentage).RandomValue());
+        newGenome.SetGeneInChromosome(GeneID.TailWidthPercentage, gGenesDef.GetGene(GeneID.TailWidthPercentage).RandomValue());
         newGenome.SetGeneInChromosome(GeneID.BodyColorRed, gGenesDef.GetGene(GeneID.BodyColorRed).RandomValue(false, 1));
         newGenome.SetGeneInChromosome(GeneID.BodyColorGreen, gGenesDef.GetGene(GeneID.BodyColorGreen).RandomValue(false, 1));
         newGenome.SetGeneInChromosome(GeneID.BodyColorBlue, gGenesDef.GetGene(GeneID.BodyColorBlue).RandomValue(false, 1));

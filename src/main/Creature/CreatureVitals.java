@@ -1,11 +1,10 @@
 package main.Creature;
-import main.Constants;
+import main.GameParameters;
 
 import java.util.UUID;
 
 public class CreatureVitals {
     private final CreatureGeneValues CGV;
-    private final CreatureBody Body;
     private float X;
     private float Y;
     private float Angle;
@@ -16,28 +15,19 @@ public class CreatureVitals {
     private int LifeSpan;
     private float MaturityRate;
     private boolean Alive;
-    private boolean Hungry;
     private boolean Pregnant;
-
     private CreatureStomachContent StomachContent;
     private float EnergyLevel;
     private int BirthRecoveryTime;
     private int GestationPeriodCountDown;
     private float UnbornHealthDamage;
-
     private UUID ParentMaleID;
     private UUID ParentFemaleID;
-
-    private float SpeedChangeWithGrowth;
-    private float ColorChangeWithOldAge;
-
-    private float MaxEnergyStorage;
     private float StomachSize;
-
     private float Maturity;
+
     public CreatureVitals(Creature currentCreature){
         CGV= currentCreature.GetGenes();
-        Body= currentCreature.GetBody();
     }
 
     public void InitializeCreatureVitals(float x, float y, float angle, float health,int age, UUID parentMale, UUID parentFemale){
@@ -50,7 +40,7 @@ public class CreatureVitals {
         LifeSpan= (int) CGV.GetLifeSpan();
         MaturityAge= (int) (LifeSpan*CGV.GetMatureAgePercentage());
         SeniorAge=(int) (LifeSpan*CGV.GetSeniorAgePercentage());
-        MaturityRate=( 1f /MaturityAge);
+        MaturityRate=( 1.0f /MaturityAge);
         if (Age<MaturityAge){
             Maturity=MaturityRate*Age;
         } else {
@@ -60,15 +50,12 @@ public class CreatureVitals {
         Pregnant=false;
 
         StomachContent=new CreatureStomachContent();
-        EnergyLevel=0;
+        EnergyLevel=0.0f;
         BirthRecoveryTime=0;
         GestationPeriodCountDown=0;
 
         ParentMaleID=parentMale;
         ParentFemaleID=parentFemale;
-
-        SpeedChangeWithGrowth=0;
-        ColorChangeWithOldAge=0;
 
         StomachSize=CGV.GetStomachSize();
 
@@ -88,10 +75,10 @@ public class CreatureVitals {
     }
     public float GetHealth(){return Health;}
     public void DecreaseHealth(float value) {
-        if (Health-value>0){
+        if (Health-value>0.0f){
             Health-=value;
         } else {
-            Health=0;
+            Health=0.0f;
         }
         EvaluateHealth();
     }
@@ -103,7 +90,7 @@ public class CreatureVitals {
         }
     }
     public void EvaluateHealth(){
-        if (Health<0){
+        if (Health<0f){
             Alive=false;
         }
     }
@@ -133,11 +120,7 @@ public class CreatureVitals {
     public void SetEnergyLevel(float value){
         if (value>GetCurrentMaxEnergyStorage()){
             EnergyLevel=GetCurrentMaxEnergyStorage();
-        } else if (value<0) {
-            EnergyLevel = 0;
-        } else {
-            EnergyLevel=value;
-        }
+        } else EnergyLevel = Math.max(value, 0.0f);
     }
     public int GetBirthRecoveryTime(){return BirthRecoveryTime;}
     public void SetBirthRecoveryTime(int value){BirthRecoveryTime=value;}
@@ -145,27 +128,22 @@ public class CreatureVitals {
     public void IncreaseGestationPeriodCountDown(){GestationPeriodCountDown++;}
     public void DecreaseGestationPeriodCountDown(){GestationPeriodCountDown--;}
     public float GetUnbornHealthDamage(){return UnbornHealthDamage;}
-    public void IncreaseUnbornHealthDamage(){UnbornHealthDamage+=Constants.UnbornHealthDamagePerIncrease;}
+    public void IncreaseUnbornHealthDamage(){UnbornHealthDamage+= GameParameters.UnbornHealthDamagePerIncrease;}
     public void SetGestationPeriodCountDown(int value){GestationPeriodCountDown=value;}
     public UUID GetParentMaleID(){return ParentMaleID;}
     public void SetParentMaleID(UUID value){ParentMaleID=value;}
     public UUID GetParentFemaleID(){return ParentFemaleID;}
     public void SetParentFemaleID(UUID value){ParentFemaleID=value;}
 
-    public float GetSpeedChangeWithGrowth(){return SpeedChangeWithGrowth;}
-    public void SetSpeedChangeWithGrowth(float value){SpeedChangeWithGrowth=value;}
-    public float GetColorChangeWithOldAge(){return ColorChangeWithOldAge;}
-    public void SetColorChangeWithOldAge(float value){ColorChangeWithOldAge=value;}
-
     public float GetMaturity(){return Maturity;}
     public void SetMaturity(float value){
         Maturity=value;
     }
     public void IncreaseMaturity(){
-        if (Maturity<1){
+        if (Maturity<1.0f){
             Maturity+=MaturityRate;
         } else {
-            Maturity=1;
+            Maturity=1.0f;
         }
     }
     public float GetCurrentMaxEnergyStorage(){return CGV.GetMaxStoredEnergy() * GetMaturity();}

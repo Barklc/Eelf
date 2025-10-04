@@ -1,6 +1,5 @@
 package main.Creature;
 import main.FlagsOverride;
-import main.GeneMinMax;
 import main.Creature.BodySegments.BodySegment;
 import main.Genetics.GeneID;
 

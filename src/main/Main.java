@@ -1,6 +1,5 @@
 package main;
 
-import main.Creature.Creature;
 import main.Genetics.GeneDefinitions;
 import processing.core.PApplet;
 

@@ -20,8 +20,8 @@ public class CreatureBody{
 
     //CGV parameter variables
     private final float HeadShape;
-    private final boolean MouthPresent;
-    private final boolean FlipperPresent;
+    private boolean MouthPresent;
+    private boolean FlipperPresent;
     private boolean TailPresent;
 
     private boolean EyesPresent;
@@ -104,9 +104,13 @@ public class CreatureBody{
         if (FlipperPresent){
             Flippers f=new Flippers();
             f.InitializeSegment(x,y,GetCurrentBodyWidth(),GetCurrentBodyHeight(),0,GetCurrentBodyDistanceBetweenSegments(), GetCurrentFlipperColor());
-            f.SetFlipperWidth(GetCurrentFlipperWidth());
             f.SetFlipperHeight(GetCurrentFlipperHeight());
-            f.SetSegmentConnectedTo(GameParameters.FlippersSegmentConnected);
+            f.SetFlipperWidth(GetCurrentFlipperWidth());
+            int connectorOffset=0;
+            if (GetCurrentFlipperHeight()>GetCurrentBodyDistanceBetweenSegments()) {
+                connectorOffset= (int) Math.floor(GetCurrentFlipperHeight()/GetCurrentBodyDistanceBetweenSegments());
+            }
+            f.SetSegmentConnectedTo(GameParameters.FlippersSegmentConnected+connectorOffset);
             Body.add(f);
             FlippersSegmentID=Body.size()-1;
         }
@@ -319,7 +323,10 @@ public class CreatureBody{
     public Color GetCurrentSegmentsColor(){return CGV.GetBodyColor();}
     public Color GetCurrentMouthColor(){return CGV.GetMouthColor();}
     public Color GetCurrentEyesColor(){return CGV.GetEyeColor();}
-    public Color GetCurrentFlipperColor(){return CGV.GetFlipperColor();}
+    public Color GetCurrentFlipperColor(){
+        return CGV.GetFlipperColor();
+        //return gUtils.ChangeColorByPercentage(new Color(CGV.GetBodyColorRGB().get(0),CGV.GetBodyColorRGB().get(1),CGV.GetBodyColorRGB().get(2)),CGV.GetFlipperColorDeviation());
+    }
     public Color GetCurrentTailColor(){return CGV.GetTailColor();}
     public boolean GetMouthPresent(){return MouthPresent;}
     public boolean GetEyesPresent(){return EyesPresent;}

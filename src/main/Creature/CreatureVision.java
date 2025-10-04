@@ -16,7 +16,7 @@ public class CreatureVision{
     CreatureGeneValues cgv;
 
     public CreatureVision(Creature currentCreature) {
-
+        cgv=currentCreature.GetGenes();
     }
 
     public void InitializeVision(float a, float d, float newClarity){

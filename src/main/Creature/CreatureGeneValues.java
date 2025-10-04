@@ -6,6 +6,7 @@ import main.Genetics.GeneID;
 import java.awt.*;
 import java.util.ArrayList;
 
+
 public class CreatureGeneValues{
 
     //variables set initial by genes
@@ -55,6 +56,7 @@ public class CreatureGeneValues{
     private final float tailHeightPercentage;
     private final float tailWidthPercentage;
     private final float tailPresent;
+    //private final float flipperColorDeviation;
     private final int flipperColorBlue;
     private final int flipperColorGreen;
     private final int flipperColorRed;
@@ -85,6 +87,7 @@ public class CreatureGeneValues{
         bodyColorRed=(int) Math.floor(dna.GetGene(GeneID.BodyColorRed));
         bodyColorGreen=(int) Math.floor(dna.GetGene(GeneID.BodyColorGreen));
         bodyColorBlue=(int) Math.floor(dna.GetGene(GeneID.BodyColorBlue));
+        //flipperColorDeviation=-0.5f; //dna.GetGene(GeneID.FlipperColorDeviation);
         flipperColorRed=(int) Math.floor(dna.GetGene(GeneID.FlipperColorRed));
         flipperColorGreen=(int) Math.floor(dna.GetGene(GeneID.FlipperColorGreen));
         flipperColorBlue=(int) Math.floor(dna.GetGene(GeneID.FlipperColorBlue));
@@ -165,6 +168,7 @@ public class CreatureGeneValues{
         return flipperWidth;
     }
 
+    //public float GetFlipperColorDeviation(){return flipperColorDeviation;}
     public Color GetFlipperColor(){
         return new Color(flipperColorRed,flipperColorGreen,flipperColorBlue);
     }

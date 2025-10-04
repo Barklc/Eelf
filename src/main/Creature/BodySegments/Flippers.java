@@ -29,16 +29,16 @@ public class Flippers extends BodySegment {
         return SegmentID.Flippers;
     }
 
-    //@Override
-    //  public void InitializeSegment(float x,float y,float w, float h, float a, float d,color c){
-    //  SetSegmentX(x);
-    //  SetSegmentY(y);
-    //  SetSegmentHeight(h);
-    //  SetSegmentWidth(w);
-    //  SetSegmentAngle(a);
-    //  SetSegmentColor(c);
-    //  SetSegmentDistance(d);
-    //}
+    @Override
+      public void InitializeSegment(float x,float y,float w, float h, float a, float d,Color c){
+      SetSegmentX(x);
+      SetSegmentY(y);
+      SetSegmentHeight(h);
+      SetSegmentWidth(w);
+      SetSegmentAngle(a);
+      SetSegmentColor(c);
+      SetSegmentDistance(d);
+    }
 
     @Override
     public void UpdateSegment(BodySegment prev){
@@ -53,8 +53,8 @@ public class Flippers extends BodySegment {
     @Override
     public void DisplaySegment(PApplet w, float scale){
 
-        float fx= (float) (GetSegmentX()+(GetSegmentWidth())*Math.cos(GetSegmentAngle()+(+0.5f*Math.PI)));
-        float fy= (float) (GetSegmentY()+(GetSegmentHeight())*Math.sin(GetSegmentAngle()+(+0.5f*Math.PI)));
+        float fx= (float) (GetSegmentX() + (GetSegmentWidth())*Math.cos(GetSegmentAngle()+(0.5f*Math.PI)));
+        float fy= (float) (GetSegmentY() + (GetSegmentHeight())*Math.sin(GetSegmentAngle()+(0.5f*Math.PI)));
 
         PShape bFlipper=CreateBottomFlipper(w,FlipperWidth,FlipperHeight,GetSegmentColor());
         bFlipper.rotate(GetSegmentAngle());
@@ -62,8 +62,8 @@ public class Flippers extends BodySegment {
         w.shapeMode(CORNER);
         w.shape(bFlipper,fx,fy);
 
-        float gx= (float) (GetSegmentX()+(GetSegmentWidth())*Math.cos(GetSegmentAngle()+(-0.5f*Math.PI)));
-        float gy= (float) (GetSegmentY()+(GetSegmentHeight())*Math.sin(GetSegmentAngle()+(-0.5f*Math.PI)));
+        float gx= (float) (GetSegmentX() + (GetSegmentWidth())*Math.cos(GetSegmentAngle()+(-0.5f*Math.PI)));
+        float gy= (float) (GetSegmentY() + (GetSegmentHeight())*Math.sin(GetSegmentAngle()+(-0.5f*Math.PI)));
 
         PShape tFlipper=CreateBottomFlipper(w,FlipperWidth,FlipperHeight,GetSegmentColor());
         tFlipper.scale(1,-1);
@@ -75,8 +75,7 @@ public class Flippers extends BodySegment {
 
     @Override
     public ArrayList<PShape> CreateShapes(float w, float h, Color c){
-        ArrayList<PShape> flippers=new ArrayList<PShape>();
-        return flippers;
+        return new ArrayList<>();
     }
 
     private PShape CreateBottomFlipper(PApplet w, float fheight, float fwidth,Color fcolor){

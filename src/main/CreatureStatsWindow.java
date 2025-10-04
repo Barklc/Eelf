@@ -104,21 +104,21 @@ public class CreatureStatsWindow {
         bp+=AddField("Present",2,Genes.GetMouthPresent(),Body.GetMouthPresent());
         bp+=AddField("Size",2,Genes.GetMouthSize(),Body.GetCurrentMouthSize());
         bp+=AddField("Bite Strength",2,Genes.GetBiteStrength(),Body.GetCurrentBiteStrength());
-        bp+=AddField("Color",2,new Color(0,0,0),new Color(0,0,0));
+        bp+=AddField("Color",2,Genes.GetMouthColor(),Body.GetCurrentMouthColor());
         bp+=AddSection("Eye Info",1);
         bp+=AddField("Present",2,Genes.GetEyesPresent(),Body.GetEyesPresent());
         bp+=AddField("Size",2,Genes.GetMouthSize(),Body.GetCurrentMouthSize());
-        bp+=AddField("Color",2,new Color(0,0,0),new Color(0,0,0));
+        bp+=AddField("Color",2,Genes.GetEyeColor(),Body.GetCurrentEyesColor());
         bp+=AddSection("Flippers Info",1);
         bp+=AddField("Present",2,Genes.GetFlipperPresent(),Body.GetFlipperPresent());
         bp+=AddField("Width",2,Genes.GetFlipperWidth(),Body.GetCurrentFlipperWidth());
         bp+=AddField("Height",2,Genes.GetFlipperHeight(),Body.GetCurrentFlipperHeight());
-        bp+=AddField("Color",2,new Color(0,0,0),new Color(0,0,0));
+        bp+=AddField("Color",2,Genes.GetFlipperColor(),Body.GetCurrentFlipperColor());
         bp+=AddSection("Tail Info",1);
         bp+=AddField("Present",2,Genes.GetTailPresent(),Body.GetTailPresent());
         bp+=AddField("Width",2,Genes.GetTailWidthPercentage(),Body.GetCurrentTailWidth());
         bp+=AddField("Height",2,Genes.GetTailHeightPercentage(),Body.GetCurrentTailHeight());
-        bp+=AddField("Color",2,new Color(0,0,0),new Color(0,0,0));
+        bp+=AddField("Color",2,Genes.GetFlipperColor(),Body.GetCurrentTailColor());
         bp+=AddField("Modifier",2,Physics.GetTailSpeedMod(),Physics.GetCurrentTailSpeedMod());
 
         String ap=AddSection("Age Info",0);
@@ -150,10 +150,10 @@ public class CreatureStatsWindow {
         vp+=AddField("Scan Freq",1,Genes.GetVisionScanFreq());
 
         String rp=AddSection("Reproduction Info",0);
-        rp+=AddField("Birth Recovery Time",1,0,0);
-        rp+=AddField("Energy Birth Gestation Energy Cost",1,0,0);
-        rp+=AddField("Gestation Period",1,0,0);
-        rp+=AddField("Birth Energy Cost",1,0,0);
+        rp+=AddField("Birth Recovery Time",1,Genes.GetBirthRecoveryTime(),Vitals.GetBirthRecoveryTime());
+        rp+=AddField("Energy Birth Gestation Energy Cost",1,Genes.GetBirthGestationEnergyCost());
+        rp+=AddField("Gestation Period",1,Genes.GetGestationPeriod(),Vitals.GetGestationPeriodCountDown());
+        rp+=AddField("Birth Energy Cost",1,Genes.GetBirthEnergyCost());
 
         Stats.setText(cp+bp+ap);
         Stats1.setText(mp+rp+vp);

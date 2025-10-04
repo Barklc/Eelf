@@ -1,5 +1,6 @@
 package main;
 
+import java.awt.*;
 import java.util.Random;
 
 public class Utilities{
@@ -71,4 +72,11 @@ public class Utilities{
         return min + random.nextFloat(max-min);
     }
 
+    public Color ChangeColorByPercentage(Color original, float percentage)
+    {
+        int red = (int) Math.min(255, Math.max(0, original.getRed() + (original.getRed() * percentage)));
+        int green = (int) Math.min(255, Math.max(0, original.getGreen() + (original.getGreen() * percentage)));
+        int blue = (int) Math.min(255, Math.max(0, original.getBlue() + (original.getBlue() * percentage)));
+        return new Color(red, green, blue);
+    }
 }

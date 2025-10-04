@@ -247,7 +247,6 @@ public class Creature{
         if (b !=null && b.BodySegmentType()==SegmentID.Flippers){
             b.DisplaySegment(w,scale);
         }
-        float temp=Body.GetBodyLength()-1;
         for(int i=0;i<Body.GetBodyLength()-1;i++){
             Body.GetBodySegment(i).DisplaySegment(w, scale);
         }

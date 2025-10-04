@@ -120,11 +120,7 @@ public class CreatureVitals {
     public void SetEnergyLevel(float value){
         if (value>GetCurrentMaxEnergyStorage()){
             EnergyLevel=GetCurrentMaxEnergyStorage();
-        } else if (value<0.0f) {
-            EnergyLevel = 0.0f;
-        } else {
-            EnergyLevel=value;
-        }
+        } else EnergyLevel = Math.max(value, 0.0f);
     }
     public int GetBirthRecoveryTime(){return BirthRecoveryTime;}
     public void SetBirthRecoveryTime(int value){BirthRecoveryTime=value;}

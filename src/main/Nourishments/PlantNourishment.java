@@ -47,6 +47,6 @@ public class PlantNourishment extends Nourishment{
 
     @Override
     public ArrayList<PShape> CreateShape(float w, float h, Color c){
-        return new ArrayList<PShape>();
+        return new ArrayList<>();
     }
 }

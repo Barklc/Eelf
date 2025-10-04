@@ -23,7 +23,6 @@ public class CreaturePhysics{
 
     public CreaturePhysics(Creature currentCreature){
         CreatureGeneValues CGV = currentCreature.GetGenes();
-        CreatureVitals vitals = currentCreature.GetVitals();
         Body = currentCreature.GetBody();
         MassMax=195;
         MaxTurnAngle= CGV.GetBaseDNA().GetGeneDef(GeneID.MaxTurnAngle).Maximum();
@@ -52,9 +51,9 @@ public class CreaturePhysics{
         if (PauseSpeed){
             return 0;
         }
-        if(TailHeight>= GeneMinMax.TailHeightMax/2f){
+       // if(TailHeight>= GeneMinMax.TailHeightMax/2f){
             //TailSpeedMod=(TailHeight/2f)/(GeneMinMax.TailHeightMax/2f);
-        }
+       // }
         if(true){
             MassSpeedMod=1f-(Mass/MassMax);
         }

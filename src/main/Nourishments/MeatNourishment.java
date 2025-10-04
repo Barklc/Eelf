@@ -1,8 +1,6 @@
 package main.Nourishments;
 import main.FlagsOverride;
 import main.GameParameters;
-import main.Nourishments.Nourishment;
-import main.Nourishments.NourishmentTypes;
 import processing.core.*;
 
 import java.awt.*;
@@ -48,6 +46,6 @@ public class MeatNourishment extends Nourishment {
 
     @Override
     public ArrayList<PShape> CreateShape(float w, float h, Color c){
-        return new ArrayList<PShape>();
+        return new ArrayList<>();
     }
 }

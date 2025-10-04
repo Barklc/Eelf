@@ -7,16 +7,14 @@ import java.util.ArrayList;
 import static main.Main.*;
 
 public class CreatureOlfactory{
-    private Creature CurrentCreature;
-    private CreatureGeneValues CGV;
-    private CreatureVitals Vitals;
+    private final Creature CurrentCreature;
     float Sensitivity;
 
     public CreatureOlfactory(Creature currentCreature){
         CurrentCreature=currentCreature;
-        CGV=currentCreature.GetGenes();
-        Sensitivity=CGV.GetReceptorSensitivity();
-        Vitals=currentCreature.GetVitals();
+        CreatureGeneValues CGV = currentCreature.GetGenes();
+        Sensitivity= CGV.GetReceptorSensitivity();
+        CreatureVitals vitals = currentCreature.GetVitals();
     }
 
     public float ScentDetected(float x, float y, float scentx, float scenty, float strength){
@@ -41,7 +39,7 @@ public class CreatureOlfactory{
     }
 
     public ArrayList<ObjectInRange> FindScents(ArrayList<ObjectInRange> objectInRanges){
-        ArrayList<ObjectInRange> scentsInRange = new ArrayList<ObjectInRange>();
+        ArrayList<ObjectInRange> scentsInRange = new ArrayList<>();
         for (ObjectInRange o : objectInRanges) {
             //println("World.Display - o.objectType: " + o.objectType);
             if (o.objectType == ObjectInRangeType.PlantScent || o.objectType == ObjectInRangeType.MeatScent) {

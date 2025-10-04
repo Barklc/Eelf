@@ -156,12 +156,6 @@ public class GeneDefinitions {
         geneBase=new GeneBase(true,  0.7f,   0.9f, 0.01f,  0.0f, true,    "Determines when the creature is old.", GeneID.SeniorAgePercentage, locationOnChromosome,"GeneID.SeniorAgePercentage", ChromosomeID.Aging);
         genes.set(GeneID.SeniorAgePercentage,geneBase); //Percentage of life expediency
 
-        geneBase=new GeneBase(true,  0.0f,   1.0f,  0.01f,  0.0f, true, "Determines the maximum health for the creature.", GeneID.MaxHealth, locationOnChromosome++,"GeneID.MaxHealth", ChromosomeID.Metabolism);
-        genes.set(GeneID.MaxHealth,geneBase);
-
-        geneBase=new GeneBase(true,  0.0f,   1.0f,  0.5f,  0.0f, true, "Determines the percentage of health increase when eaten.", GeneID.IncreaseHealthPercentage, locationOnChromosome++,"GeneID.IncreaseHealthPercentage", ChromosomeID.Metabolism);
-        genes.set(GeneID.IncreaseHealthPercentage,geneBase);
-
         //Metabolism
         locationOnChromosome =0;
         geneBase=new GeneBase(true,  0.0f,   1.0f,  0.01f,  0.0f, true, "Determines how much food can be held in stomach.", GeneID.StomachSize, locationOnChromosome++,"GeneID.StomachSize", ChromosomeID.Metabolism);
@@ -170,14 +164,20 @@ public class GeneDefinitions {
         geneBase=new GeneBase(true,  0.1f,   1.0f,  0.1f,  0.0f, true,   "Determine the rate of how fast food is converted to energy.", GeneID.DigestionRate, locationOnChromosome++,"GeneID.DigestionRate", ChromosomeID.Metabolism);
         genes.set(GeneID.DigestionRate,geneBase);
 
-        geneBase=new GeneBase(true,0.1f, 1.0f, 0.1f,  0.0f, true,   "Determines how what percentage of digested plant is converted to energy.", GeneID.PlantToEnergyConversionRate, locationOnChromosome,"GeneID.PlantToEnergyConversionRate", ChromosomeID.Metabolism);
+        geneBase=new GeneBase(true,0.1f, 1.0f, 0.1f,  0.0f, true,   "Determines how what percentage of digested plant is converted to energy.", GeneID.PlantToEnergyConversionRate, locationOnChromosome++,"GeneID.PlantToEnergyConversionRate", ChromosomeID.Metabolism);
         genes.set(GeneID.PlantToEnergyConversionRate,geneBase);
 
-        geneBase=new GeneBase(true,0.1f, 1.0f, 0.1f,  0.0f, true,   "Determines how what percentage of digested meat is converted to energy.", GeneID.MeatToEnergyConversionRate, locationOnChromosome,"GeneID.MeatToEnergyConversionRate", ChromosomeID.Metabolism);
+        geneBase=new GeneBase(true,0.1f, 1.0f, 0.1f,  0.0f, true,   "Determines how what percentage of digested meat is converted to energy.", GeneID.MeatToEnergyConversionRate, locationOnChromosome++,"GeneID.MeatToEnergyConversionRate", ChromosomeID.Metabolism);
         genes.set(GeneID.MeatToEnergyConversionRate,geneBase);
 
         geneBase=new GeneBase(true,  0.0f,   1.0f,  0.1f,  0.0f, true, "Determines how much excess energy can be stored.", GeneID.MaxStoredEnergy, locationOnChromosome++,"GeneID.MaxStoredEnergy", ChromosomeID.Metabolism);
         genes.set(GeneID.MaxStoredEnergy,geneBase);
+
+        geneBase=new GeneBase(true,  0.0f,   1.0f,  0.01f,  0.0f, true, "Determines the maximum health for the creature.", GeneID.MaxHealth, locationOnChromosome++,"GeneID.MaxHealth", ChromosomeID.Metabolism);
+        genes.set(GeneID.MaxHealth,geneBase);
+
+        geneBase=new GeneBase(true,  0.0f,   1.0f,  0.5f,  0.0f, true, "Determines the percentage of health increase when eaten.", GeneID.IncreaseHealthPercentage, locationOnChromosome,"GeneID.IncreaseHealthPercentage", ChromosomeID.Metabolism);
+        genes.set(GeneID.IncreaseHealthPercentage,geneBase);
 
         //Reproduction
         locationOnChromosome =0;

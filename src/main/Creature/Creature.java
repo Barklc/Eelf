@@ -49,7 +49,7 @@ public class Creature{
 
         guid=uuid;
         Physics.SetBaseSpeed(Genes.GetSpeed());
-        Speed = Physics.DetermineSpeed(Genes.GetTailHeight(),BodyMass);
+        Speed = Physics.DetermineSpeed(BodyMass);
         Physics.SetBaseTurnRate(.025f);
         TurnAngle = Physics.DetermineTurnRate(Genes.GetFlipperWidth(),Genes.GetBodyWidth());
         Vision.InitializeVision(Genes.GetVisionAngle(), Vitals.GetCurrentVisionDistance(), Genes.GetVisionClarity());
@@ -89,12 +89,6 @@ public class Creature{
     }
 
     public void UpdateCreatureLocation(){
-        //Update speed value based on when growing.  Otherwise, use the last
-        BodyMass=Body.GetBodyMass();
-        Speed = Physics.DetermineSpeed(Body.GetCurrentTailHeight(),Body.GetBodyMass());
-        TurnAngle = Physics.DetermineTurnRate(Body.GetCurrentFlipperWidth(),Body.GetBodySegment(GameParameters.FlippersSegmentConnected).GetSegmentWidth());
-        System.out.println("TurnAngle=" + TurnAngle);
-
         //Loop through each body segment and update location, color and angle
         for(int i=0;i<Body.GetTotalBodySegmentLength();i++){
             BodySegment b=Body.GetBodySegment(i);
@@ -180,7 +174,7 @@ public class Creature{
         DecisionEngine.SetObjectInRangeBySpecifiedType(Creature,ObjectInRangeType.Creature);
 
         CreatureAction=DecisionEngine.Decision(CreatureAction);
-        System.out.println("CreatureAction=" + CreatureAction);
+        //System.out.println("CreatureAction=" + CreatureAction);
         switch (CreatureAction){
             case NewDestination:
                 TargetObject=NewDestination();
@@ -203,13 +197,13 @@ public class Creature{
                 gWorld.gNourishment.set(Plant.IdOfObject(),nourishment);
                 break;
         }
-        System.out.println("Vital X=" + Vitals.GetX());
-        System.out.println("Vital Y=" + Vitals.GetY());
-        System.out.println("Target X=" + TargetObject.X());
-        System.out.println("Target Y=" + TargetObject.Y());
-        System.out.println("Angle=" + Vitals.GetAngle());
-        System.out.println("DistanceToTarget=" + DistanceToTarget);
-        System.out.println("PreviousDistanceToTarget=" + PreviousDistanceToTarget);
+//        System.out.println("Vital X=" + Vitals.GetX());
+//        System.out.println("Vital Y=" + Vitals.GetY());
+//        System.out.println("Target X=" + TargetObject.X());
+//        System.out.println("Target Y=" + TargetObject.Y());
+//        System.out.println("Angle=" + Vitals.GetAngle());
+//        System.out.println("DistanceToTarget=" + DistanceToTarget);
+//        System.out.println("PreviousDistanceToTarget=" + PreviousDistanceToTarget);
         //println("Creature.CreatureAction - soir.size(): " + soir.size());
         //println("Creature.CreatureAction - voir.size(): " + voir.size());
 
@@ -225,11 +219,18 @@ public class Creature{
         Body.GetHeadSegment().SetSegmentX(Vitals.GetX());
         Body.GetHeadSegment().SetSegmentY(Vitals.GetY());
         Body.GetHeadSegment().SetSegmentAngle(Vitals.GetAngle());
-
-        if (ticks==1){
+         if (ticks==1){
             Vitals.IncreaseMaturity();
             Body.UpdateBody();
         }
+        //Update body mass, speed and turn rate based on it growing.  Otherwise, use the last
+        if (Vitals.GetMaturity()<1.0f){
+            BodyMass=Body.GetCurrentBodyMass();
+            Speed = Physics.DetermineSpeed(Body.GetCurrentBodyMass());
+            TurnAngle = Physics.DetermineTurnRate(Body.GetCurrentFlipperWidth(),Body.GetBodySegment(GameParameters.FlippersSegmentConnected).GetSegmentWidth());
+            //System.out.println("TurnAngle=" + TurnAngle);
+        }
+
     }
 
     public void Display(PApplet w,float scale){

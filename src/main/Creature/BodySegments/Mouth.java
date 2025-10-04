@@ -1,8 +1,8 @@
 package main.Creature.BodySegments;
 import main.Coords;
+import main.GameParameters;
 import processing.core.PApplet;
 import processing.core.PShape;
-import processing.opengl.PShapeOpenGL;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -72,12 +72,16 @@ public class Mouth extends BodySegment {
 
     @Override
     public ArrayList<PShape> CreateShapes(float w, float h, Color c){
-        return new ArrayList<PShape>();
+        return new ArrayList<>();
     }
 
     PShape CreateMouth(PApplet w,float mouthSize, float biteStrength){
         PShape mouth;
-        float modifier=.1f*biteStrength;
+        float modifier=0.1f;
+        if (biteStrength>GameParameters.BiteStrengthVisualThreshold){
+            modifier=.1f*biteStrength-GameParameters.BiteStrengthVisualThreshold;
+        }
+
         float mouthRight=20;
         float mouthLeft=340;
 
@@ -98,6 +102,7 @@ public class Mouth extends BodySegment {
 
             mouth.vertex( nx , ny);
         }
+
 
         float mouthInnerRadius=mouthSize*(1-modifier);
         float cx=mouthSize-mouthInnerRadius;//cos(angle)+mouthInnerRadius;

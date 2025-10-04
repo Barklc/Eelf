@@ -33,16 +33,19 @@ public class CreatureStatsWindow {
 
         frame.setVisible(true);
 
-       }
+    }
+    String FloatToString(float value){
+        return String.format("%.2f",value);
+    }
     private String AddField(String Name, int offset, float GeneValue, float VitalsValue){
         String tab = "    ";
         return tab.repeat(Math.max(0, offset)) +
-                Name + ": (" + GeneValue + ") " + VitalsValue + "\r\n";
+                Name + ": (" + FloatToString(GeneValue) + ") " + FloatToString(VitalsValue) + "\r\n";
     }
     private String AddField(String Name, int offset, float GeneValue, boolean VitalsValue){
         String tab = "    ";
         return tab.repeat(Math.max(0, offset)) +
-                Name + ": (" + GeneValue + ") " + VitalsValue + "\r\n";
+                Name + ": (" + FloatToString(GeneValue)+ ") " + VitalsValue + "\r\n";
     }
 
     private String AddField(String Name, int offset, Color GeneValue, Color VitalsValue){
@@ -63,7 +66,7 @@ public class CreatureStatsWindow {
     private String AddField(String Name, int offset, float Value){
         String tab = "    ";
         return tab.repeat(Math.max(0, offset)) +
-                Name + ": " + Value + "\r\n";
+                Name + ": " + FloatToString(Value) + "\r\n";
     }
     private String AddSection(String Name, int offset){
         String tab = "    ";
@@ -113,9 +116,10 @@ public class CreatureStatsWindow {
         bp+=AddField("Color",2,new Color(0,0,0),new Color(0,0,0));
         bp+=AddSection("Tail Info",1);
         bp+=AddField("Present",2,Genes.GetTailPresent(),Body.GetTailPresent());
-        bp+=AddField("Width",2,Genes.GetTailWidth(),Body.GetCurrentTailWidth());
-        bp+=AddField("Height",2,Genes.GetTailHeight(),Body.GetCurrentTailHeight());
+        bp+=AddField("Width",2,Genes.GetTailWidthPercentage(),Body.GetCurrentTailWidth());
+        bp+=AddField("Height",2,Genes.GetTailHeightPercentage(),Body.GetCurrentTailHeight());
         bp+=AddField("Color",2,new Color(0,0,0),new Color(0,0,0));
+        bp+=AddField("Modifier",2,Physics.GetTailSpeedMod(),Physics.GetCurrentTailSpeedMod());
 
         String ap=AddSection("Age Info",0);
         ap+=AddField("Age",1, Vitals.GetLifeSpan(), Vitals.GetAge());

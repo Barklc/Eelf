@@ -114,13 +114,13 @@ public class CreatureBody{
             Tail t=new Tail();
             t.InitializeSegment(x-(GetBodyLength()-GameParameters.TailSegmentOffsetFromEnd),
                     y,
-                    GetCurrentBodyWidth()-DetermineTaper(GetCurrentBodyWidth(),GetBodyLength()-1-GameParameters.TailSegmentOffsetFromEnd,GetBodyLength()),
-                    GetCurrentBodyHeight()-DetermineTaper(GetCurrentBodyWidth(),GetBodyLength()-1-GameParameters.TailSegmentOffsetFromEnd,GetBodyLength()),
+                    GetCurrentBodyWidth()-DetermineTaper(GetCurrentBodyWidth(),GetBodyLength()-2-GameParameters.TailSegmentOffsetFromEnd,GetBodyLength()),
+                    GetCurrentBodyHeight()-DetermineTaper(GetCurrentBodyWidth(),GetBodyLength()-2-GameParameters.TailSegmentOffsetFromEnd,GetBodyLength()),
                     0,GetCurrentBodyDistanceBetweenSegments(),
                     GetCurrentTailColor());
             t.SetTailWidth(GetCurrentTailWidth());
             t.SetTailHeight(GetCurrentTailHeight());
-            t.SetSegmentConnectedTo(GetBodyLength()- 1- GameParameters.TailSegmentOffsetFromEnd);
+            t.SetSegmentConnectedTo(GetBodyLength()- 2- GameParameters.TailSegmentOffsetFromEnd);
             Body.add(t);
             TailSegmentID=Body.size()-1;
         }
@@ -170,6 +170,8 @@ public class CreatureBody{
         }
         if (GetTailPresent() && GetBodySegment(TailSegmentID).BodySegmentType()==SegmentID.Tail){
             Tail tail=(Tail) GetBodySegment(TailSegmentID);
+            tail.SetSegmentDistance(GetCurrentBodyDistanceBetweenSegments());
+            tail.SetSegmentAngle(GetBodySegment(tail.GetSegmentConnectedTo()).GetSegmentAngle());
             tail.SetTailHeight(GetCurrentTailHeight());//   GetCurrentTailHeight());
             tail.SetTailWidth(GetCurrentTailWidth()); // GetCurrentTailWidth());
             bodySegment.UpdateSegment(GetBodySegment(tail.GetSegmentConnectedTo()));
@@ -274,6 +276,8 @@ public class CreatureBody{
         return Mass;
     }
 
+    public float GetCurrentBodyMass(){return Mass * Vitals.GetMaturity();}
+
     public float CalculateBodyMass(){
         Mass=0;
         for (BodySegment bs : Body) {
@@ -304,9 +308,9 @@ public class CreatureBody{
     //public void SetCurrentFlipperHeight(float value){CurrentFlipperHeight=value;}
     public float GetCurrentFlipperWidth(){return CGV.GetFlipperWidth() * Vitals.GetMaturity();}
     //public void SetCurrentFlipperWidth(float value){CurrentFlipperWidth=value;}
-    public float GetCurrentTailHeight(){return (CGV.GetTailHeight()*CGV.GetBodyHeight()) * Vitals.GetMaturity();}
+    public float GetCurrentTailHeight(){return (CGV.GetTailHeightPercentage()*CGV.GetBodyHeight()) * Vitals.GetMaturity();}
     //public void SetCurrentTailHeight(float value){CurrentTailHeight=value;}
-    public float GetCurrentTailWidth(){return (CGV.GetTailWidth()*CGV.GetBodyWidth()) * Vitals.GetMaturity();}
+    public float GetCurrentTailWidth(){return (CGV.GetTailWidthPercentage()*CGV.GetBodyWidth()) * Vitals.GetMaturity();}
     //public void SetCurrentTailWidth(float value){CurrentTailWidth=value;}
     public float GetCurrentMouthSize(){return CGV.GetMouthSize() * Vitals.GetMaturity();}
     public float GetCurrentEyeSize(){return CGV.GetEyeSize() * Vitals.GetMaturity();}
@@ -322,4 +326,5 @@ public class CreatureBody{
     public boolean GetFlipperPresent(){return FlipperPresent;}
     public boolean GetTailPresent(){return TailPresent;}
     public float GetCurrentBiteStrength(){return CGV.GetBiteStrength() * Vitals.GetMaturity();}
+    public float GetCurrentTailWidthPercentage(){return CGV.GetTailWidthPercentage() * Vitals.GetMaturity();}
 }

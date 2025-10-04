@@ -52,8 +52,8 @@ public class CreatureGeneValues{
     private final float flipperHeight;
     private final float flipperWidth;
     private final float flipperPresent;
-    private final float tailHeight;
-    private final float tailWidth;
+    private final float tailHeightPercentage;
+    private final float tailWidthPercentage;
     private final float tailPresent;
     private final int flipperColorBlue;
     private final int flipperColorGreen;
@@ -80,8 +80,8 @@ public class CreatureGeneValues{
         flipperHeight=GeneMinMax.FlipperHeightMin + (dna.GetGene(GeneID.FlipperHeight)* (GeneMinMax.FlipperHeightMax-GeneMinMax.FlipperHeightMin));
         flipperWidth=GeneMinMax.FlipperWidthMin + (dna.GetGene(GeneID.FlipperWidth)* (GeneMinMax.FlipperWidthMax-GeneMinMax.FlipperWidthMin));
         tailPresent=dna.GetGene(GeneID.TailPresent);
-        tailHeight=GeneMinMax.TailHeightMin + (dna.GetGene(GeneID.TailHeight) * (GeneMinMax.TailHeightMax-GeneMinMax.TailHeightMin));
-        tailWidth=GeneMinMax.TailWidthMin + (dna.GetGene(GeneID.TailWidth)* (GeneMinMax.TailWidthMax-GeneMinMax.TailWidthMin));
+        tailHeightPercentage=GeneMinMax.TailHeightMinPercentage + (dna.GetGene(GeneID.TailHeightPercentage) * (GeneMinMax.TailHeightMaxPercentage-GeneMinMax.TailHeightMinPercentage));
+        tailWidthPercentage=GeneMinMax.TailWidthMinPercentage + (dna.GetGene(GeneID.TailWidthPercentage)* (GeneMinMax.TailWidthMaxPercentage-GeneMinMax.TailWidthMinPercentage));
         bodyColorRed=(int) Math.floor(dna.GetGene(GeneID.BodyColorRed));
         bodyColorGreen=(int) Math.floor(dna.GetGene(GeneID.BodyColorGreen));
         bodyColorBlue=(int) Math.floor(dna.GetGene(GeneID.BodyColorBlue));
@@ -180,13 +180,11 @@ public class CreatureGeneValues{
     public float GetTailPresent(){return tailPresent;
     }
 
-    public float GetTailHeight(){
-        return tailHeight;
+    public float GetTailHeightPercentage(){
+        return tailHeightPercentage;
     }
 
-    public float GetTailWidth(){
-        return tailWidth;
-    }
+    public float GetTailWidthPercentage(){return tailWidthPercentage;}
 
     public Color GetTailColor(){
         return new Color(tailColorRed,tailColorGreen,tailColorBlue);

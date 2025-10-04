@@ -1,15 +1,19 @@
 package main.Creature;
 import main.FlagsOverride;
 import main.Creature.BodySegments.BodySegment;
+import main.GameParameters;
+import main.GeneMinMax;
 import main.Genetics.GeneID;
 
 import static main.Main.gUtils;
 
 public class CreaturePhysics{
     private final CreatureBody Body;
+    private final CreatureGeneValues Genes;
     private float BaseSpeed;
     private final float MaxTurnAngle;
     private float TurnAngle;
+    private final float TailWidthPercentage;
     private float TailSpeedMod;
     private final float MassMax;
     private float MassSpeedMod;
@@ -21,12 +25,13 @@ public class CreaturePhysics{
     private boolean PauseSpeed;
 
     public CreaturePhysics(Creature currentCreature){
-        CreatureGeneValues CGV = currentCreature.GetGenes();
+        Genes = currentCreature.GetGenes();
         Body = currentCreature.GetBody();
         MassMax=195;
-        MaxTurnAngle= CGV.GetBaseDNA().GetGeneDef(GeneID.MaxTurnAngle).Maximum();
-        FlipperWidthMax= CGV.GetBaseDNA().GetGeneDef(GeneID.FlipperWidth).Maximum(); //GetGeneValueMax(GeneID.FlipperWidth);
-        SegmentWidthMax= CGV.GetBaseDNA().GetGeneDef(GeneID.BodyWidth).Maximum();
+        MaxTurnAngle= Genes.GetBaseDNA().GetGeneDef(GeneID.MaxTurnAngle).Maximum();
+        TailWidthPercentage=Genes.GetTailWidthPercentage();
+        FlipperWidthMax= Genes.GetBaseDNA().GetGeneDef(GeneID.FlipperWidth).Maximum(); //GetGeneValueMax(GeneID.FlipperWidth);
+        SegmentWidthMax= Genes.GetBaseDNA().GetGeneDef(GeneID.BodyWidth).Maximum();
         PauseSpeed=false;
     }
 
@@ -46,17 +51,19 @@ public class CreaturePhysics{
         return TurnAngle;
     }
 
-    public float DetermineSpeed(float TailHeight, float Mass){
+    public float DetermineSpeed(float Mass){
         if (PauseSpeed){
             return 0;
         }
-       // if(TailHeight>= GeneMinMax.TailHeightMax/2f){
-            //TailSpeedMod=(TailHeight/2f)/(GeneMinMax.TailHeightMax/2f);
-       // }
+        if(TailWidthPercentage>= GameParameters.TailThresholdForSpeedMod){
+            TailSpeedMod=GeneMinMax.TailSpeedModMinPercentage + (Body.GetCurrentTailWidthPercentage() * (GeneMinMax.TailSpeedModMaxPercentage-GeneMinMax.TailSpeedModMinPercentage));
+            System.out.println("GetCurrentTailWidthPercentage=" + Body.GetCurrentTailWidthPercentage());
+            System.out.println("TailSpeedMod=" + TailSpeedMod);
+        }
         if(true){
             MassSpeedMod=1f-(Mass/MassMax);
         }
-        CurrentSpeed= BaseSpeed + TailSpeedMod + MassSpeedMod;
+        CurrentSpeed= BaseSpeed + TailSpeedMod;// + MassSpeedMod;
         return CurrentSpeed;
     }
 
@@ -102,5 +109,13 @@ public class CreaturePhysics{
 
     public void PauseSpeed(boolean value){
         PauseSpeed=value;
+    }
+
+    public float GetTailSpeedMod(){
+        return  GeneMinMax.TailSpeedModMinPercentage + (Genes.GetTailWidthPercentage() * (GeneMinMax.TailSpeedModMaxPercentage-GeneMinMax.TailSpeedModMinPercentage));
+    }
+
+    public float GetCurrentTailSpeedMod(){
+        return TailSpeedMod;
     }
 }

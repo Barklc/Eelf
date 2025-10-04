@@ -1,6 +1,5 @@
 package main;
 import processing.core.PApplet;
-
 import static main.Main.*;
 
 public class Visualization extends PApplet {
@@ -12,8 +11,8 @@ public class Visualization extends PApplet {
 
     public void setup() {
 
-        gWorld.CreatePopulation(gMaxPop);
-        gWorld.CreateNourishment(gMaxPlants, gMaxMeat);
+        gWorld.CreatePopulation(GameParameters.MaxPop);
+        gWorld.CreateNourishment(GameParameters.MaxPlants, GameParameters.MaxMeat);
 
     }
 

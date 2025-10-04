@@ -13,10 +13,12 @@ public class GeneMinMax {
     public static final float BodyTapperMin = 0.5f;
     public static final float EyeSizeMax = 4f;
     public static final float EyeSizeMin = 2f;
-    public static final float TailWidthMax = 1.0f;
-    public static final float TailWidthMin = 0.5f;
-    public static final float TailHeightMax = 1.0f;
-    public static final float TailHeightMin = 0.5f;
+    public static final float TailWidthMaxPercentage = 1.0f;
+    public static final float TailWidthMinPercentage = 0.5f;
+    public static final float TailSpeedModMaxPercentage=1.0f;
+    public static final float TailSpeedModMinPercentage=0.1f;
+    public static final float TailHeightMaxPercentage = 1.0f;
+    public static final float TailHeightMinPercentage = 0.5f;
     public static final float FlipperWidthMax = 20f;
     public static final float FlipperWidthMin = 1f;
     public static final float FlipperHeightMax = 10f;

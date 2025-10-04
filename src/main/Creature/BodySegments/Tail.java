@@ -59,10 +59,10 @@ public class Tail extends BodySegment {
     @Override
     public void DisplaySegment(PApplet w, float scale){
 
-        float nx= (float) (GetSegmentX() + (GetSegmentWidth()+TailWidth/2)*Math.cos(GetSegmentAngle()));
-        float ny= (float) (GetSegmentY() + (GetSegmentHeight())*Math.sin(GetSegmentAngle()));
+        float nx= (float) (GetSegmentX() + (GetSegmentWidth()+TailWidth)*Math.cos(GetSegmentAngle()));
+        float ny= (float) (GetSegmentY() + (GetSegmentHeight()+TailWidth)*Math.sin(GetSegmentAngle()));
         PShape tail=CreateTail(w, TailHeight, TailWidth, GetSegmentColor());
-        w.stroke(255);
+        //w.circle(nx,ny,5);
         w.pushMatrix();
         w.translate(nx,ny);
         w.rotate(GetSegmentAngle());

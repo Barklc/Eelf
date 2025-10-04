@@ -59,10 +59,10 @@ public class GeneDefinitions {
         geneBase=new GeneBase(true,  0.00f,  1.00f,  0.01f,  0.0f, true,   "Determines the if tail should be present and if they should be considered in speed rate calculation.", GeneID.TailPresent, locationOnChromosome++,"GeneID.TailPresent", ChromosomeID.Body);
         genes.set(GeneID.TailPresent,geneBase);
 
-        geneBase=new GeneBase(true,  0.00f,  1.00f,  0.01f,  0.0f, false,   "Determines the height of the flipper.", GeneID.TailHeight, locationOnChromosome++,"GeneID.TailHeight", ChromosomeID.Body);
+        geneBase=new GeneBase(true,  0.00f,  1.00f,  0.01f,  0.0f, true,   "Determines the height of the flipper.", GeneID.TailHeight, locationOnChromosome++,"GeneID.TailHeight", ChromosomeID.Body);
         genes.set(GeneID.TailHeight,geneBase);
 
-        geneBase=new GeneBase(true,  0.00f,  1.00f,  0.01f,  0.0f, false,   "Determines the width of the skin flipper", GeneID.TailWidth, locationOnChromosome++,"GeneID.TailWidth", ChromosomeID.Body);
+        geneBase=new GeneBase(true,  0.00f,  1.00f,  0.01f,  0.0f, true,   "Determines the width of the skin flipper", GeneID.TailWidth, locationOnChromosome++,"GeneID.TailWidth", ChromosomeID.Body);
         genes.set(GeneID.TailWidth,geneBase);
 
         geneBase=new GeneBase(true,   0.0f, 255.00f, 10.0f,  0.0f, true,   "Determines the red color of the creature.", GeneID.TailColorRed, locationOnChromosome++,"GeneID.TailColorRed", ChromosomeID.Body);

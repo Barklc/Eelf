@@ -1,5 +1,7 @@
 package main.Creature;
 
+import main.GameParameters;
+
 import java.util.ArrayList;
 
 import static main.Main.*;
@@ -26,8 +28,8 @@ public class CreatureOlfactory{
         //println("CreatureOlfactory.ScentDetected - distance: " + distance);
         //println("CreatureOlfactory.ScentDetected - maxScentDistance: " + gMaxScentDistance);
         //println("CreatureOlfactory.ScentDetected - Sensitivity: " + strength*Sensitivity);
-        if (distance<=gMaxScentDistance){
-            float scentStrengthPerPointOfDistance=strength/gMaxScentDistance;
+        if (distance<= GameParameters.MaxScentDistance){
+            float scentStrengthPerPointOfDistance=strength/GameParameters.MaxScentDistance;
             float scentStrengthAtDistance=strength-(scentStrengthPerPointOfDistance*distance);
             //println("CreatureOlfactory.ScentDetected - scentStrengthPerPointOfDistance: " + scentStrengthPerPointOfDistance);
             //println("CreatureOlfactory.ScentDetected - scentStrengthAtDistance: " + scentStrengthAtDistance);

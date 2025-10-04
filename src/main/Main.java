@@ -13,11 +13,7 @@ public class Main {
     public static int gMaxPop=1;
     public static int gMaxPlants=3;
     public static int gMaxMeat=0;
-    public static int gMaxScentDistance=255;
-    public static int gMaxObjectInRangeRadius=300;
 
-    public static boolean gShowScentRangeFlag=true;
-    public static boolean gShowVisionSightLinesFlag =false;
 
     static DisplayCreatureWindow gDisplayCreatureWnd;
 

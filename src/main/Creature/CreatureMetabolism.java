@@ -79,7 +79,7 @@ public class CreatureMetabolism {
     public void SetEnergyUsedForMovement(float value){
         //TODO: Determine how much energy is used to move the distance moved
         EnergyUsedForMovement=value;
-        //Metabolism Cost (E/S) = Default Metabolism Cost (setting) * Bibite Speed (gene) * Bibite Size (2D)
+        //Metabolism Cost (E/S) = Default Metabolism Cost (setting) *  Speed (gene) *  Size (2D)
     }
 
     public void SetEnergyUsedDuringBirthRecoveryTime(float value){

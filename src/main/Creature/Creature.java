@@ -2,11 +2,13 @@ package main.Creature;
 
 import main.Actions;
 import main.Creature.BodySegments.*;
+import main.FlagsOverride;
 import main.GameParameters;
 import main.Genetics.Genome;
 import main.Nourishments.Nourishment;
 import processing.core.PApplet;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -82,7 +84,7 @@ public class Creature{
     public ObjectInRange GetTargetObject(){return TargetObject;}
 
     public ArrayList<ObjectInRange> GetObjectsInRange(UUID CurrentUUID){
-        ObjectsInRange=gWorld.ObjectsInRange(Vitals.GetX(),Vitals.GetY(),gMaxObjectInRangeRadius,CurrentUUID);
+        ObjectsInRange=gWorld.ObjectsInRange(Vitals.GetX(),Vitals.GetY(),GameParameters.MaxObjectInRangeRadius,CurrentUUID);
         return ObjectsInRange;
     }
 
@@ -228,17 +230,15 @@ public class Creature{
             Vitals.IncreaseMaturity();
             Body.UpdateBody();
         }
-
-
-
     }
 
     public void Display(PApplet w,float scale){
        w.stroke(0);
-       // w.fill(new Color(128,128,128).hashCode());
-       // w.circle(head.GetSegmentX(),head.GetSegmentY(),gMaxObjectInRangeRadius*2);
-       // w.stroke(new Color(0,0,255).hashCode());
-       // w.circle(head.GetSegmentX(),head.GetSegmentY(),gMaxScentDistance*2);
+
+       if (FlagsOverride.ShowObjectsInRangeFlag) {
+           w.fill(new Color(128, 128, 128).hashCode());
+           w.circle(Body.GetHeadSegment().GetSegmentX(), Body.GetHeadSegment().GetSegmentY(), GameParameters.MaxObjectInRangeRadius * 2);
+       }
         BodySegment b=Body.GetMouthSegment();
         if (b !=null && b.BodySegmentType()==SegmentID.Mouth){
             b.DisplaySegment(w,scale);
@@ -247,12 +247,19 @@ public class Creature{
         if (b !=null && b.BodySegmentType()==SegmentID.Flippers){
             b.DisplaySegment(w,scale);
         }
-        for(int i=0;i<Body.GetTotalBodySegmentLength();i++){
-            b=Body.GetBodySegment(i);
-            if (b.BodySegmentType()!=SegmentID.Mouth && b.BodySegmentType()!=SegmentID.Flippers) {
-                b.DisplaySegment(w, scale);
-            }
+        float temp=Body.GetBodyLength()-1;
+        for(int i=0;i<Body.GetBodyLength()-1;i++){
+            Body.GetBodySegment(i).DisplaySegment(w, scale);
         }
+        b=Body.GetEyesSegment();
+        if (b !=null && b.BodySegmentType()==SegmentID.Eyes){
+            b.DisplaySegment(w,scale);
+        }
+        b=Body.GetTailSegment();
+        if (b !=null && b.BodySegmentType()==SegmentID.Tail){
+            b.DisplaySegment(w,scale);
+        }
+
 
         Vision.Display(w, scale);
         w.circle(TargetObject.X(),TargetObject.Y(),5);

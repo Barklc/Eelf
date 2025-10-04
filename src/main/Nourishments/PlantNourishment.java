@@ -1,11 +1,11 @@
 package main.Nourishments;
+import main.FlagsOverride;
+import main.GameParameters;
 import processing.core.*;
 
 import java.awt.*;
 import java.util.ArrayList;
 
-import static main.Main.gMaxScentDistance;
-import static main.Main.gShowScentRangeFlag;
 
 public class PlantNourishment extends Nourishment{
 
@@ -29,15 +29,15 @@ public class PlantNourishment extends Nourishment{
         //circle wants diameter so double radius
         w.circle(0,0,GetNourishmentSize());
         w.noFill();
-        if (gShowScentRangeFlag){
+        if (FlagsOverride.ShowScentRangeFlag){
             switch(NourishmentType()){
                 case Plant:
                     w.stroke(new Color(0,255,0).hashCode());
-                    w.circle(0,0,gMaxScentDistance*2);
+                    w.circle(0,0, GameParameters.MaxScentDistance *2);
                     break;
                 case Meat:
                     w.stroke(new Color(255,0,0).hashCode());
-                    w.circle(0,0,gMaxScentDistance*2);
+                    w.circle(0,0,GameParameters.MaxScentDistance*2);
                     break;
             }
         }

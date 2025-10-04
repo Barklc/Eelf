@@ -80,7 +80,7 @@ public class CreatureGeneValues{
         flipperHeight=GeneMinMax.FlipperHeightMin + (dna.GetGene(GeneID.FlipperHeight)* (GeneMinMax.FlipperHeightMax-GeneMinMax.FlipperHeightMin));
         flipperWidth=GeneMinMax.FlipperWidthMin + (dna.GetGene(GeneID.FlipperWidth)* (GeneMinMax.FlipperWidthMax-GeneMinMax.FlipperWidthMin));
         tailPresent=dna.GetGene(GeneID.TailPresent);
-        tailHeight=GeneMinMax.TailHeightMin + (dna.GetGene(GeneID.TailHeight)* (GeneMinMax.TailHeightMax-GeneMinMax.TailHeightMin));
+        tailHeight=GeneMinMax.TailHeightMin + (dna.GetGene(GeneID.TailHeight) * (GeneMinMax.TailHeightMax-GeneMinMax.TailHeightMin));
         tailWidth=GeneMinMax.TailWidthMin + (dna.GetGene(GeneID.TailWidth)* (GeneMinMax.TailWidthMax-GeneMinMax.TailWidthMin));
         bodyColorRed=(int) Math.floor(dna.GetGene(GeneID.BodyColorRed));
         bodyColorGreen=(int) Math.floor(dna.GetGene(GeneID.BodyColorGreen));

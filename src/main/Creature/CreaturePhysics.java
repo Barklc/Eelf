@@ -53,7 +53,7 @@ public class CreaturePhysics{
             return 0;
         }
         if(TailHeight>= GeneMinMax.TailHeightMax/2f){
-            TailSpeedMod=(TailHeight/2f)/(GeneMinMax.TailHeightMax/2f);
+            //TailSpeedMod=(TailHeight/2f)/(GeneMinMax.TailHeightMax/2f);
         }
         if(true){
             MassSpeedMod=1f-(Mass/MassMax);

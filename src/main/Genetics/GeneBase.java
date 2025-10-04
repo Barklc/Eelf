@@ -106,8 +106,8 @@ public class GeneBase{
 //            float min=mid-(mid*range/2);
 //            float max=mid+(mid*range/2);
 //            returnvalue = gUtils.GetRandomNumber(min+minimum, max+minimum);
-            if (minimum==maximum)
-                {returnvalue=minimum;
+            if (minimum==maximum){
+                returnvalue=minimum;
             } else {
                 returnvalue = gUtils.GetRandomNumber(minimum, maximum);
             }

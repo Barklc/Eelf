@@ -35,13 +35,13 @@ public class CreatureMetabolism {
     }
 
     //Digest food in stomach and convert to energy.
-    private float DigestionCycle(){
+    private float DigestionCyclePerTick(){
         float energyCreated=0;
         float MeatDigestionAmount;
         float PlantDigestionAmount;
 
         if (Vitals.GetTotalStomachContent()>0){
-            float digestionAmount= GameParameters.BaseDigestionAmount*CGV.GetDigestionRate();
+            float digestionAmount= GameParameters.BaseDigestionAmountPerTick*CGV.GetDigestionRate();
             if (Vitals.GetMeatStomachContent()>0){
                 MeatDigestionAmount=Vitals.RemoveMeatStomachContent(digestionAmount);
                 digestionAmount=digestionAmount-MeatDigestionAmount;
@@ -63,36 +63,36 @@ public class CreatureMetabolism {
         EnergyUsedForMovement=0.0f;
         EnergyUsedDuringBirthRecoveryTime=0.0f;
     }
-    public void SetEnergyUsedBase(float value){
+    public void SetEnergyUsedBasePerTick(float value){
         //TODO: Determine how much energy is needed to run basic body needs
         EnergyUsedBase=value;
     }
 
-    public void SetEnergyUsedInGestation(float value){
+    public void SetEnergyUsedInGestationPerTick(float value){
         //TODO: Determine how much energy is needed to each gestation cycle
         EnergyUsedInGestation=value;
     }
 
-    public void SetEnergyUsedInBirth(float value){
+    public void SetEnergyUsedInBirthPerTick(float value){
         //TODO: Determine how much energy is needed to give birth
         EnergyUsedInBirth=value;
     }
 
-    public void SetEnergyUsedForMovement(float value){
+    public void SetEnergyUsedForMovementPerTick(float value){
         //TODO: Determine how much energy is used to move the distance moved
         EnergyUsedForMovement=value;
         //Metabolism Cost (E/S) = Default Metabolism Cost (setting) *  Speed (gene) *  Size (2D)
     }
 
-    public void SetEnergyUsedDuringBirthRecoveryTime(float value){
+    public void SetEnergyUsedDuringBirthRecoveryTimePerTick(float value){
         //TODO: Determine how much energy is used to for each birth cool down cycle
         EnergyUsedDuringBirthRecoveryTime=value;
     }
 
     //The energy cycle converts stomach content to energy, takes the value provided by the SetEnergyUsed methods and
     //determines if the needed energy using processes get what is needed.  Any remaining energy is stored.
-    public void EnergyCycle(){
-        float energyCreated=DigestionCycle();
+    public void EnergyCyclePerTick(){
+        float energyCreated=DigestionCyclePerTick();
         float totalEnergy=Vitals.GetEnergyLevel()+energyCreated;
         //TODO: Put energy usage in descending order of importance. (Think about adding gene control for the priority)
 

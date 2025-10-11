@@ -43,14 +43,14 @@ public class Genome{
     }
 
     public void SetGeneInChromosome(int GeneId, float value){
-        System.out.print("Genome.SetGeneInChromosome: " + GeneId);
+        System.out.print("Genome.SetGeneInChromosome: " + GeneId + "\r\n");
         GeneBase gene=genesDef.GetGene(GeneId);
 
         int chrome=gene.GetChromosome();
         System.out.print(" - " + chrome);
         Chromosome c=chromosomes.get(chrome);
         int location=gene.GetGeneLocationOnChromosome();
-        System.out.println(":" + location +"="+value);
+        //System.out.println(":" + location +"="+value);
         c.SetGene(location,value);
 
 

@@ -1,14 +1,17 @@
 package main.Nourishments;
+import main.GameParameters;
 import processing.core.*;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Set;
 
 public abstract class Nourishment{
     private float NourishmentX;
     private float NourishmentY;
     private float NourishmentSize;
     private float NourishmentMass;
+    private float NourishmentMassMax;
     private Color NourishmentColor;
     private float NourishmentScent;
     private float NourishmentScentStrength;
@@ -37,19 +40,16 @@ public abstract class Nourishment{
     };
 
     public Float GetNourishmentSize(){
-        return NourishmentSize;
+        return NourishmentMass*GameParameters.NourishmentMassToSizeAdjustment;
     };
 
-    public void SetNourishmentSize(float s){
-        NourishmentSize=s;
-    };
 
     public Float GetNourishmentMass(){
         return NourishmentMass;
     };
 
     public void SetNourishmentMass(float m){
-        if (m<0) {NourishmentMass=0;} else {NourishmentMass=m;}
+        if (m<0) {NourishmentMass=0.5f;} else {NourishmentMass=m;}
     };
 
     public Color GetNourishmentColor(){
@@ -77,11 +77,31 @@ public abstract class Nourishment{
         NourishmentScentStrength=s;
     };
 
+    public void GrowRotNourishment(){
+        if (NourishmentType()==NourishmentTypes.Plant){
+            float growthAmount = (GetNourishmentMass() * GameParameters.GrowthPercentagePerTick);
+            float currentMass = GetNourishmentMass();
+            if (currentMass +  growthAmount>NourishmentMassMax){
+                SetNourishmentMass(NourishmentMassMax);
+            } else {
+                SetNourishmentMass(currentMass + growthAmount);
+            }
+        } else {
+            float rotAmount = (GetNourishmentMass() * GameParameters.RotPercentagePerTick);
+            float currentMass = GetNourishmentMass();
+            if (currentMass -  rotAmount<0){
+                SetNourishmentMass(0);
+            } else {
+                SetNourishmentMass(currentMass - rotAmount);
+            }
+        }
+    }
     public void InitializeNourishment(float x,float y,float size, float mass,Color c,float scent,float strength){
         NourishmentX=x;
         NourishmentY=y;
-        NourishmentSize=mass/10;
+        NourishmentSize=mass/GameParameters.NourishmentMassToSizeAdjustment;
         NourishmentMass=mass;
+        NourishmentMassMax=mass;
         NourishmentColor=c;
         NourishmentScent=scent;
         NourishmentScentStrength=strength;

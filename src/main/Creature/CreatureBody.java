@@ -6,6 +6,8 @@ import main.Creature.BodySegments.*;
 import java.awt.*;
 import java.util.ArrayList;
 
+import static main.Main.gUtils;
+
 public class CreatureBody{
 
     private final CreatureGeneValues CGV;
@@ -68,6 +70,8 @@ public class CreatureBody{
 
         Head h=new Head();
         //InitializeSegment(float x,float y,float w, float h, float a, float d,color c)
+        float percentage=0.1f*0;
+        Color newColor=gUtils.ChangeColorByPercentage(GetCurrentHeadColor(),percentage);
         h.InitializeSegment(x,y,GetCurrentBodyWidth(),GetCurrentBodyHeight(),0,GetCurrentBodyDistanceBetweenSegments(),GetCurrentHeadColor());
         h.SetHeadShape(HeadShape);
         HeadSegmentID=0;
@@ -76,8 +80,10 @@ public class CreatureBody{
 
         for(int i=1;i<GetBodyLength()-1;i++){
             HeightOfCurrentSegment=HeightOfCurrentSegment-i*(HeightOfCurrentSegment/(GetBodyLength()-1));
+            percentage=0.1f*i;
+            newColor=gUtils.ChangeColorByPercentage(GetCurrentHeadColor(),percentage);
             Segment s=new Segment();
-            s.InitializeSegment(x-i*HeightOfCurrentSegment,y,GetCurrentBodyWidth()-DetermineTaper(GetCurrentBodyWidth(),i,GetBodyLength()),GetCurrentBodyHeight()-DetermineTaper(GetCurrentBodyWidth(),i,GetBodyLength()),0,GetCurrentBodyDistanceBetweenSegments(),GetCurrentSegmentsColor());
+            s.InitializeSegment(x-i*HeightOfCurrentSegment,y,GetCurrentBodyWidth()-DetermineTaper(GetCurrentBodyWidth(),i,GetBodyLength()),GetCurrentBodyHeight()-DetermineTaper(GetCurrentBodyWidth(),i,GetBodyLength()),0,GetCurrentBodyDistanceBetweenSegments(),newColor);
             s.SetSegmentConnectedTo(i-1);
             Body.add(s);
         }
@@ -134,7 +140,7 @@ public class CreatureBody{
         }
 
         Mass=CalculateBodyMass();
-        System.out.println("CreatureBody.CreateBody - CalculateBodyMass: " + CalculateBodyMass());
+        //System.out.println("CreatureBody.CreateBody - CalculateBodyMass: " + CalculateBodyMass());
     }
 
     public void UpdateBody(){

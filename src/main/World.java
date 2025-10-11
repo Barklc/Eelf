@@ -20,15 +20,17 @@ public class World{
     public CreatureGeneWindow gCreatureGeneWindow;
     static DisplayCreatureWindow gDisplayCreatureWindow;
     static CreatureVisionWindow gCreatureVisionWindow;
+    static NourishmentWindow gNourishmentWindow;
     public float gTicks=1;
 
     private final int Width=1200;
     private final int Height=1000;
     public World(){
-        gCreatureStatsWindow=new CreatureStatsWindow();
-        gCreatureGeneWindow=new CreatureGeneWindow();
-        if(FlagsOverride.ShowCreatureDisplayWindow){gDisplayCreatureWindow=new DisplayCreatureWindow();}
-        gCreatureVisionWindow=new CreatureVisionWindow();
+        if(FlagsOverride.ShowCreatureStatsWindow){gCreatureStatsWindow=new CreatureStatsWindow();}
+        if(FlagsOverride.ShowCreatureGeneWindow){gCreatureGeneWindow=new CreatureGeneWindow();}
+        if(FlagsOverride.ShowDisplayCreatureWindow){gDisplayCreatureWindow=new DisplayCreatureWindow();}
+        if(FlagsOverride.ShowCreatureVisionWindow){gCreatureVisionWindow=new CreatureVisionWindow();}
+        if(FlagsOverride.ShowNourishmentWindow){gNourishmentWindow=new NourishmentWindow();}
     }
 
     public void CreatePopulation(int maxPop){
@@ -51,21 +53,25 @@ public class World{
     public void Display(PApplet w){
 
         gTicks++;
-        if (gTicks>60) {gTicks=1;}
+        if (gTicks>GameParameters.YearInTicks) {gTicks=1;}
 
         for(int i=0;i<gPopulation.GetMaxPop();i++){
             Creature creature=gPopulation.GetCreature(i);
-            creature.CreatureAction(gTicks);
+            creature.CreatureAction();
             creature.Display(w,1.0f);
-            if (gTicks%2==0){gCreatureStatsWindow.Update(creature);}
-            if (gTicks%2==0){gCreatureGeneWindow.Update(creature);}
-            if (gTicks%2==0 && FlagsOverride.ShowCreatureDisplayWindow){gCreatureVisionWindow.Update(creature);}
+            creature.IncreaseAliveTickCount();
+            if (gTicks%2==0 && FlagsOverride.ShowCreatureStatsWindow){gCreatureStatsWindow.Update(creature);}
+            if (gTicks%2==0 && FlagsOverride.ShowCreatureGeneWindow){gCreatureGeneWindow.Update(creature);}
+            if (gTicks%2==0 && FlagsOverride.ShowCreatureVisionWindow){gCreatureVisionWindow.Update(creature);}
+            if (gTicks%2==0 && FlagsOverride.ShowDisplayCreatureWindow){
+                gDisplayCreatureWindow.Update(creature);}
         }
 
         for (Nourishment nourishment : gNourishment) {
+            nourishment.GrowRotNourishment();
             nourishment.DisplayNourishment(w, 1.0f);
         }
-
+        if (gTicks%2==0 && FlagsOverride.ShowNourishmentWindow){gNourishmentWindow.Update(gNourishment);}
     }
 
     //Determine true home for this.

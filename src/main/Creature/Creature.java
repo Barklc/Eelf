@@ -2,6 +2,8 @@ package main.Creature;
 
 import main.Actions;
 import main.Creature.BodySegments.*;
+import main.DecisionEngine.DecisionEngine;
+import main.DecisionEngine.InputID;
 import main.FlagsOverride;
 import main.GameParameters;
 import main.Genetics.Genome;
@@ -21,7 +23,7 @@ public class Creature{
     private final CreatureOlfactory Olfactory;
     private final CreatureVision Vision;
     private final CreatureVitals Vitals;
-    private final CreatureDecisionEngine DecisionEngine;
+    private final main.DecisionEngine.DecisionEngine DecisionEngine;
     private final CreatureMetabolism Metabolism;
     private float Speed;
     private float BodyMass;
@@ -34,6 +36,10 @@ public class Creature{
     private ArrayList<ObjectInRange> ObjectsInRange;
     private ArrayList<ObjectInRange> ScentObjectsInRange;
     private ArrayList<ObjectInRange> SeenObjectsInRange;
+    private int AliveTickCount;
+    private ObjectInRange NearestPlant;
+    private ObjectInRange NearestMeat;
+    private ObjectInRange NearestCreature;
 
 
     public Creature(float startX, float startY, Genome genome, UUID uuid){
@@ -47,7 +53,7 @@ public class Creature{
         ObjectsInRange=new ArrayList<>();
         Vision=new CreatureVision(this);
         Metabolism=new CreatureMetabolism(this);
-        DecisionEngine=new CreatureDecisionEngine(this);
+        DecisionEngine=new DecisionEngine(this);
 
         guid=uuid;
         Physics.SetBaseSpeed(Genes.GetSpeed());
@@ -64,6 +70,7 @@ public class Creature{
         ObjectsInRange=new ArrayList<>();
         ScentObjectsInRange=new ArrayList<>();
         SeenObjectsInRange=new ArrayList<>();
+        AliveTickCount=0;
     }
 
     public UUID GetUUID() {
@@ -84,7 +91,7 @@ public class Creature{
 
     public CreatureMetabolism GetMetabolism(){return Metabolism;}
 
-    public CreatureDecisionEngine GetDecisionEngine(){return DecisionEngine;}
+    public DecisionEngine GetDecisionEngine(){return DecisionEngine;}
     public CreatureVision GetCreatureVision(){return Vision;}
 
     public ObjectInRange GetTargetObject(){return TargetObject;}
@@ -121,18 +128,28 @@ public class Creature{
 
     public void MoveTo(float targetX,float targetY){
         PreviousDistanceToTarget=DistanceToTarget;
-        float a= (float) Math.atan2(targetY -Vitals.GetY(), targetX -Vitals.GetX());
+        float a= (float) Math.atan2(targetY - Vitals.GetY(), targetX - Vitals.GetX());
         float delta = a-Vitals.GetAngle();
         while (delta < -Math.PI){delta+= (float) (2*Math.PI);}
         while (delta > Math.PI){delta-= (float) (2*Math.PI);}
-        Vitals.SetAngle(Vitals.GetAngle()+(TurnAngle* delta));
-        Vitals.SetX((float) (Vitals.GetX()+Speed*Math.cos(Vitals.GetAngle())));
-        Vitals.SetY((float) (Vitals.GetY()+Speed*Math.sin(Vitals.GetAngle())));
+        Vitals.SetAngle(Vitals.GetAngle() + (TurnAngle * delta));
+        Vitals.SetX((float) (Vitals.GetX() + Speed*Math.cos(Vitals.GetAngle())));
+        Vitals.SetY((float) (Vitals.GetY() + Speed*Math.sin(Vitals.GetAngle())));
 
         DistanceToTarget= gUtils.DistanceBetweenPoints(Vitals.GetX(),Vitals.GetY(),TargetObject.X(),TargetObject.Y());
 
         //creatureProperties.ReduceEnergyLevel((currentSpeed*gSpeedEnergyMod)/60);
     }
+    public float GetAngleToTarget(float targetX,float targetY){
+        float a= (float) Math.atan2(targetY - Vitals.GetY(), targetX - Vitals.GetX());
+        float delta = a;
+        //while (delta < -Math.PI){delta+= (float) (2*Math.PI);}
+        //while (delta > Math.PI){delta-= (float) (2*Math.PI);}
+        System.out.println("GetAngleToTarget.Angle: " + Math.toDegrees(delta) );
+        System.out.println("GetAngleToTarget.Physic: " + Physics.GetCurrentTurnAngle());
+        return (float)Math.toDegrees(delta);
+    }
+
     public float GetDistanceToTarget(){
         return DistanceToTarget;
     }
@@ -146,93 +163,116 @@ public class Creature{
     public Actions GetCurrentAction(){
         return CreatureAction;
     }
+    public void SetCurrentAction(Actions action){
+        System.out.println("Creature.SetCurrentAction: " + action);
+        CreatureAction=action;
+    }
     public ArrayList<ObjectInRange> GetObjectsInRange(UUID CurrentUUID){return ObjectsInRange;}
     public ArrayList<ObjectInRange> GetObjectsScentInRange(ArrayList<ObjectInRange> objectsInRangeList) {return ScentObjectsInRange;}
     public ArrayList<ObjectInRange> GetObjectsSeenInRange(ArrayList<ObjectInRange> objectsInRangeList) {return SeenObjectsInRange;}
-    public ObjectInRange GetNearestPlantScent(ArrayList<ObjectInRange> objectsInRangeList){return Olfactory.GetNearestScentSpecified(objectsInRangeList,ObjectInRangeType.PlantScent);}
-    public ObjectInRange GetNearestMeatScent(ArrayList<ObjectInRange> objectsInRangeList){return Olfactory.GetNearestScentSpecified(objectsInRangeList,ObjectInRangeType.MeatScent);}
-    public ObjectInRange GetNearestCreatureScent(ArrayList<ObjectInRange> objectsInRangeList){return Olfactory.GetNearestScentSpecified(objectsInRangeList,ObjectInRangeType.CreatureScent);}
+    public int GetAliveTickCount(){return AliveTickCount;}
+    public void SetAliveTickCount(int value){AliveTickCount=value;}
+    public void IncreaseAliveTickCount(){AliveTickCount++;}
 
-    public void CreatureAction(float ticks){
+    public void SetInputs(){
+        DecisionEngine.SetInputArray(InputID.InputCreatureX,Vitals.GetX());
+        DecisionEngine.SetInputArray(InputID.InputCreatureY,Vitals.GetY());
+        DecisionEngine.SetInputArray(InputID.InputCreatureAngleToTarget,GetAngleToTarget(TargetObject.X(),TargetObject.Y()));
+        DecisionEngine.SetInputArray(InputID.InputCreatureTarget,GetTargetObject());
+        DecisionEngine.SetInputArray(InputID.InputCreatureDistanceToTarget,DistanceToTarget);
+        DecisionEngine.SetInputArray(InputID.InputCreaturePreviousDistanceToTarget,PreviousDistanceToTarget);
+        DecisionEngine.SetInputArray(InputID.InputVisionDominance,Body.GetEyesPresent() && Vitals.GetVisionDominancePercentage()>Vitals.GetScentDominancePercentage());
+        DecisionEngine.SetInputArray(InputID.InputScentDominance,Vitals.GetScentDominancePercentage()> Vitals.GetVisionDominancePercentage());
+        DecisionEngine.SetInputArray(InputID.InputNourishments,gWorld.gNourishment);
+        DecisionEngine.SetInputArray(InputID.InputIsHungry,Vitals.IsHungry());
+        DecisionEngine.SetInputArray(InputID.InputIsPregnant,Vitals.IsPregnant());
+        DecisionEngine.SetInputArray(InputID.InputMouthAtPoint,Physics.MouthAtPoint(GetTargetObject().X(),GetTargetObject().Y(),GetTargetObject().GetRadius()/2));
+        DecisionEngine.SetInputArray(InputID.InputCreatureCurrentSpeed,Physics.GetCurrentSpeed());
+
+        ObjectsInRange = gWorld.ObjectsInRange(Vitals.GetX(),Vitals.GetY(),GameParameters.MaxObjectInRangeRadius,guid);
+        DecisionEngine.SetInputArray(InputID.InputAllObjectsInRange,ObjectsInRange);
+        ScentObjectsInRange=Olfactory.FindScents(ObjectsInRange);
+        DecisionEngine.SetInputArray(InputID.InputScentObjectsInRange,ScentObjectsInRange);
+        SeenObjectsInRange=Vision.FindObjects(ObjectsInRange);
+        DecisionEngine.SetInputArray(InputID.InputSeenObjectsInRange,SeenObjectsInRange);
+
+        NearestPlant=Vision.GetNearestObjectSpecified(SeenObjectsInRange,ObjectInRangeType.Plant);
+        DecisionEngine.SetInputArray(InputID.InputNearestPlantInRange,NearestPlant);
+        NearestMeat=Vision.GetNearestObjectSpecified(SeenObjectsInRange,ObjectInRangeType.Meat);
+        DecisionEngine.SetInputArray(InputID.InputNearestMeatInRange,NearestMeat);
+        NearestCreature=Vision.GetNearestObjectSpecified(SeenObjectsInRange,ObjectInRangeType.Creature);
+        DecisionEngine.SetInputArray(InputID.InputNearestCreatureInRange,NearestCreature);
+
+        DecisionEngine.SetInputArray(InputID.InputNearestPlantScentInRange,Vision.GetNearestObjectSpecified(ScentObjectsInRange,ObjectInRangeType.Plant));
+        DecisionEngine.SetInputArray(InputID.InputNearestMeatScentInRange,Vision.GetNearestObjectSpecified(ScentObjectsInRange,ObjectInRangeType.Meat));
+        DecisionEngine.SetInputArray(InputID.InputNearestCreatureScentInRange,Vision.GetNearestObjectSpecified(ScentObjectsInRange,ObjectInRangeType.Creature));
+
+        DecisionEngine.SetInputArray(InputID.InputAliveTickCount,GetAliveTickCount());
+        DecisionEngine.SetInputArray(InputID.InputAge,Vitals.GetAge());
+        DecisionEngine.SetInputArray(InputID.InputMaturityAge,Vitals.GetMaturityAge());
+        DecisionEngine.SetInputArray(InputID.InputSeniorAge,Vitals.GetSeniorAge());
+        DecisionEngine.SetInputArray(InputID.InputLifeSpan,Vitals.GetLifeSpan());
+        DecisionEngine.SetInputArray(InputID.InputHealth,Vitals.GetHealth());
+        DecisionEngine.SetInputArray(InputID.InputCurrentTurnRate,Physics.GetCurrentTurnAngle());
+
+    }
+    public void CreatureAction(){
+        IncreaseAliveTickCount();
         UpdateCreatureLocation();
 
         Vision.SetVisionDistance(Vitals.GetCurrentVisionDistance());
         Vision.UpdateLocation(Body.GetHeadSegment());
         Vision.UpdateSightLines();
 
-        //TODO: Reengineer this to be an array with specific objects at specified locations in array to allow for easy additions to senses.
+        SetInputs();
 
-        //Determine Objects in Range.
-        ObjectsInRange = gWorld.ObjectsInRange(Vitals.GetX(),Vitals.GetY(),GameParameters.MaxObjectInRangeRadius,guid);
-        ScentObjectsInRange=Olfactory.FindScents(ObjectsInRange);
-        SeenObjectsInRange=Vision.FindObjects(ObjectsInRange);
+        Actions PreviousAction = GetCurrentAction();
 
-        //Add different types of objects in range to decision engine.
-        DecisionEngine.SetObjectListInRange(ObjectsInRange);
-        DecisionEngine.SetScentObjectListInRange(ScentObjectsInRange);
-        DecisionEngine.SetSeenObjectListInRange(SeenObjectsInRange);
-
-        //Nearest scent determined for each type.  If no scent of that type is in range, null is returned.
-        ObjectInRange PlantScent=GetNearestPlantScent(ScentObjectsInRange);
-        ObjectInRange MeatScent=GetNearestMeatScent(ScentObjectsInRange);
-        ObjectInRange CreatureScent=GetNearestCreatureScent(ScentObjectsInRange);
-
-        //Nearest seen objects determined for each type.  If no seen objects of that type is in range, null is returned.
-        ObjectInRange Plant=Vision.GetNearestObjectSpecified(SeenObjectsInRange,ObjectInRangeType.Plant);
-        ObjectInRange Meat=Vision.GetNearestObjectSpecified(SeenObjectsInRange,ObjectInRangeType.Meat);
-        ObjectInRange Creature=Vision.GetNearestObjectSpecified(SeenObjectsInRange,ObjectInRangeType.Creature);
-
-        //Add Nearest objects to DecisionEngine.
-        DecisionEngine.SetObjectInRangeBySpecifiedType(PlantScent,ObjectInRangeType.PlantScent);
-        DecisionEngine.SetObjectInRangeBySpecifiedType(MeatScent,ObjectInRangeType.MeatScent);
-        DecisionEngine.SetObjectInRangeBySpecifiedType(CreatureScent,ObjectInRangeType.CreatureScent);
-        DecisionEngine.SetObjectInRangeBySpecifiedType(Plant,ObjectInRangeType.Plant);
-        DecisionEngine.SetObjectInRangeBySpecifiedType(Meat,ObjectInRangeType.Meat);
-        DecisionEngine.SetObjectInRangeBySpecifiedType(Creature,ObjectInRangeType.Creature);
-
-        Actions PreviousAction = CreatureAction;
-
-        CreatureAction=DecisionEngine.Decision(CreatureAction);
+        SetCurrentAction(DecisionEngine.Decision(GetCurrentAction()));
 
         switch (CreatureAction){
             case NewDestination:
                 TargetObject=NewDestination();
                 DistanceToTarget= gUtils.DistanceBetweenPoints(Vitals.GetX(),Vitals.GetY(),TargetObject.X(),TargetObject.Y());
-                CreatureAction=Actions.Move;
+                SetCurrentAction(Actions.Move);
                 break;
-            case Move, MoveToPlant:
+            case Move, MoveToPlant,MoveToMeat:
                 Physics.PauseSpeed(false);
                 MoveTo(TargetObject.X(),TargetObject.Y());
                 break;
             case TargetPlant:
-                Nourishment plant=gWorld.gNourishment.get(Plant.IdOfObject());
-                TargetObject=Plant;
+                TargetObject=NearestPlant;
+                SetCurrentAction(Actions.MoveToPlant);
+                break;
+            case TargetMeat:
+                TargetObject=NearestMeat;
                 CreatureAction=Actions.MoveToPlant;
                 break;
             case Eat:
                 Physics.PauseSpeed(true);
-                Nourishment nourishment=gWorld.gNourishment.get(TargetObject.IdOfObject());
-                float amountBit=Metabolism.Bite(nourishment);
-                nourishment.SetNourishmentMass(nourishment.GetNourishmentMass()-amountBit);
-                nourishment.SetNourishmentSize(nourishment.GetNourishmentMass()/10);
-                gWorld.gNourishment.set(TargetObject.IdOfObject(),nourishment);
+                if (gWorld.gTicks%GameParameters.TicksBetweenBites==0){
+                    Nourishment nourishment=gWorld.gNourishment.get(TargetObject.IdOfObject());
+                    float amountBit=Metabolism.Bite(nourishment);
+                    nourishment.SetNourishmentMass(nourishment.GetNourishmentMass()-amountBit);
+                    gWorld.gNourishment.set(TargetObject.IdOfObject(),nourishment);
+                }
                 break;
         }
 
         //TODO: Determine movement distance and pass it to energy cycle
-//        Metabolism.SetEnergyUsedBase(0.0f);
-//        Metabolism.SetEnergyUsedInGestation(0.0f);
-//        Metabolism.SetEnergyUsedInBirth(0.0f);
-//        Metabolism.SetEnergyUsedForMovement(0.0f);
-//        Metabolism.SetEnergyUsedDuringBirthRecoveryTime(0.0f);
-//        Metabolism.EnergyCycle();
+        Metabolism.SetEnergyUsedBasePerTick(0.0f);
+        Metabolism.SetEnergyUsedInGestationPerTick(0.0f);
+        Metabolism.SetEnergyUsedInBirthPerTick(0.0f);
+        Metabolism.SetEnergyUsedForMovementPerTick(0.0f);
+        Metabolism.SetEnergyUsedDuringBirthRecoveryTimePerTick(0.0f);
+        Metabolism.EnergyCyclePerTick();
 
         //TODO: Check health of unborn and determine its state (alive/dead)
         //TODO: If unborn is lost clear pregnant flag and start birthRecoveryTime
         Body.GetHeadSegment().SetSegmentX(Vitals.GetX());
         Body.GetHeadSegment().SetSegmentY(Vitals.GetY());
         Body.GetHeadSegment().SetSegmentAngle(Vitals.GetAngle());
-         if (ticks==1){
+         if (gWorld.gTicks==1){
             Vitals.IncreaseMaturity();
             Body.UpdateBody();
         }

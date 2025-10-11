@@ -45,20 +45,20 @@ public class CreatureVisionWindow {
     }
     public void Update(Creature CurrentCreature) {
         ArrayList<ObjectInRange> ObjectsInRangeList =CurrentCreature.GetObjectsInRange(CurrentCreature.GetUUID());
-        StringBuilder os= new StringBuilder(AddSection("Objects in Range:", 0));
+        StringBuilder AllObjectsInRange= new StringBuilder(AddSection("Objects in Range:", 0));
         for(ObjectInRange object: ObjectsInRangeList){
-            os.append(AddField(object, 1));
+            AllObjectsInRange.append(AddField(object, 1));
         }
-        StringBuilder scs= new StringBuilder(AddSection("Scent Objects in Range:", 0));
+        StringBuilder ScentObjectsInRange= new StringBuilder(AddSection("Scent Objects in Range:", 0));
         for(ObjectInRange object: CurrentCreature.GetObjectsScentInRange(ObjectsInRangeList)){
-            scs.append(AddField(object, 1));
+            ScentObjectsInRange.append(AddField(object, 1));
         }
-        StringBuilder ss= new StringBuilder(AddSection("Seen Objects in Range:", 0));
+        StringBuilder SceneObjectsInRange= new StringBuilder(AddSection("Seen Objects in Range:", 0));
         ArrayList<ObjectInRange> seen= CurrentCreature.GetObjectsSeenInRange(ObjectsInRangeList);
         for(ObjectInRange object: seen){
-            ss.append(AddField(object, 1));
+            SceneObjectsInRange.append(AddField(object, 1));
         }
-        String value=os.append(scs).append(ss).toString();
+        String value=AllObjectsInRange.append(ScentObjectsInRange).append(SceneObjectsInRange).toString();
         Stats.setText(value);
         //Stats1.setText();
     }

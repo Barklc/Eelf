@@ -13,7 +13,7 @@ public class CreatureVitals {
     private int Age;
     private int MaturityAge;
     private int SeniorAge;
-    private int LifeSpan;
+    private float LifeSpan;
     private float MaturityRate;
     private boolean Alive;
     private boolean Pregnant;
@@ -38,7 +38,7 @@ public class CreatureVitals {
         Health=health;
         Age=age;
 
-        LifeSpan= (int) CGV.GetLifeSpan();
+        LifeSpan= CGV.GetLifeSpan();
         MaturityAge= (int) (LifeSpan*CGV.GetMatureAgePercentage());
         SeniorAge=(int) (LifeSpan*CGV.GetSeniorAgePercentage());
         MaturityRate=( 1.0f /MaturityAge);
@@ -103,7 +103,7 @@ public class CreatureVitals {
             Age = value;
         }
     }
-    public int GetLifeSpan(){return LifeSpan;}
+    public float GetLifeSpan(){return LifeSpan;}
     public int GetMaturityAge(){return MaturityAge;}
     public int GetSeniorAge(){return SeniorAge;}
 

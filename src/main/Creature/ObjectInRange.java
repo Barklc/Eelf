@@ -1,5 +1,11 @@
 package main.Creature;
 
+import main.Nourishments.Nourishment;
+
+import java.util.concurrent.Callable;
+
+import static main.Main.gWorld;
+
 public class ObjectInRange{
     float x,y,distance;
     ObjectInRangeType objectType;
@@ -41,6 +47,17 @@ public class ObjectInRange{
 
     public void SetScentStrength(float s){
         scentStrength=s;
+    }
+    public float GetRadius() {
+        if (objectType == ObjectInRangeType.Plant || objectType == ObjectInRangeType.Meat) {
+            Nourishment nourishment = gWorld.gNourishment.get(idOfObject);
+            return nourishment.GetNourishmentSize();
+        }
+        if (objectType==ObjectInRangeType.Creature){
+            Creature currentCreature=gWorld.gPopulation.GetCreature(idOfObject);
+            return currentCreature.GetBody().GetHeadSegment().GetSegmentHeight();
+        }
+        return 10;
     }
 }
 

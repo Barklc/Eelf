@@ -61,7 +61,7 @@ public class GeneMinMax {
     public static final float MatureAgePercentageMin=0.4f;
     public static final float VisionDominanceMax=1.0f;
     public static final float VisionDominanceMin=0.01f;
-    public static final float ScentDominanceMax=1.0f;
+    public static final float ScentDominanceMax=0.01f; //1.0f;
     public static final float ScentDominanceMin=0.01f;
 
 }

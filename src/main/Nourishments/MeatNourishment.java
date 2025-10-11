@@ -17,6 +17,7 @@ public class MeatNourishment extends Nourishment {
         return NourishmentTypes.Meat;
     }
 
+
     @Override
     public void DisplayNourishment(PApplet w, float scale){
         w.fill(GetNourishmentColor().hashCode());

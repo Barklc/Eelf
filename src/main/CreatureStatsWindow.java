@@ -79,101 +79,103 @@ public class CreatureStatsWindow {
         CreaturePhysics Physics=CurrentCreature.GetPhysics();
         CreatureGeneValues Genes=CurrentCreature.GetGenes();
 
-        String cp=AddSection("Creature Info",0);
-        cp+=AddField("ID",1, CurrentCreature.GetUUID().toString());
-        cp+=AddField("Alive",1,Vitals.IsAlive());
-        cp+=AddField("Current Action",1,CurrentCreature.GetCurrentAction().toString());
-        cp+=AddField("Hungry",1,Vitals.IsHungry());
-        cp+=AddField("Pregnant",1,false);
-        cp+=AddField("Speed",1,Genes.GetSpeed(),Physics.GetCurrentSpeed());
-        cp+=AddField("Tail Speed Modifier",2,Physics.GetTailSpeedMod(),Physics.GetCurrentTailSpeedMod());
-        cp+=AddField("Mass Speed Modifier", 2,Physics.GetMassSpeedMod(),Physics.GetCurrentMassSpeedMod());
-        cp+=AddField("MaxTurnAngle",1,Genes.GetMaxTurnAngle(),Physics.GetCurrentTurnAngle());
-        cp+=AddSection("Location Info",1);
-        cp+=AddField("Type",2,CurrentCreature.GetTargetObject().ObjectTypeInRange().toString());
-        cp+=AddField("X",2,CurrentCreature.GetTargetObject().X(),Vitals.GetX());
-        cp+=AddField("Y",2,CurrentCreature.GetTargetObject().Y(),Vitals.GetY());
-        cp+=AddField("Distance to Target",2,CurrentCreature.GetDistanceToTarget(),CurrentCreature.GetPreviousDistanceToTarget());
+        String GeneralStats=AddSection("Creature Info",0);
+        GeneralStats+=AddField("ID",1, CurrentCreature.GetUUID().toString());
+        GeneralStats+=AddField("Alive",1,Vitals.IsAlive());
+        GeneralStats+=AddField("Current Action",1,CurrentCreature.GetCurrentAction().toString());
+        GeneralStats+=AddField("Hungry",1,Vitals.IsHungry());
+        GeneralStats+=AddField("Pregnant",1,false);
+        GeneralStats+=AddField("Speed",1,Genes.GetSpeed(),Physics.GetCurrentSpeed());
+        GeneralStats+=AddField("Tail Speed Modifier",2,Physics.GetTailSpeedMod(),Physics.GetCurrentTailSpeedMod());
+        GeneralStats+=AddField("Mass Speed Modifier", 2,Physics.GetMassSpeedMod(),Physics.GetCurrentMassSpeedMod());
+        GeneralStats+=AddField("MaxTurnAngle",1,Genes.GetMaxTurnAngle(),Physics.GetCurrentTurnAngle());
+        GeneralStats+=AddSection("Location Info",1);
+        GeneralStats+=AddField("Type",2,CurrentCreature.GetTargetObject().ObjectTypeInRange().toString());
+        GeneralStats+=AddField("X",2,CurrentCreature.GetTargetObject().X(),Vitals.GetX());
+        GeneralStats+=AddField("Y",2,CurrentCreature.GetTargetObject().Y(),Vitals.GetY());
+        GeneralStats+=AddField("Radius",2,CurrentCreature.GetTargetObject().GetRadius());
+        GeneralStats+=AddField("Distance to Target",2,CurrentCreature.GetDistanceToTarget(),CurrentCreature.GetPreviousDistanceToTarget());
 
-        String bp=AddSection("Body Info",0);
-        bp+=AddField("Length",1,Genes.GetBodyLength(),Body.GetBodyLength());
-        bp+=AddField("Mass",1,Body.GetBodyMass(),Body.GetCurrentBodyMass());
-        bp+=AddField("Width",1,Genes.GetBodyWidth(),Body.GetCurrentBodyWidth());
-        bp+=AddField("Height",1,Genes.GetBodyHeight(),Body.GetCurrentBodyHeight());
-        bp+=AddField("Distance Between Segments",1,Genes.GetBodyDistanceBetweenSegments(),Body.GetCurrentBodyDistanceBetweenSegments());
-        bp+=AddField("Tapper",1,Genes.GetBodyTaper());
-        bp+=AddField("Color",1,Genes.GetBodyColor(),Body.GetCurrentHeadColor());
-        bp+=AddSection("Mouth Info",1);
-        bp+=AddField("Present",2,Genes.GetMouthPresent(),Body.GetMouthPresent());
+        String BodyStats=AddSection("Body Info",0);
+        BodyStats+=AddField("Length",1,Genes.GetBodyLength(),Body.GetBodyLength());
+        BodyStats+=AddField("Mass",1,Body.GetBodyMass(),Body.GetCurrentBodyMass());
+        BodyStats+=AddField("Width",1,Genes.GetBodyWidth(),Body.GetCurrentBodyWidth());
+        BodyStats+=AddField("Height",1,Genes.GetBodyHeight(),Body.GetCurrentBodyHeight());
+        BodyStats+=AddField("Distance Between Segments",1,Genes.GetBodyDistanceBetweenSegments(),Body.GetCurrentBodyDistanceBetweenSegments());
+        BodyStats+=AddField("Tapper",1,Genes.GetBodyTaper());
+        BodyStats+=AddField("Color",1,Genes.GetBodyColor(),Body.GetCurrentHeadColor());
+
+        BodyStats+=AddSection("Mouth Info",1);
+        BodyStats+=AddField("Present",2,Genes.GetMouthPresent(),Body.GetMouthPresent());
         if (Body.GetMouthPresent()) {
-            bp += AddField("Connect Segment", 2, Body.GetMouthSegment().GetSegmentConnectedTo());
+            BodyStats += AddField("Connect Segment", 2, Body.GetMouthSegment().GetSegmentConnectedTo());
         }
-        bp+=AddField("Size",2,Genes.GetMouthSize(),Body.GetCurrentMouthSize());
-        bp+=AddField("Bite Strength",2,Genes.GetBiteStrength(),Body.GetCurrentBiteStrength());
-        bp+=AddField("Color",2,Genes.GetMouthColor(),Body.GetCurrentMouthColor());
-        bp+=AddSection("Eye Info",1);
-        bp+=AddField("Present",2,Genes.GetEyesPresent(),Body.GetEyesPresent());
+        BodyStats+=AddField("Size",2,Genes.GetMouthSize(),Body.GetCurrentMouthSize());
+        BodyStats+=AddField("Bite Strength",2,Genes.GetBiteStrength(),Body.GetCurrentBiteStrength());
+        BodyStats+=AddField("Color",2,Genes.GetMouthColor(),Body.GetCurrentMouthColor());
+        BodyStats+=AddSection("Eye Info",1);
+        BodyStats+=AddField("Present",2,Genes.GetEyesPresent(),Body.GetEyesPresent());
         if (Body.GetEyesPresent()) {
-            bp += AddField("Connect Segment", 2, Body.GetEyesSegment().GetSegmentConnectedTo());
+            BodyStats += AddField("Connect Segment", 2, Body.GetEyesSegment().GetSegmentConnectedTo());
         }
-        bp+=AddField("Size",2,Genes.GetMouthSize(),Body.GetCurrentMouthSize());
-        bp+=AddField("Color",2,Genes.GetEyeColor(),Body.GetCurrentEyesColor());
-        bp+=AddSection("Flippers Info",1);
-        bp+=AddField("Present",2,Genes.GetFlipperPresent(),Body.GetFlipperPresent());
+        BodyStats+=AddField("Size",2,Genes.GetMouthSize(),Body.GetCurrentMouthSize());
+        BodyStats+=AddField("Color",2,Genes.GetEyeColor(),Body.GetCurrentEyesColor());
+        BodyStats+=AddSection("Flippers Info",1);
+        BodyStats+=AddField("Present",2,Genes.GetFlipperPresent(),Body.GetFlipperPresent());
         if (Body.GetFlipperPresent()) {
-            bp += AddField("Connect Segment", 2, Body.GetFlippersSegment().GetSegmentConnectedTo());
+            BodyStats += AddField("Connect Segment", 2, Body.GetFlippersSegment().GetSegmentConnectedTo());
         }
-        bp+=AddField("Width",2,Genes.GetFlipperWidth(),Body.GetCurrentFlipperWidth());
-        bp+=AddField("Height",2,Genes.GetFlipperHeight(),Body.GetCurrentFlipperHeight());
-        bp+=AddField("Color",2,Genes.GetFlipperColor(),Body.GetCurrentFlipperColor());
-        bp+=AddSection("Tail Info",1);
-        bp+=AddField("Present",2,Genes.GetTailPresent(),Body.GetTailPresent());
+        BodyStats+=AddField("Width",2,Genes.GetFlipperWidth(),Body.GetCurrentFlipperWidth());
+        BodyStats+=AddField("Height",2,Genes.GetFlipperHeight(),Body.GetCurrentFlipperHeight());
+        BodyStats+=AddField("Color",2,Genes.GetFlipperColor(),Body.GetCurrentFlipperColor());
+        BodyStats+=AddSection("Tail Info",1);
+        BodyStats+=AddField("Present",2,Genes.GetTailPresent(),Body.GetTailPresent());
         if (Body.GetTailPresent()){
-            bp += AddField("Connect Segment", 2, Body.GetTailSegment().GetSegmentConnectedTo());
+            BodyStats += AddField("Connect Segment", 2, Body.GetTailSegment().GetSegmentConnectedTo());
         }
-        bp+=AddField("Width",2,Genes.GetTailWidthPercentage(),Body.GetCurrentTailWidth());
-        bp+=AddField("Height",2,Genes.GetTailHeightPercentage(),Body.GetCurrentTailHeight());
-        bp+=AddField("Color",2,Genes.GetFlipperColor(),Body.GetCurrentTailColor());
+        BodyStats+=AddField("Width",2,Genes.GetTailWidthPercentage(),Body.GetCurrentTailWidth());
+        BodyStats+=AddField("Height",2,Genes.GetTailHeightPercentage(),Body.GetCurrentTailHeight());
+        BodyStats+=AddField("Color",2,Genes.GetFlipperColor(),Body.GetCurrentTailColor());
 
-        String ap=AddSection("Age Info",0);
-        ap+=AddField("Age",1, Vitals.GetLifeSpan(), Vitals.GetAge());
-        ap+=AddField("Maturity",1,Vitals.GetMaturity());
-        ap+=AddField("Maturity",1,Genes.GetMatureAgePercentage(),Vitals.GetMaturityAge());
-        ap+=AddField("Senior",1,Genes.GetSeniorAgePercentage(),Vitals.GetSeniorAge());
+        String AgeStats=AddSection("Age Info",0);
+        AgeStats+=AddField("Age",1, Vitals.GetLifeSpan(), Vitals.GetAge());
+        AgeStats+=AddField("Maturity",1,Vitals.GetMaturity());
+        AgeStats+=AddField("Maturity",1,Genes.GetMatureAgePercentage(),Vitals.GetMaturityAge());
+        AgeStats+=AddField("Senior",1,Genes.GetSeniorAgePercentage(),Vitals.GetSeniorAge());
 
-        String mp=AddSection("Metabolism Info",0);
-        mp+=AddSection("Digestion Info",1);
-        mp+=AddField("StomachSize",2,Genes.GetStomachSize(),Vitals.GetCurrentStomachSize());
-        mp+=AddSection("Stomach Content",2);
-        mp+=AddField("Total",3,Vitals.GetTotalStomachContent());
-        mp+=AddField("Plant",3,Vitals.GetPlantStomachContent());
-        mp+=AddField("Meat",3,Vitals.GetMeatStomachContent());
-        mp+=AddField("DigestionRate",2,Genes.GetDigestionRate());
-        mp+=AddField("Plant To Energy Conversion Rate",2,Genes.GetPlantToEnergyConversionRate());
-        mp+=AddField("Meat To Energy Conversion Rate",2,Genes.GetMeatToEnergyConversionRate());
-        mp+=AddSection("Health Info",1);
-        mp+=AddField("Health",2,Genes.GetMaxHealth(),Vitals.GetHealth());
-        mp+=AddSection("Energy Info",1);
-        mp+=AddField("Max Energy Storage",2,Genes.GetMaxStoredEnergy(),Vitals.GetCurrentMaxEnergyStorage());
-        mp+=AddField("Energy Stored",2,Vitals.GetEnergyLevel());
+        String MetabolismStats=AddSection("Metabolism Info",0);
+        MetabolismStats+=AddSection("Digestion Info",1);
+        MetabolismStats+=AddField("StomachSize",2,Genes.GetStomachSize(),Vitals.GetCurrentStomachSize());
+        MetabolismStats+=AddSection("Stomach Content",2);
+        MetabolismStats+=AddField("Total",3,Vitals.GetTotalStomachContent());
+        MetabolismStats+=AddField("Plant",3,Vitals.GetPlantStomachContent());
+        MetabolismStats+=AddField("Meat",3,Vitals.GetMeatStomachContent());
+        MetabolismStats+=AddField("DigestionRate",2,Genes.GetDigestionRate());
+        MetabolismStats+=AddField("Plant To Energy Conversion Rate",2,Genes.GetPlantToEnergyConversionRate());
+        MetabolismStats+=AddField("Meat To Energy Conversion Rate",2,Genes.GetMeatToEnergyConversionRate());
+        MetabolismStats+=AddSection("Health Info",1);
+        MetabolismStats+=AddField("Health",2,Genes.GetMaxHealth(),Vitals.GetHealth());
+        MetabolismStats+=AddSection("Energy Info",1);
+        MetabolismStats+=AddField("Max Energy Storage",2,Genes.GetMaxStoredEnergy(),Vitals.GetCurrentMaxEnergyStorage());
+        MetabolismStats+=AddField("Energy Stored",2,Vitals.GetEnergyLevel());
 
-        String vp=AddSection("Vision Info",0);
-        vp+=AddField("Angle",1,(float)Math.toDegrees(Genes.GetVisionAngle()));
-        vp+=AddField("Distance",1,Genes.GetVisionDistance());
-        vp+=AddField("Clarity",1,Genes.GetVisionClarity());
-        vp+=AddField("Scan Freq",1,Genes.GetVisionScanFreq());
-        vp+=AddField("VisionDominance",1,Genes.GetVisionDominancePercentage());
+        String VisionStats=AddSection("Vision Info",0);
+        VisionStats+=AddField("Angle",1,(float)Math.toDegrees(Genes.GetVisionAngle()));
+        VisionStats+=AddField("Distance",1,Genes.GetVisionDistance());
+        VisionStats+=AddField("Clarity",1,Genes.GetVisionClarity());
+        VisionStats+=AddField("Scan Freq",1,Genes.GetVisionScanFreq());
+        VisionStats+=AddField("VisionDominance",1,Genes.GetVisionDominancePercentage());
 
-        String rp=AddSection("Reproduction Info",0);
-        rp+=AddField("Birth Recovery Time",1,Genes.GetBirthRecoveryTime(),Vitals.GetBirthRecoveryTime());
-        rp+=AddField("Energy Birth Gestation Energy Cost",1,Genes.GetBirthGestationEnergyCost());
-        rp+=AddField("Gestation Period",1,Genes.GetGestationPeriod(),Vitals.GetGestationPeriodCountDown());
-        rp+=AddField("Birth Energy Cost",1,Genes.GetBirthEnergyCost());
+        String ReproductionStats=AddSection("Reproduction Info",0);
+        ReproductionStats+=AddField("Birth Recovery Time",1,Genes.GetBirthRecoveryTime(),Vitals.GetBirthRecoveryTime());
+        ReproductionStats+=AddField("Energy Birth Gestation Energy Cost",1,Genes.GetBirthGestationEnergyCost());
+        ReproductionStats+=AddField("Gestation Period",1,Genes.GetGestationPeriod(),Vitals.GetGestationPeriodCountDown());
+        ReproductionStats+=AddField("Birth Energy Cost",1,Genes.GetBirthEnergyCost());
 
-        String op=AddSection("Olfactory",0);
-        op+=AddField("ScentDominance",1,Genes.GetScentDominancePercentage());
+        String OlfactoryStats=AddSection("Olfactory",0);
+        OlfactoryStats+=AddField("ScentDominance",1,Genes.GetScentDominancePercentage());
 
-        Stats.setText(cp+bp+ap);
-        Stats1.setText(mp+rp+vp+op);
+        Stats.setText(GeneralStats + BodyStats + AgeStats);
+        Stats1.setText(MetabolismStats + ReproductionStats + VisionStats + OlfactoryStats);
     }
 }

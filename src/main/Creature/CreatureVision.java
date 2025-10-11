@@ -41,10 +41,10 @@ public class CreatureVision{
 
     public void UpdateSightLines(){
         sightlines=new ArrayList<>();
-        System.out.println(Math.toDegrees(hangle));
-        System.out.println(Math.toDegrees(hangle-(angle/2)*Math.PI));
-        System.out.println(Math.toDegrees(hangle+(angle/2)*Math.PI));
-        System.out.println(Math.toDegrees(angle));
+        //System.out.println(Math.toDegrees(hangle));
+        //System.out.println(Math.toDegrees(hangle-(angle/2)*Math.PI));
+        //System.out.println(Math.toDegrees(hangle+(angle/2)*Math.PI));
+        //System.out.println(Math.toDegrees(angle));
 
         //get outside sight lines
         float x1,y1,x2,y2;

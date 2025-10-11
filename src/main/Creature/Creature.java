@@ -141,8 +141,7 @@ public class Creature{
         //creatureProperties.ReduceEnergyLevel((currentSpeed*gSpeedEnergyMod)/60);
     }
     public float GetAngleToTarget(float targetX,float targetY){
-        float a= (float) Math.atan2(targetY - Vitals.GetY(), targetX - Vitals.GetX());
-        float delta = a;
+        float delta= (float) Math.atan2(targetY - Vitals.GetY(), targetX - Vitals.GetX());
         //while (delta < -Math.PI){delta+= (float) (2*Math.PI);}
         //while (delta > Math.PI){delta-= (float) (2*Math.PI);}
         System.out.println("GetAngleToTarget.Angle: " + Math.toDegrees(delta) );

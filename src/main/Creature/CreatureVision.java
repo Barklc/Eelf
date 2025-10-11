@@ -1,6 +1,5 @@
 package main.Creature;
 import main.Coords;
-import main.CreatureVisionWindow;
 import main.FlagsOverride;
 import main.Creature.BodySegments.BodySegment;
 
@@ -60,7 +59,7 @@ public class CreatureVision{
         float sightLineCount=(angle)/((clarity));
         //print("Angle=" + angle*100 + "  Clarity=" + clarity + " Step=" + steps + "\r\n");
         //print("sightLineCount= " + sightLineCount + "\r\n");
-        float startingAngle= (float) (hangle-(angle/2));
+        float startingAngle= (hangle-(angle/2));
         for(int i=0;i<sightLineCount;i++){
             x2 = (float) (hx + (distance)*Math.cos(startingAngle+((steps*i))));
             y2 = (float) (hy + (distance)*Math.sin(startingAngle+((steps*i))));
@@ -85,7 +84,7 @@ public class CreatureVision{
 
                 w.stroke(100);
                 w.noFill();
-                w.arc(hx,hy,distance*2,distance*2, (float) (hangle-(angle/2)), (float) (hangle+(angle/2)));
+                w.arc(hx,hy,distance*2,distance*2, (hangle-(angle/2)), (hangle+(angle/2)));
 
                 for(int i=2;i<sightlines.size();i++){
                     sightline=sightlines.get(i);

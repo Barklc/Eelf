@@ -1,7 +1,5 @@
 package main.DecisionEngine;
 
-import java.util.ArrayList;
-
 public class InputID {
 
     public final static int InputCreatureX=0;
@@ -34,7 +32,4 @@ public class InputID {
     public final static int InputHealth=28;
     public final static int InputCurrentTurnRate=29;
 
-    public void InputID(){
-
-    }
 }

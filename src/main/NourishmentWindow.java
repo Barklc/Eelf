@@ -1,8 +1,6 @@
 package main;
 
-import main.Creature.ObjectInRange;
 import main.Nourishments.Nourishment;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -70,19 +68,19 @@ public class NourishmentWindow {
                 Name + "\r\n";
     }
     public void Update(ArrayList<Nourishment> nourishments) {
-        String NourishmentStats=AddSection("Nourishment Info",0);
+        StringBuilder NourishmentStats= new StringBuilder(AddSection("Nourishment Info", 0));
         for(int i=0;i<nourishments.size(); i++) {
             Nourishment currentNourishment = nourishments.get(i);
-            NourishmentStats += AddField("ID", 1, (float) i);
-            NourishmentStats += AddField("Type", 2, currentNourishment.NourishmentType().toString());
-            NourishmentStats += AddField("Mass", 2, currentNourishment.GetNourishmentMass());
-            NourishmentStats += AddField("Size", 2, currentNourishment.GetNourishmentSize());
-            NourishmentStats += AddField("Scent Strength",2,currentNourishment.GetNourishmentScentStrength());
-            NourishmentStats += AddField("Scent",2,currentNourishment.GetNourishmentScent());
-            NourishmentStats += AddField("Color",2,currentNourishment.GetNourishmentColor());
+            NourishmentStats.append(AddField("ID", 1, (float) i));
+            NourishmentStats.append(AddField("Type", 2, currentNourishment.NourishmentType().toString()));
+            NourishmentStats.append(AddField("Mass", 2, currentNourishment.GetNourishmentMass()));
+            NourishmentStats.append(AddField("Size", 2, currentNourishment.GetNourishmentSize()));
+            NourishmentStats.append(AddField("Scent Strength", 2, currentNourishment.GetNourishmentScentStrength()));
+            NourishmentStats.append(AddField("Scent", 2, currentNourishment.GetNourishmentScent()));
+            NourishmentStats.append(AddField("Color", 2, currentNourishment.GetNourishmentColor()));
         }
 
-        Stats.setText(NourishmentStats);
+        Stats.setText(NourishmentStats.toString());
 
     }
 }

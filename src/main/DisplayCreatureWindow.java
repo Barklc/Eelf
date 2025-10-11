@@ -2,13 +2,12 @@ package main;
 
 import main.Creature.BodySegments.BodySegment;
 import main.Creature.Creature;
-import static main.Main.gWorld;
 import main.Genetics.Genome;
 import processing.core.PApplet;
 import java.util.UUID;
 
 public class DisplayCreatureWindow extends PApplet{
-        private final int lastDisplayed=-1;
+
         private Creature originalCreature;
 
         public DisplayCreatureWindow() {

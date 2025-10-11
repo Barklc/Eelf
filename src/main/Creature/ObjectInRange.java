@@ -2,8 +2,6 @@ package main.Creature;
 
 import main.Nourishments.Nourishment;
 
-import java.util.concurrent.Callable;
-
 import static main.Main.gWorld;
 
 public class ObjectInRange{

@@ -4,12 +4,10 @@ import processing.core.*;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Set;
 
 public abstract class Nourishment{
     private float NourishmentX;
     private float NourishmentY;
-    private float NourishmentSize;
     private float NourishmentMass;
     private float NourishmentMassMax;
     private Color NourishmentColor;
@@ -25,28 +23,28 @@ public abstract class Nourishment{
 
     public Float GetNourishmentX(){
         return NourishmentX;
-    };
+    }
 
     public void SetNourishmentX(float x){
         NourishmentX=x;
-    };
+    }
 
     public Float GetNourishmentY(){
         return NourishmentY;
-    };
+    }
 
     public void SetNourishmentY(float y){
         NourishmentY=y;
-    };
+    }
 
     public Float GetNourishmentSize(){
         return NourishmentMass*GameParameters.NourishmentMassToSizeAdjustment;
-    };
+    }
 
 
     public Float GetNourishmentMass(){
         return NourishmentMass;
-    };
+    }
 
     public void SetNourishmentMass(float m){
         if (m<0) {NourishmentMass=0.5f;} else {NourishmentMass=m;}
@@ -54,38 +52,34 @@ public abstract class Nourishment{
 
     public Color GetNourishmentColor(){
         return NourishmentColor;
-    };
+    }
 
     public void SetNourishmentColor(Color c){
         NourishmentColor=c;
-    };
+    }
 
 
     public Float GetNourishmentScent(){
         return NourishmentScent;
-    };
+    }
 
     public void SetNourishmentScent(float s){
         NourishmentScent=s;
-    };
+    }
 
     public Float GetNourishmentScentStrength(){
         return NourishmentScentStrength;
-    };
+    }
 
     public void SetNourishmentScentStrength(float s){
         NourishmentScentStrength=s;
-    };
+    }
 
     public void GrowRotNourishment(){
         if (NourishmentType()==NourishmentTypes.Plant){
             float growthAmount = (GetNourishmentMass() * GameParameters.GrowthPercentagePerTick);
             float currentMass = GetNourishmentMass();
-            if (currentMass +  growthAmount>NourishmentMassMax){
-                SetNourishmentMass(NourishmentMassMax);
-            } else {
-                SetNourishmentMass(currentMass + growthAmount);
-            }
+            SetNourishmentMass(Math.min(currentMass + growthAmount, NourishmentMassMax));
         } else {
             float rotAmount = (GetNourishmentMass() * GameParameters.RotPercentagePerTick);
             float currentMass = GetNourishmentMass();
@@ -96,10 +90,9 @@ public abstract class Nourishment{
             }
         }
     }
-    public void InitializeNourishment(float x,float y,float size, float mass,Color c,float scent,float strength){
+    public void InitializeNourishment(float x,float y, float mass,Color c,float scent,float strength){
         NourishmentX=x;
         NourishmentY=y;
-        NourishmentSize=mass/GameParameters.NourishmentMassToSizeAdjustment;
         NourishmentMass=mass;
         NourishmentMassMax=mass;
         NourishmentColor=c;

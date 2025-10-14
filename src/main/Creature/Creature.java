@@ -40,7 +40,9 @@ public class Creature{
     private ObjectInRange NearestPlant;
     private ObjectInRange NearestMeat;
     private ObjectInRange NearestCreature;
-
+    private ObjectInRange NearestPlantScent;
+    private ObjectInRange NearestMeatScent;
+    private ObjectInRange NearestCreatureScent;
 
     public Creature(float startX, float startY, Genome genome, UUID uuid){
 
@@ -195,16 +197,44 @@ public class Creature{
         SeenObjectsInRange=Vision.FindObjects(ObjectsInRange);
         DecisionEngine.SetInputArray(InputID.InputSeenObjectsInRange,SeenObjectsInRange);
 
+
         NearestPlant=Vision.GetNearestObjectSpecified(SeenObjectsInRange,ObjectInRangeType.Plant);
         DecisionEngine.SetInputArray(InputID.InputNearestPlantInRange,NearestPlant);
         NearestMeat=Vision.GetNearestObjectSpecified(SeenObjectsInRange,ObjectInRangeType.Meat);
         DecisionEngine.SetInputArray(InputID.InputNearestMeatInRange,NearestMeat);
         NearestCreature=Vision.GetNearestObjectSpecified(SeenObjectsInRange,ObjectInRangeType.Creature);
         DecisionEngine.SetInputArray(InputID.InputNearestCreatureInRange,NearestCreature);
+        if (NearestMeat!=null && NearestPlant!=null){
+            if (NearestMeat.Distance()<NearestPlant.Distance()){
+                DecisionEngine.SetInputArray(InputID.InputClosestSeenNourishmentInRange,NearestMeat);
+            } else {
+                DecisionEngine.SetInputArray(InputID.InputClosestSeenNourishmentInRange,NearestPlant);
+            }
+        }
+        if (NearestPlant!=null && NearestMeat==null) { DecisionEngine.SetInputArray(InputID.InputClosestSeenNourishmentInRange,NearestPlant);}
+        if (NearestMeat!=null && NearestPlant==null) { DecisionEngine.SetInputArray(InputID.InputClosestSeenNourishmentInRange,NearestMeat);}
+        if (NearestMeat==null && NearestPlant==null){
+            DecisionEngine.SetInputArray(InputID.InputClosestSeenNourishmentInRange,null);
+        }
 
-        DecisionEngine.SetInputArray(InputID.InputNearestPlantScentInRange,Vision.GetNearestObjectSpecified(ScentObjectsInRange,ObjectInRangeType.Plant));
-        DecisionEngine.SetInputArray(InputID.InputNearestMeatScentInRange,Vision.GetNearestObjectSpecified(ScentObjectsInRange,ObjectInRangeType.Meat));
-        DecisionEngine.SetInputArray(InputID.InputNearestCreatureScentInRange,Vision.GetNearestObjectSpecified(ScentObjectsInRange,ObjectInRangeType.Creature));
+        NearestPlantScent=Olfactory.GetNearestScentSpecified(ScentObjectsInRange,ObjectInRangeType.PlantScent);
+        DecisionEngine.SetInputArray(InputID.InputNearestPlantScentInRange,NearestPlantScent);
+        NearestMeatScent=Olfactory.GetNearestScentSpecified(ScentObjectsInRange,ObjectInRangeType.MeatScent);
+        DecisionEngine.SetInputArray(InputID.InputNearestMeatScentInRange,NearestMeatScent);
+        NearestCreatureScent=Olfactory.GetNearestScentSpecified(ScentObjectsInRange,ObjectInRangeType.CreatureScent);
+        DecisionEngine.SetInputArray(InputID.InputNearestCreatureScentInRange,NearestCreatureScent);
+        if (NearestMeatScent!=null && NearestPlantScent!=null){
+            if (NearestMeatScent.Distance()<NearestPlantScent.Distance()){
+                DecisionEngine.SetInputArray(InputID.InputClosestSmeltNourishmentInRange,NearestMeatScent);
+            } else {
+                DecisionEngine.SetInputArray(InputID.InputClosestSmeltNourishmentInRange,NearestPlantScent);
+            }
+        }
+        if (NearestPlantScent!=null && NearestMeatScent==null) { DecisionEngine.SetInputArray(InputID.InputClosestSmeltNourishmentInRange,NearestPlantScent);}
+        if (NearestMeatScent!=null && NearestPlantScent==null) { DecisionEngine.SetInputArray(InputID.InputClosestSmeltNourishmentInRange,NearestMeatScent);}
+        if (NearestMeatScent==null && NearestPlantScent==null){
+            DecisionEngine.SetInputArray(InputID.InputClosestSmeltNourishmentInRange,null);
+        }
 
         DecisionEngine.SetInputArray(InputID.InputAliveTickCount,GetAliveTickCount());
         DecisionEngine.SetInputArray(InputID.InputAge,Vitals.GetAge());
@@ -214,6 +244,7 @@ public class Creature{
         DecisionEngine.SetInputArray(InputID.InputHealth,Vitals.GetHealth());
         DecisionEngine.SetInputArray(InputID.InputCurrentTurnRate,Physics.GetCurrentTurnAngle());
 
+        DecisionEngine.SetInputArray(InputID.InputDietaryPreference, Vitals.GetDietaryPreference());
     }
     public void CreatureAction(){
         IncreaseAliveTickCount();
@@ -245,7 +276,7 @@ public class Creature{
                 break;
             case TargetMeat:
                 TargetObject=NearestMeat;
-                CreatureAction=Actions.MoveToPlant;
+                CreatureAction=Actions.MoveToMeat;
                 break;
             case Eat:
                 Physics.PauseSpeed(true);
@@ -256,6 +287,8 @@ public class Creature{
                     gWorld.gNourishment.set(TargetObject.IdOfObject(),nourishment);
                 }
                 break;
+            case SearchForMate:
+                CreatureAction=Actions.MateFound;
         }
 
         //TODO: Determine movement distance and pass it to energy cycle
@@ -302,6 +335,7 @@ public class Creature{
         }
         for(int i=0;i<Body.GetBodyLength()-1;i++){
             Body.GetBodySegment(i).DisplaySegment(w, scale);
+            System.out.println(i + ":" + Body.GetBodySegment(i).GetSegmentAngle());
         }
         b=Body.GetEyesSegment();
         if (b !=null && b.BodySegmentType()==SegmentID.Eyes){
@@ -313,6 +347,11 @@ public class Creature{
         }
 
         Vision.Display(w, scale);
-        w.circle(TargetObject.X(),TargetObject.Y(),5);
+        if(TargetObject!=null) {
+            w.circle(TargetObject.X(), TargetObject.Y(), 5);
+        }
     }
 }
+
+
+//978-601-1791

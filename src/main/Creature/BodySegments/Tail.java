@@ -44,9 +44,12 @@ public class Tail extends BodySegment {
     public void UpdateSegment(BodySegment prev){
         float a= (float) Math.atan2(prev.GetSegmentY()-GetSegmentY(),prev.GetSegmentX()-GetSegmentX());
         SetSegmentAngle(a);
+        if (a==0.0f){
+            System.out.println("Tail angle is 0");
+        }
         //take the x and y squared, find the sqr root is the distance between
         float d = (float) Math.sqrt(Math.pow(prev.GetSegmentX()-GetSegmentX(),2) + Math.pow(prev.GetSegmentY()-GetSegmentY(),2));
-        if (d >GetSegmentDistance()){
+        if (d>GetSegmentDistance()){
             float delta = d-GetSegmentDistance();
             //cos determines new x location based on angle.
             //sin determines new y location based on angle.

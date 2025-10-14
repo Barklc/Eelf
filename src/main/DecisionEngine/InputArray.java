@@ -7,7 +7,7 @@ public class InputArray {
 
     public void InputArray(){
         input =new ArrayList<>();
-        for(int i=0;i<30;i++){
+        for(int i=0;i<InputID.InputMaxEntries;i++){
             input.add(new Object());
         }
     }
@@ -25,7 +25,7 @@ public class InputArray {
 
     public void ClearInputs(){
         input =new ArrayList<>();
-        for(int i=0;i<30;i++){
+        for(int i=0;i<InputID.InputMaxEntries;i++){
             input.add(new Object());
         }
     }

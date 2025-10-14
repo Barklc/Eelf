@@ -83,7 +83,7 @@ public class GeneBase{
 
     public float Mutation(float value){
         if (gUtils.GetRandomNumber(.01f,1f)<=MutationRate){
-            value=value+gUtils.GetRandomNumber(-mutationFactor,mutationFactor);
+            value=value+(gUtils.GetRandomNumber(0.0f,mutationFactor*2)-mutationFactor);
             if (value<minimum) value=minimum;
             if (value>maximum) value=maximum;
         }

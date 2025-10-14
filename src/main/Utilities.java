@@ -69,7 +69,10 @@ public class Utilities{
 
     public float GetRandomNumber(float min, float max) {
         Random random=new Random();
-        return min + random.nextFloat(max-min);
+        if (max-min<=0.0f){
+            return 0.0f;
+        }
+            return min + random.nextFloat(max - min);
     }
 
     public Color ChangeColorByPercentage(Color original, float percentage)

@@ -2,9 +2,9 @@ package main;
 
 public class GameParameters {
 
-    public static final int MaxPop=1;
-    public static final int MaxPlants=3;
-    public static final int MaxMeat=0;
+    public static final int MaxPop=5;
+    public static final int MaxPlants=5;
+    public static final int MaxMeat=5;
     public static final int YearInTicks=60;
     public static final int TicksBetweenBites=30;
     public static final int FlippersSegmentConnected = 2;
@@ -20,7 +20,9 @@ public class GameParameters {
     public static final float TailPresentThreshold = 0.5f;
     //This is the base amount of nourishment digested adjusted by DigestionRate gene per tick
     public static final float BaseDigestionAmountPerTick = 10f/YearInTicks;
-
+    //These two thresholds are used to determine if creature is an Omnivore
+    public static final float OmnivorePlantThreshold=0.70f;
+    public static final float OmnivoreMeatThreshold=0.70f;
     //This is the amount of damage an unborn will take if parent is missing need engergy or health.
     public static final float UnbornHealthDamagePerIncrease = 0.1f;
 
@@ -31,7 +33,7 @@ public class GameParameters {
     // source has to be within this range.
     public static final float MaxScentDistance=255.0f;
     //How much meat nourishments rot per tick.  Larger the number the more per tick.
-    public static final float RotPercentagePerTick=0.01f;
+    public static final float RotPercentagePerTick=0.001f;
 
     //How much plant nourishments grow per tick.  Larger the number the more per tick.
     public static final float GrowthPercentagePerTick=0.001f;

@@ -153,6 +153,7 @@ public class CreatureStatsWindow {
         MetabolismStats+=AddField("DigestionRate",2,Genes.GetDigestionRate());
         MetabolismStats+=AddField("Plant To Energy Conversion Rate",2,Genes.GetPlantToEnergyConversionRate());
         MetabolismStats+=AddField("Meat To Energy Conversion Rate",2,Genes.GetMeatToEnergyConversionRate());
+        MetabolismStats+=AddField("Dietary Preference",2,Vitals.GetDietaryPreference().toString());
         MetabolismStats+=AddSection("Health Info",1);
         MetabolismStats+=AddField("Health",2,Genes.GetMaxHealth(),Vitals.GetHealth());
         MetabolismStats+=AddSection("Energy Info",1);

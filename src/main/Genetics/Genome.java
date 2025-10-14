@@ -34,7 +34,7 @@ public class Genome{
         chromosomes.set(ChromosomeID,Chromosome);
     }
 
-    public float GetGene(int GeneId){
+    public float GetGeneValue(int GeneId){
         GeneBase gene=genesDef.GetGene(GeneId);
         int cn=gene.GetChromosome();
         Chromosome c=chromosomes.get(cn);

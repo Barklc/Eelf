@@ -1,6 +1,7 @@
 package main;
 
 import main.Creature.Creature;
+import main.Genetics.GeneBase;
 import main.Genetics.GeneID;
 import main.Genetics.Genome;
 
@@ -19,10 +20,12 @@ public class Population {
 
     public void CreatePopulation(int MaxPop,int Width,int Height){
         maxPop=MaxPop;
+        Genome Base=BuildRandomGenome();
         for(int i=0;i<maxPop;i++){
-            Genome g=BuildRandomGenome();
-            g.ExportGenome();
-            Creature creature = new Creature((float) Width /2, (float) Height /2,g,UUID.randomUUID());
+            Genome newGenome=Mutate(Base);
+            newGenome.ExportGenome();
+            Creature creature = new Creature((float) Width /2, (float) Height /2,newGenome,UUID.randomUUID());
+            creature.SetCurrentAction(Actions.NewDestination);
             AddPopulation(creature);
         }
     }
@@ -115,5 +118,77 @@ public class Population {
         newGenome.SetGeneInChromosome(GeneID.ScentDominancePercentage, gGenesDef.GetGene(GeneID.ScentDominancePercentage).RandomValue());
 
         return newGenome;
+    }
+
+    public Genome Mutate(Genome genome){
+        Genome newGenome=genome;
+        newGenome.SetGeneInChromosome(GeneID.BodyLength,MutateGene(newGenome.GetGeneDef(GeneID.BodyLength),newGenome.GetGeneValue(GeneID.BodyLength)));
+        newGenome.SetGeneInChromosome(GeneID.HeadShape, MutateGene(newGenome.GetGeneDef(GeneID.HeadShape),newGenome.GetGeneValue(GeneID.HeadShape)));
+        newGenome.SetGeneInChromosome(GeneID.BodyHeight, MutateGene(newGenome.GetGeneDef(GeneID.BodyHeight),newGenome.GetGeneValue(GeneID.BodyHeight)));
+        newGenome.SetGeneInChromosome(GeneID.BodyTaper, MutateGene(newGenome.GetGeneDef(GeneID.BodyTaper),newGenome.GetGeneValue(GeneID.BodyTaper)));
+        newGenome.SetGeneInChromosome(GeneID.BodyWidth, MutateGene(newGenome.GetGeneDef(GeneID.BodyWidth),newGenome.GetGeneValue(GeneID.BodyWidth)));
+        newGenome.SetGeneInChromosome(GeneID.FlipperPresent, MutateGene(newGenome.GetGeneDef(GeneID.FlipperPresent),newGenome.GetGeneValue(GeneID.FlipperPresent)));
+        newGenome.SetGeneInChromosome(GeneID.FlipperHeight, MutateGene(newGenome.GetGeneDef(GeneID.FlipperHeight),newGenome.GetGeneValue(GeneID.FlipperHeight)));
+        newGenome.SetGeneInChromosome(GeneID.FlipperWidth, MutateGene(newGenome.GetGeneDef(GeneID.FlipperWidth),newGenome.GetGeneValue(GeneID.FlipperWidth)));
+        newGenome.SetGeneInChromosome(GeneID.TailPresent, MutateGene(newGenome.GetGeneDef(GeneID.TailPresent),newGenome.GetGeneValue(GeneID.TailPresent)));
+        newGenome.SetGeneInChromosome(GeneID.TailHeightPercentage, MutateGene(newGenome.GetGeneDef(GeneID.TailHeightPercentage),newGenome.GetGeneValue(GeneID.TailHeightPercentage)));
+        newGenome.SetGeneInChromosome(GeneID.TailWidthPercentage, MutateGene(newGenome.GetGeneDef(GeneID.TailWidthPercentage),newGenome.GetGeneValue(GeneID.TailWidthPercentage)));
+        newGenome.SetGeneInChromosome(GeneID.BodyColorRed, MutateGene(newGenome.GetGeneDef(GeneID.BodyColorRed),newGenome.GetGeneValue(GeneID.BodyColorRed)));
+        newGenome.SetGeneInChromosome(GeneID.BodyColorGreen, MutateGene(newGenome.GetGeneDef(GeneID.BodyColorGreen),newGenome.GetGeneValue(GeneID.BodyColorGreen)));
+        newGenome.SetGeneInChromosome(GeneID.BodyColorBlue, MutateGene(newGenome.GetGeneDef(GeneID.BodyColorBlue),newGenome.GetGeneValue(GeneID.BodyColorBlue)));
+        newGenome.SetGeneInChromosome(GeneID.SkinToughness, MutateGene(newGenome.GetGeneDef(GeneID.SkinToughness),newGenome.GetGeneValue(GeneID.SkinToughness)));
+        newGenome.SetGeneInChromosome(GeneID.FlipperColorRed, MutateGene(newGenome.GetGeneDef(GeneID.FlipperColorRed),newGenome.GetGeneValue(GeneID.FlipperColorRed)));
+        newGenome.SetGeneInChromosome(GeneID.FlipperColorGreen, MutateGene(newGenome.GetGeneDef(GeneID.FlipperColorGreen),newGenome.GetGeneValue(GeneID.FlipperColorGreen)));
+        newGenome.SetGeneInChromosome(GeneID.FlipperColorBlue, MutateGene(newGenome.GetGeneDef(GeneID.FlipperColorBlue),newGenome.GetGeneValue(GeneID.FlipperColorBlue)));
+        newGenome.SetGeneInChromosome(GeneID.TailColorRed, MutateGene(newGenome.GetGeneDef(GeneID.TailColorRed),newGenome.GetGeneValue(GeneID.TailColorRed)));
+        newGenome.SetGeneInChromosome(GeneID.TailColorGreen, MutateGene(newGenome.GetGeneDef(GeneID.TailColorGreen),newGenome.GetGeneValue(GeneID.TailColorGreen)));
+        newGenome.SetGeneInChromosome(GeneID.TailColorBlue, MutateGene(newGenome.GetGeneDef(GeneID.TailColorBlue),newGenome.GetGeneValue(GeneID.TailColorBlue)));
+        newGenome.SetGeneInChromosome(GeneID.BodyDistanceBetweenSegments, MutateGene(newGenome.GetGeneDef(GeneID.BodyDistanceBetweenSegments),newGenome.GetGeneValue(GeneID.BodyDistanceBetweenSegments)));
+
+        newGenome.SetGeneInChromosome(GeneID.StomachSize, MutateGene(newGenome.GetGeneDef(GeneID.StomachSize),newGenome.GetGeneValue(GeneID.StomachSize)));
+        newGenome.SetGeneInChromosome(GeneID.DigestionRate, MutateGene(newGenome.GetGeneDef(GeneID.DigestionRate),newGenome.GetGeneValue(GeneID.DigestionRate)));
+        newGenome.SetGeneInChromosome(GeneID.PlantToEnergyConversionRate, MutateGene(newGenome.GetGeneDef(GeneID.PlantToEnergyConversionRate),newGenome.GetGeneValue(GeneID.PlantToEnergyConversionRate)));
+        newGenome.SetGeneInChromosome(GeneID.MeatToEnergyConversionRate, MutateGene(newGenome.GetGeneDef(GeneID.MeatToEnergyConversionRate),newGenome.GetGeneValue(GeneID.MeatToEnergyConversionRate)));
+        newGenome.SetGeneInChromosome(GeneID.MaxStoredEnergy, MutateGene(newGenome.GetGeneDef(GeneID.MaxStoredEnergy),newGenome.GetGeneValue(GeneID.MaxStoredEnergy)));
+
+        newGenome.SetGeneInChromosome(GeneID.BirthGestationEnergyCost, MutateGene(newGenome.GetGeneDef(GeneID.BirthGestationEnergyCost),newGenome.GetGeneValue(GeneID.BirthGestationEnergyCost)));
+        newGenome.SetGeneInChromosome(GeneID.BirthRecoveryTime, MutateGene(newGenome.GetGeneDef(GeneID.BirthRecoveryTime),newGenome.GetGeneValue(GeneID.BirthRecoveryTime)));
+        newGenome.SetGeneInChromosome(GeneID.BirthEnergyCost, MutateGene(newGenome.GetGeneDef(GeneID.BirthEnergyCost),newGenome.GetGeneValue(GeneID.BirthEnergyCost)));
+        newGenome.SetGeneInChromosome(GeneID.GestationPeriod, MutateGene(newGenome.GetGeneDef(GeneID.GestationPeriod),newGenome.GetGeneValue(GeneID.GestationPeriod)));
+
+        newGenome.SetGeneInChromosome(GeneID.VisionAngle, MutateGene(newGenome.GetGeneDef(GeneID.VisionAngle),newGenome.GetGeneValue(GeneID.VisionAngle)));
+        newGenome.SetGeneInChromosome(GeneID.VisionClarity, MutateGene(newGenome.GetGeneDef(GeneID.VisionClarity),newGenome.GetGeneValue(GeneID.VisionClarity)));
+        newGenome.SetGeneInChromosome(GeneID.VisionDistance, MutateGene(newGenome.GetGeneDef(GeneID.VisionDistance),newGenome.GetGeneValue(GeneID.VisionDistance)));
+        newGenome.SetGeneInChromosome(GeneID.VisionScanFreq, MutateGene(newGenome.GetGeneDef(GeneID.VisionScanFreq),newGenome.GetGeneValue(GeneID.VisionScanFreq)));
+        newGenome.SetGeneInChromosome(GeneID.EyeColorRed, MutateGene(newGenome.GetGeneDef(GeneID.EyeColorRed),newGenome.GetGeneValue(GeneID.EyeColorRed)));
+        newGenome.SetGeneInChromosome(GeneID.EyeColorGreen, MutateGene(newGenome.GetGeneDef(GeneID.EyeColorGreen),newGenome.GetGeneValue(GeneID.EyeColorGreen)));
+        newGenome.SetGeneInChromosome(GeneID.EyeColorBlue, MutateGene(newGenome.GetGeneDef(GeneID.EyeColorBlue),newGenome.GetGeneValue(GeneID.EyeColorBlue)));
+        newGenome.SetGeneInChromosome(GeneID.EyeSize, MutateGene(newGenome.GetGeneDef(GeneID.EyeSize),newGenome.GetGeneValue(GeneID.EyeSize)));
+        newGenome.SetGeneInChromosome(GeneID.EyesPresent, MutateGene(newGenome.GetGeneDef(GeneID.EyesPresent),newGenome.GetGeneValue(GeneID.EyesPresent)));
+        newGenome.SetGeneInChromosome(GeneID.VisionDominancePercentage, MutateGene(newGenome.GetGeneDef(GeneID.VisionDominancePercentage),newGenome.GetGeneValue(GeneID.VisionDominancePercentage)));
+
+        newGenome.SetGeneInChromosome(GeneID.MovementSpeed, MutateGene(newGenome.GetGeneDef(GeneID.MovementSpeed),newGenome.GetGeneValue(GeneID.MovementSpeed)));
+        newGenome.SetGeneInChromosome(GeneID.MaxTurnAngle, MutateGene(newGenome.GetGeneDef(GeneID.MaxTurnAngle),newGenome.GetGeneValue(GeneID.MaxTurnAngle)));
+        newGenome.SetGeneInChromosome(GeneID.MassPercentage, MutateGene(newGenome.GetGeneDef(GeneID.MassPercentage),newGenome.GetGeneValue(GeneID.MassPercentage)));
+
+        newGenome.SetGeneInChromosome(GeneID.MouthSize, MutateGene(newGenome.GetGeneDef(GeneID.MouthSize),newGenome.GetGeneValue(GeneID.MouthSize)));
+        newGenome.SetGeneInChromosome(GeneID.BiteStrength, MutateGene(newGenome.GetGeneDef(GeneID.BiteStrength),newGenome.GetGeneValue(GeneID.BiteStrength)));
+        newGenome.SetGeneInChromosome(GeneID.MouthColorRed, MutateGene(newGenome.GetGeneDef(GeneID.MouthColorRed),newGenome.GetGeneValue(GeneID.MouthColorRed)));
+        newGenome.SetGeneInChromosome(GeneID.MouthColorGreen, MutateGene(newGenome.GetGeneDef(GeneID.MouthColorGreen),newGenome.GetGeneValue(GeneID.MouthColorGreen)));
+        newGenome.SetGeneInChromosome(GeneID.MouthColorBlue, MutateGene(newGenome.GetGeneDef(GeneID.MouthColorBlue),newGenome.GetGeneValue(GeneID.MouthColorBlue)));
+        newGenome.SetGeneInChromosome(GeneID.MouthPresent, MutateGene(newGenome.GetGeneDef(GeneID.MouthPresent),newGenome.GetGeneValue(GeneID.MouthPresent)));
+
+        newGenome.SetGeneInChromosome(GeneID.LifeSpan, MutateGene(newGenome.GetGeneDef(GeneID.LifeSpan),newGenome.GetGeneValue(GeneID.LifeSpan)));
+        newGenome.SetGeneInChromosome(GeneID.MatureAgePercentage, MutateGene(newGenome.GetGeneDef(GeneID.MatureAgePercentage),newGenome.GetGeneValue(GeneID.MatureAgePercentage)));
+        newGenome.SetGeneInChromosome(GeneID.SeniorAgePercentage, MutateGene(newGenome.GetGeneDef(GeneID.SeniorAgePercentage),newGenome.GetGeneValue(GeneID.SeniorAgePercentage)));
+
+        newGenome.SetGeneInChromosome(GeneID.ReceptorsSensitivity, MutateGene(newGenome.GetGeneDef(GeneID.ReceptorsSensitivity),newGenome.GetGeneValue(GeneID.ReceptorsSensitivity)));
+        newGenome.SetGeneInChromosome(GeneID.ScentDominancePercentage, MutateGene(newGenome.GetGeneDef(GeneID.ScentDominancePercentage),newGenome.GetGeneValue(GeneID.ScentDominancePercentage)));
+        return newGenome;
+    }
+
+    public float MutateGene(GeneBase base,float value){
+        //base.SetMutationRate(float) - to change the chances of a mutation from occurring.  Default is .10f
+        return base.Mutation(value);
     }
 }

@@ -1,4 +1,5 @@
 package main.Nourishments;
+import main.FlagsOverride;
 import main.GameParameters;
 import processing.core.*;
 
@@ -48,7 +49,7 @@ public abstract class Nourishment{
 
     public void SetNourishmentMass(float m){
         if (m<0) {NourishmentMass=0.5f;} else {NourishmentMass=m;}
-    };
+    }
 
     public Color GetNourishmentColor(){
         return NourishmentColor;
@@ -81,12 +82,14 @@ public abstract class Nourishment{
             float currentMass = GetNourishmentMass();
             SetNourishmentMass(Math.min(currentMass + growthAmount, NourishmentMassMax));
         } else {
-            float rotAmount = (GetNourishmentMass() * GameParameters.RotPercentagePerTick);
-            float currentMass = GetNourishmentMass();
-            if (currentMass -  rotAmount<0){
-                SetNourishmentMass(0);
-            } else {
-                SetNourishmentMass(currentMass - rotAmount);
+            if (!FlagsOverride.StopMeatRotOverride) {
+                float rotAmount = (GetNourishmentMass() * GameParameters.RotPercentagePerTick);
+                float currentMass = GetNourishmentMass();
+                if (currentMass - rotAmount < 0) {
+                    SetNourishmentMass(0);
+                } else {
+                    SetNourishmentMass(currentMass - rotAmount);
+                }
             }
         }
     }

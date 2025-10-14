@@ -44,7 +44,6 @@ public class CreatureMetabolism {
             float digestionAmount= GameParameters.BaseDigestionAmountPerTick*CGV.GetDigestionRate();
             if (Vitals.GetMeatStomachContent()>0){
                 MeatDigestionAmount=Vitals.RemoveMeatStomachContent(digestionAmount);
-                digestionAmount=digestionAmount-MeatDigestionAmount;
                 energyCreated=MeatDigestionAmount*CGV.GetMeatToEnergyConversionRate();
             }
             if (Vitals.GetPlantStomachContent()>0) {

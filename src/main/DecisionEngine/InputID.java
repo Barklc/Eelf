@@ -17,19 +17,22 @@ public class InputID {
     public final static int InputCreatureCurrentSpeed=12;
     public final static int InputNearestPlantInRange=13;
     public final static int InputNearestMeatInRange=14;
-    public final static int InputNearestCreatureInRange=15;
-    public final static int InputNearestPlantScentInRange=16;
-    public final static int InputNearestMeatScentInRange=17;
-    public final static int InputNearestCreatureScentInRange=18;
-    public final static int InputAllObjectsInRange=19;
-    public final static int InputScentObjectsInRange=20;
-    public final static int InputSeenObjectsInRange=21;
-    public final static int InputAliveTickCount=23;
-    public final static int InputAge=24;
-    public final static int InputMaturityAge=25;
-    public final static int InputSeniorAge=26;
-    public final static int InputLifeSpan=27;
-    public final static int InputHealth=28;
-    public final static int InputCurrentTurnRate=29;
-
+    public final static int InputClosestSeenNourishmentInRange=15;
+    public final static int InputClosestSmeltNourishmentInRange=16;
+    public final static int InputNearestCreatureInRange=17;
+    public final static int InputNearestPlantScentInRange=18;
+    public final static int InputNearestMeatScentInRange=19;
+    public final static int InputNearestCreatureScentInRange=20;
+    public final static int InputAllObjectsInRange=21;
+    public final static int InputScentObjectsInRange=22;
+    public final static int InputSeenObjectsInRange=23;
+    public final static int InputAliveTickCount=24;
+    public final static int InputAge=25;
+    public final static int InputMaturityAge=26;
+    public final static int InputSeniorAge=27;
+    public final static int InputLifeSpan=28;
+    public final static int InputHealth=29;
+    public final static int InputCurrentTurnRate=30;
+    public final static int InputDietaryPreference=31;
+    public final static int InputMaxEntries=32;
 }

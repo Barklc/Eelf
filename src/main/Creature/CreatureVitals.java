@@ -1,6 +1,7 @@
 package main.Creature;
 import main.FlagsOverride;
 import main.GameParameters;
+import main.Nourishments.DietaryPreference;
 
 import java.util.UUID;
 
@@ -17,10 +18,12 @@ public class CreatureVitals {
     private float MaturityRate;
     private boolean Alive;
     private boolean Pregnant;
+    private boolean ReadyToMate;
     private CreatureStomachContent StomachContent;
     private float EnergyLevel;
     private int BirthRecoveryTime;
     private int GestationPeriodCountDown;
+    private int BirthRecoveryCountDown;
     private float UnbornHealthDamage;
     private UUID ParentMaleID;
     private UUID ParentFemaleID;
@@ -54,6 +57,7 @@ public class CreatureVitals {
         EnergyLevel=0.0f;
         BirthRecoveryTime=0;
         GestationPeriodCountDown=0;
+        BirthRecoveryCountDown=0;
 
         ParentMaleID=parentMale;
         ParentFemaleID=parentFemale;
@@ -113,10 +117,28 @@ public class CreatureVitals {
         if (FlagsOverride.HungryOverride){
             return true;
         }
-        return StomachContent.GetTotalContent()<GetCurrentStomachSize()-1;}
+        return StomachContent.GetTotalContent()<GetCurrentStomachSize()-1;
+    }
+    public DietaryPreference GetDietaryPreference(){
+        float meatDominance=CGV.GetMeatToEnergyConversionRate();
+        float plantDominance=CGV.GetPlantToEnergyConversionRate();
+
+        if (plantDominance>GameParameters.OmnivorePlantThreshold && meatDominance>GameParameters.OmnivoreMeatThreshold){
+            return DietaryPreference.Omnivore;
+        }
+        if (meatDominance>plantDominance){
+            return DietaryPreference.Carnivore;
+        }
+        if (plantDominance>meatDominance){
+            return DietaryPreference.Herbivore;
+        }
+
+
+        return DietaryPreference.Herbivore;
+    }
     public boolean IsPregnant(){return Pregnant;}
     public void IsPregnant(boolean value){Pregnant=value;}
-
+    public boolean IsReadyToMate(){return GetMaturity() == 1.0f && GetBirthRecoveryCountDown() == 0;}
     public float GetMeatStomachContent(){return StomachContent.GetMeatContent();}
     public float AddMeatStomachContent(float value){return StomachContent.AddMeatContent(GetCurrentStomachSize(),value);}
     public float GetPlantStomachContent(){return StomachContent.GetPlantContent();}
@@ -129,6 +151,15 @@ public class CreatureVitals {
     }
     public int GetBirthRecoveryTime(){return BirthRecoveryTime;}
     public void SetBirthRecoveryTime(int value){BirthRecoveryTime=value;}
+    public int GetBirthRecoveryCountDown(){return BirthRecoveryCountDown;}
+    public void SetBirthRecoveryCountDown(int value){BirthRecoveryCountDown=value;}
+    public void DecreaseBirthRecoveryCountDown(){
+        if (BirthRecoveryCountDown<=1){
+            BirthRecoveryCountDown=0;
+        }else {
+            BirthRecoveryCountDown--;
+        }
+    }
     public int GetGestationPeriodCountDown(){return GestationPeriodCountDown;}
     public void IncreaseGestationPeriodCountDown(){GestationPeriodCountDown++;}
     public void DecreaseGestationPeriodCountDown(){GestationPeriodCountDown--;}

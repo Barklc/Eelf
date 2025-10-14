@@ -45,7 +45,7 @@ public class World{
         }
         for(int i=0;i<maxMeat;i++){
             MeatNourishment meatNourishment=new MeatNourishment();
-            meatNourishment.InitializeNourishment(gUtils.GetRandomNumber(10,Width-10),gUtils.GetRandomNumber(10,Height-10), 100,new Color(0,255,0),0,100);
+            meatNourishment.InitializeNourishment(gUtils.GetRandomNumber(10,Width-10),gUtils.GetRandomNumber(10,Height-10), 100,new Color(255,0,0),0,100);
             gNourishment.add(meatNourishment);
         }
     }

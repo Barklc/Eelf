@@ -1,11 +1,14 @@
 package main.Creature.BodySegments;
 import main.Coords;
 import main.GameParameters;
+import main.Creature.GeometryUtils;
 import processing.core.PApplet;
 import processing.core.PShape;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.List;
 
 import static main.Main.gUtils;
 import static processing.core.PConstants.CENTER;
@@ -61,9 +64,10 @@ public class Mouth extends BodySegment {
         Coords coords=gUtils.calculatePointOnEllipse(GetSegmentX(),GetSegmentY(), GetSegmentAngle(),GetSegmentHeight(), GetSegmentHeight());
         PShape mouth=CreateMouth(w,MouthSize,BiteStrength);
         w.pushMatrix();
-        w.fill(GetMouthColor().hashCode());
+        // Use getRGB() instead of hashCode()
+        w.fill(GetMouthColor() != null ? GetMouthColor().getRGB() : Color.BLACK.getRGB());
         w.translate(coords.X(),coords.Y());
-        w.stroke(GetMouthColor().hashCode());
+        w.stroke(GetMouthColor() != null ? GetMouthColor().getRGB() : Color.BLACK.getRGB());
         w.rotate(GetSegmentAngle());
         w.shapeMode(CENTER);
         w.shape(mouth,mouth.width/2,mouth.height/2);
@@ -87,35 +91,25 @@ public class Mouth extends BodySegment {
 
         mouth=w.createShape();
         mouth.beginShape();
-        mouth.fill(MouthColor.hashCode());
+        // use getRGB() to provide Processing the ARGB int
+        mouth.fill(GetMouthColor() != null ? GetMouthColor().getRGB() : Color.BLACK.getRGB());
         // Exterior part of shape, clockwise winding
-        float angle = 0.0f;
-        float nx = 0.0f;
-        float ny = 0.0f;
-
-        //Draw the outside of the mouth
-        for(float i=mouthRight;i<mouthLeft;i++)
-        {
-            angle = (float) Math.toRadians( i );
-            nx = (float) ((mouthSize) * Math.cos( angle ));
-            ny = (float) ((mouthSize) * Math.sin( angle ));
-
-            mouth.vertex( nx , ny);
+        // Generate outer arc points using GeometryUtils
+        List<Point2D.Float> outer = GeometryUtils.generateArcPoints(mouthSize, mouthRight, mouthLeft, 1.0f);
+        for (Point2D.Float p : outer) {
+            mouth.vertex(p.x, p.y);
         }
 
+        // Compute inner radius using GeometryUtils (clamped)
+        float mouthInnerRadius = GeometryUtils.computeInnerRadius(mouthSize, biteStrength, GameParameters.BiteStrengthVisualThreshold);
+        float cx = mouthSize - mouthInnerRadius; // offset for inner arc center
+        float cy = 0;
 
-        float mouthInnerRadius=mouthSize*(1-modifier);
-        float cx=mouthSize-mouthInnerRadius;//cos(angle)+mouthInnerRadius;
-        float cy=0;
-
-        for (float i = mouthLeft; i>mouthRight; i-- )
-        {
-            angle = (float) Math.toRadians( i );
-            nx = (float) (cx + mouthInnerRadius * Math.cos(angle));
-            ny = (float) (cy + mouthInnerRadius * Math.sin(angle));
-
-            mouth.vertex( nx, ny);
-
+        // Generate inner arc points and iterate in reverse to match original winding
+        List<Point2D.Float> inner = GeometryUtils.generateArcPoints(mouthInnerRadius, mouthRight, mouthLeft, 1.0f);
+        for (int idx = inner.size() - 1; idx >= 0; idx--) {
+            Point2D.Float p = inner.get(idx);
+            mouth.vertex(cx + p.x, cy + p.y);
         }
 
         mouth.disableStyle();
